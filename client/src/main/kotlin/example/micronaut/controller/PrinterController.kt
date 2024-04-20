@@ -9,7 +9,7 @@ import io.micronaut.http.annotation.Get
 class PrinterController(private val printerService: PrinterService) {
 
     @Get("/{id}/status")
-    fun getPrinterStatus(id: String): Printer? {
+    fun getPrinterStatus(id: Int): Printer? {
         return printerService.getPrinterStatus(id)
     }
 }
