@@ -24,6 +24,16 @@ class PrinterService(
             jobService.broadcastUpdates()
         }
     }
+    fun setBusy(id:Int){
+        val printer = printers[id]
+        if(printer?.status=="free"){
+            printer.status = "working"
+        }
+
+    }
+    fun findFreePrinter(): Printer? {
+        return printers.values.firstOrNull{ it.status == "free" }
+    }
 
     fun getPrinterStatus(printerId: Int): Printer? = printers[printerId]
 }
