@@ -1,6 +1,7 @@
 package example.micronaut.controller
 
 import example.micronaut.printers.PrintJob
+import example.micronaut.service.JobService
 import example.micronaut.service.PrinterService
 import io.micronaut.http.annotation.Body
 import io.micronaut.http.annotation.Controller
@@ -11,7 +12,10 @@ import io.micronaut.views.View
 import java.time.LocalDateTime
 
 @Controller("/job")
-class PrintJobController(private val printerService: PrinterService) {
+class PrintJobController(
+    private val printerService: PrinterService,
+    private val jobService: JobService
+) {
 
     // ... printer status endpoints ...
 
@@ -19,13 +23,29 @@ class PrintJobController(private val printerService: PrinterService) {
     fun submitPrintJob(@Body printJob: PrintJob): PrintJobResponse {
         // TODO:
         // 1. Validate printJob
-        // 2. Find available printer (check printerService)
-        // 3. If available, assign job to printer, update status, return success response
-        // 4. If not, schedule the job and return scheduled times
 
-        return PrintJobResponse("success", "Job submitted",
-                                startTime = LocalDateTime.now(),
-                                estimatedFinishTime = LocalDateTime.now().plusMinutes(5)) // Placeholder
+         // 2. Find available printer
+        val availablePrinter = printerService.findFreePrinter()
+
+        return if (availablePrinter != null) {
+            // 3. If available, assign job to printer
+            availablePrinter.status = "working"
+            printerService.setBusy(availablePrinter.id)
+            val job = jobService.createJob(printJob, availablePrinter.id)
+
+            val startTime =  LocalDateTime.now()
+            val endTime = startTime.plusSeconds(printJob.totalTime.toLong())
+            // Broadcast the update over WebSocket
+            jobService.broadcastUpdates()
+
+
+            PrintJobResponse("success", "Job submitted", startTime = startTime, estimatedFinishTime = endTime)
+        } else {
+            // 4. If not, schedule the job
+            // ... (For now, let's just return a pending status)
+            PrintJobResponse("pending", "No printers available")
+        }
+
     }
 
     @Get
