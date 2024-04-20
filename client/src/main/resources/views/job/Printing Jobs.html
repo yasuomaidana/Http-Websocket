@@ -17,7 +17,14 @@
         }
 
         function updateJobList(jobs) {
-            // Update the DOM of job-list based on received job updates
+            const jobList = document.getElementById("job-list");
+            jobList.innerHTML = ''; // Clear existing
+
+            jobs.forEach(job => {
+                const listItem = document.createElement("li");
+                listItem.textContent = `Job ${job.id}: ${job.status} - Remaining Time: ${job.remainingTime}`;
+                jobList.appendChild(listItem);
+            });
         }
     </script>
 </body>
