@@ -15,10 +15,13 @@ class PrinterService(
     )
 
     // For demo, a very basic status update
-    @Scheduled(fixedDelay = "5s")
+    @Scheduled(fixedDelay = "3s")
     fun simulatePrinterUpdates() {
-        printers.values.forEach {
-            if (it.status == "working") it.status = "free"
+        val busyPrinter = printers.values.firstOrNull { it.status == "working" }
+        if (busyPrinter != null) {
+            busyPrinter.status = "free"
+            jobService.removeJob()
+            jobService.broadcastUpdates()
         }
     }
 
