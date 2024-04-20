@@ -6,9 +6,10 @@ import jakarta.inject.Singleton
 
 @Singleton
 class PrinterService {
-    private val printers: MutableMap<String, Printer> = mutableMapOf(
-        "1" to Printer("printer_1"),
-        // ... more printers
+    private val printers: MutableMap<Int, Printer> = mutableMapOf(
+        1 to Printer(1),
+        1 to Printer(1),
+        1 to Printer(1),
     )
 
     // For demo, a very basic status update
@@ -19,5 +20,5 @@ class PrinterService {
         }
     }
 
-    fun getPrinterStatus(printerId: String): Printer? = printers[printerId]
+    fun getPrinterStatus(printerId: Int): Printer? = printers[printerId]
 }
