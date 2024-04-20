@@ -5,11 +5,13 @@ import io.micronaut.scheduling.annotation.Scheduled
 import jakarta.inject.Singleton
 
 @Singleton
-class PrinterService {
+class PrinterService(
+    private val jobService: JobService
+) {
     private val printers: MutableMap<Int, Printer> = mutableMapOf(
         1 to Printer(1),
-        1 to Printer(1),
-        1 to Printer(1),
+        2 to Printer(2),
+        3 to Printer(3),
     )
 
     // For demo, a very basic status update
