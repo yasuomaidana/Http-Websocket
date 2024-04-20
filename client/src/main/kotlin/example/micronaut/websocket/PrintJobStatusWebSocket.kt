@@ -12,7 +12,7 @@ class PrintJobStatusWebSocket(private val jobService: JobService) { // Assuming 
 
     @OnOpen
     fun onOpen(session: WebSocketSession) {
-        // ... set up initial state for the client
+        jobService.addWebSocketSession(session)
     }
 
     @OnMessage
@@ -20,9 +20,11 @@ class PrintJobStatusWebSocket(private val jobService: JobService) { // Assuming 
         // ... handle client requests if needed
     }
 
+    // ... other handlers ...
+
     @OnClose
     fun onClose(session: WebSocketSession) {
-        // ... clean up
+        jobService.removeWebSocketSession(session)
     }
 
     // The JobService would broadcast status updates to this WebSocket periodically
