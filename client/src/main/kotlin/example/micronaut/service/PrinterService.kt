@@ -15,7 +15,7 @@ class PrinterService(
     )
 
     // For demo, a very basic status update
-    @Scheduled(fixedDelay = "3s")
+    @Scheduled(fixedDelay = "15s")
     fun simulatePrinterUpdates() {
         val busyPrinter = printers.values.firstOrNull { it.status == "working" }
         if (busyPrinter != null) {
