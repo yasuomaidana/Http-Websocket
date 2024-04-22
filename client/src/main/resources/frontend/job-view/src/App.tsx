@@ -1,6 +1,5 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.scss';
+import NewJobForm from './NewJobForm';
 import PrintingJobs from './PrintingJobs';
 
 function App() {
@@ -9,7 +8,12 @@ function App() {
       <header className="App-header">
         <h1>Printing jobs</h1>
       </header>
-      <PrintingJobs/>
+      <div> 
+        <NewJobForm /> 
+      </div> 
+      <div>
+        <PrintingJobs />
+      </div>
     </div>
   );
 }
