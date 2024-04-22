@@ -11,14 +11,23 @@ const PrintingJobs = () => {
 
     useEffect(() => {
       const websocket = new WebSocket("ws://localhost:8080/jobs/status");
-  
+      let isConnected = false
+
+      websocket.onopen = () =>{
+        isConnected = true;
+      }
       websocket.onmessage = (event) => {
         const jobUpdates: Job[] = JSON.parse(event.data);
         setJobs(jobUpdates);
       };
   
       // Cleanup on unmount
-      return () => websocket.close(); 
+      return () => {
+        if (isConnected){
+            websocket.close();   
+        }
+    } 
+      
     }, []); 
   
     return (
