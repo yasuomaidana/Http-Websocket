@@ -18,7 +18,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build:live": "webpack --env NODE_ENV=.env.dev --mode development",
+    "build:live": "webpack --watch --env NODE_ENV=.env.dev --mode development",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
