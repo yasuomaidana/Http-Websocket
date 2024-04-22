@@ -10,5 +10,5 @@ export const Endpoints = {
         base:API_HTTP_URL,
         jobs:`${API_HTTP_URL}/jobs`
     }
-}
+};
 

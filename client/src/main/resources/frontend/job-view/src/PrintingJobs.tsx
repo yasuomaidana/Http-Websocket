@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react'
+import { Endpoints } from './url_config';
 
 interface Job {
     id: number;
@@ -10,7 +11,7 @@ const PrintingJobs = () => {
     const [jobs, setJobs] = useState<Job[]>([]);
 
     useEffect(() => {
-      const websocket = new WebSocket("ws://localhost:8080/jobs/status");
+      const websocket = new WebSocket(Endpoints.websocket.jobStatus);
       let isConnected = false
 
       websocket.onopen = () =>{

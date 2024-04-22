@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
+import { Endpoints } from './url_config';
 
 const NewJobForm: React.FC = () => {
   const [name, setName] = useState('');
   const [totalTime, setTotalTime] = useState(0);
-
+  console.log(Endpoints);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -17,7 +18,7 @@ const NewJobForm: React.FC = () => {
     };
 
     try {
-      const response = await fetch('http://localhost:8080/job', { // Adjust endpoint if needed
+      const response = await fetch(Endpoints.http.jobs, { // Adjust endpoint if needed
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newJobData) 
