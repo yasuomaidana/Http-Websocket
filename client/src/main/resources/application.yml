@@ -1,6 +1,13 @@
 micronaut:
   application:
     name: client
+  router:
+    static-resources:
+      default:
+        paths:
+         - classpath:public
+        mapping: /public/**/*
+        enabled: true
 netty:
   default:
     allocator:
