@@ -28,11 +28,16 @@
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.new-job-form { /* Style your form container */
+  margin: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
+}
+
+.new-job-form h2 { 
+  margin-bottom: 15px;
+}
+
+.new-job-form div { /* Style individual form fields */ 
+  margin-bottom: 10px; 
 }
