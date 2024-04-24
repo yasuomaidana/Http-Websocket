@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 
 const Temperature = () => {
@@ -8,6 +9,7 @@ const Temperature = () => {
         <h1>Temperature</h1>
     </header>
     <div>Temperature Content</div>
+    <Link to="/"><button>View Jobs</button></Link>
     </>
     
   )

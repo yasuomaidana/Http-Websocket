@@ -51,6 +51,10 @@ class PrintJobController(
     @Get
     @View("job/Printing Jobs.html")
     fun jobsPage(){}
+
+    @Get("/temperature")
+    @View("job/Printing Jobs.html")
+    fun jobsTemperaturePage(){}
 }
 
 data class PrintJobResponse(val status: String, val message: String, val startTime: LocalDateTime? = null, val estimatedFinishTime: LocalDateTime? = null)
