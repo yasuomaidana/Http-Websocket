@@ -1,6 +1,7 @@
 package example.micronaut.service
 
 import example.micronaut.printers.PrintJob
+import example.micronaut.printers.PrintJobRequest
 import io.micronaut.websocket.WebSocketSession
 import jakarta.inject.Singleton
 
@@ -12,9 +13,8 @@ class JobService(
     private val jobs: MutableList<PrintJob> = mutableListOf()
     private var ids: Int = 0
 
-    fun createJob(printJob: PrintJob, printerId: Int): PrintJob {
-
-        printJob.id = ids
+    fun createJob(printJobRequest: PrintJobRequest, printerId: Int): PrintJob {
+        val printJob = PrintJob.toPrintJob(printJobRequest,ids)
         printJob.status = "printing"
         ids ++
         jobs.add(printJob)

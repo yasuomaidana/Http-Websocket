@@ -1,6 +1,6 @@
 package example.micronaut.controller
 
-import example.micronaut.printers.PrintJob
+import example.micronaut.printers.PrintJobRequest
 import example.micronaut.service.JobService
 import example.micronaut.service.PrinterService
 import io.micronaut.http.annotation.Body
@@ -20,7 +20,7 @@ class PrintJobController(
     // ... printer status endpoints ...
 
     @Post
-    fun submitPrintJob(@Body printJob: PrintJob): PrintJobResponse {
+    fun submitPrintJob(@Body printJob: PrintJobRequest): PrintJobResponse {
         // TODO:
         // 1. Validate printJob
 
@@ -31,6 +31,7 @@ class PrintJobController(
             // 3. If available, assign job to printer
             availablePrinter.status = "working"
             printerService.setBusy(availablePrinter.id)
+
             val job = jobService.createJob(printJob, availablePrinter.id)
 
             val startTime =  LocalDateTime.now()
