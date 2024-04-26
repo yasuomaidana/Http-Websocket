@@ -1,15 +1,17 @@
 plugins {
     id("java")
-    id("org.jetbrains.kotlin.jvm") version "1.6.21"
-    id("org.jetbrains.kotlin.kapt") version "1.6.21"
-    id("org.jetbrains.kotlin.plugin.allopen") version "1.6.21"
+    id("org.jetbrains.kotlin.jvm") version "${kotlinVersion}"
+    id("org.jetbrains.kotlin.kapt") version "${kotlinVersion}"
+    id("org.jetbrains.kotlin.plugin.allopen") version "${kotlinVersion}"
     id("com.github.johnrengelman.shadow") version "7.1.2"
     id("io.micronaut.application") version "3.6.7"
 }
 
 version = "0.1"
 group = "example.micronaut"
-
+ext{
+    mapstruct_version = "1.5.3.Final"
+}
 repositories {
     mavenCentral()
 }
@@ -28,9 +30,9 @@ dependencies {
 
     runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin")
 
-    implementation("org.mapstruct:mapstruct:latest.release")
-    kapt("org.mapstruct:mapstruct-processor:latest.release")
-    annotationProcessor("org.mapstruct:mapstruct-processor:latest.release") // Could be kapt in some setups
+    implementation("org.mapstruct:mapstruct:${mapstruct_version}")
+    kapt("org.mapstruct:mapstruct-processor:${mapstruct_version}")
+    annotationProcessor("org.mapstruct:mapstruct-processor:${mapstruct_version}") // Could be kapt in some setups
 }
 
 
