@@ -2,12 +2,22 @@ package example.micronaut.mapper
 
 import example.micronaut.printers.PrintJob
 import example.micronaut.printers.PrintJobRequest
+
 import org.mapstruct.Mapper
-//import org.mapstruct.Named
+import org.mapstruct.Mapping
+import org.mapstruct.Named
 
 
-@Mapper(componentModel = "jsr330")
+@Mapper(componentModel = "jakarta")
 interface PrintMapper {
-//    @Mapping(target = "status", ignore = true)
-    fun printJobRequestToPrintJob(printJobRequest:PrintJobRequest, id:Int, status:String="pending"):PrintJob
+
+    @Mapping(source = "printJobRequest", target = "status" ,qualifiedByName = ["defaultStatus"])
+    fun printJobRequestToPrintJob(printJobRequest:PrintJobRequest, id:Int):PrintJob
+
+    fun printJobRequestToPrintJob(printJobRequest:PrintJobRequest, id:Int, status:String):PrintJob
+
+    @Named("defaultStatus")
+    fun defaultStatus(printJobRequest: PrintJobRequest):String {
+        return "pending"
+    }
 }

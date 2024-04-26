@@ -10,7 +10,7 @@ plugins {
 version = "0.1"
 group = "example.micronaut"
 ext{
-    mapstruct_version = "1.5.3.Final"
+    mapstruct_version = "latest.release"
 }
 repositories {
     mavenCentral()
@@ -32,7 +32,7 @@ dependencies {
 
     implementation("org.mapstruct:mapstruct:${mapstruct_version}")
     kapt("org.mapstruct:mapstruct-processor:${mapstruct_version}")
-    annotationProcessor("org.mapstruct:mapstruct-processor:${mapstruct_version}") // Could be kapt in some setups
+//    annotationProcessor("org.mapstruct:mapstruct-processor:${mapstruct_version}") // Could be kapt in some setups
 }
 
 
