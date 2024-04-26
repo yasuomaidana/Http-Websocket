@@ -1,4 +1,5 @@
 plugins {
+    id("java")
     id("org.jetbrains.kotlin.jvm") version "1.6.21"
     id("org.jetbrains.kotlin.kapt") version "1.6.21"
     id("org.jetbrains.kotlin.plugin.allopen") version "1.6.21"
@@ -27,6 +28,9 @@ dependencies {
 
     runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin")
 
+    implementation("org.mapstruct:mapstruct:latest.release")
+    kapt("org.mapstruct:mapstruct-processor:latest.release")
+    annotationProcessor("org.mapstruct:mapstruct-processor:latest.release") // Could be kapt in some setups
 }
 
 
