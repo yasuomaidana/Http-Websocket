@@ -4,7 +4,6 @@ import { Endpoints } from './url_config';
 const NewJobForm: React.FC = () => {
   const [name, setName] = useState('');
   const [totalTime, setTotalTime] = useState(30);
-  console.log(Endpoints);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
