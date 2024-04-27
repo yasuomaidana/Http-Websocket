@@ -8,11 +8,9 @@ import { PrintingView } from "./PrintingView";
 function App() {
   return (
     <div className="App">
-      <BrowserRouter
-        basename={process.env.PUBLIC_URL ?? process.env.REACT_APP_BASENAME}
-      >
+      <BrowserRouter basename={process.env.PUBLIC_URL ?? process.env.REACT_APP_BASENAME}>
         <Routes>
-          <Route element={<PrintingView />} />
+          <Route path="" element={<PrintingView />} />
           <Route path="temperature" element={<Temperature />} />
         </Routes>
       </BrowserRouter>
