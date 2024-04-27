@@ -10,12 +10,12 @@ export const PrintingView = () => {
       <header className="App-header">
         <h1>Jobs</h1>
       </header>
-      {/* <div>
+      <div>
         <NewJobForm />
       </div>
       <div>
         <PrintingJobs />
-      </div> */}
+      </div>
       <div>Jobs Content</div>
       <NavLink to="temperature"><button>Go to Temperature</button></NavLink>
 
