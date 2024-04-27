@@ -22,18 +22,13 @@ export const PrintingView = () => {
         </Grid>
       </Grid>
 
-      <Box display="flex" justifyContent="center" marginTop="2em">
-        <Grid container justifyContent="center" xs={12} sm={9} lg={4}>
-          <Button
-            variant="contained"
-            fullWidth
-            component={NavLink}
-            to="temperature"
-          >
+      <Grid container justifyContent="center" marginTop={2}> {/* Center the button */}
+        <Grid item xs={12} sm={9} md={4}> {/* Responsive width */}
+          <Button variant="contained" fullWidth component={NavLink} to="temperature">
             Go to Temperature
           </Button>
         </Grid>
-      </Box>
+      </Grid>    
     </>
   );
 };
