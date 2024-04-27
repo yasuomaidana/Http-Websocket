@@ -38,7 +38,7 @@ class JobService(
     }
 
     fun broadcastUpdates() {
-        val updates = jobs.map { job -> Json.encodeToString(job)}
+        val updates = Json.encodeToString(jobs)
         webSocketSessions.forEach { it.sendSync(updates) } // Assuming updates are serializable
     }
 }
