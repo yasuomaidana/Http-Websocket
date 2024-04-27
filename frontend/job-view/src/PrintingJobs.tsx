@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Endpoints } from "./url_config";
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 
 interface Job {
   id: number;
@@ -32,15 +33,30 @@ const PrintingJobs = () => {
   }, []);
   return (
     <div>
-      <h2>Printing Jobs List:</h2>
-      <ul id="job-list">
-        {jobs.map((job,index) => (
-          <li key={index}>
-            Job {job.id}: {job.name} Satus: {job.status} - Remaining Time: {job.totalTime}
-          </li>
-        ))}
-      </ul>       
-    </div>
+    <h2>Printing Jobs List:</h2>
+    <TableContainer component={Paper}>
+      <Table sx={{ minWidth: 300 }} aria-label="printing jobs table"> 
+        <TableHead>
+          <TableRow>
+            <TableCell>ID</TableCell> 
+            <TableCell align="right">Name</TableCell>
+            <TableCell align="right">Status</TableCell>
+            <TableCell align="right">Remaining Time</TableCell> 
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {jobs.map((job) => (
+            <TableRow key={job.id}>
+              <TableCell>{job.id}</TableCell>
+              <TableCell align="right">{job.name}</TableCell>
+              <TableCell align="right">{job.status}</TableCell>
+              <TableCell align="right">{job.totalTime}</TableCell> 
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  </div>
   );
 };
 
