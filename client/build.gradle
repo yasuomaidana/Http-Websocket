@@ -43,7 +43,9 @@ application {
 java {
     sourceCompatibility = JavaVersion.toVersion("17")
 }
-
+jar {
+   duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+}
 tasks {
     compileKotlin {
         kotlinOptions {
