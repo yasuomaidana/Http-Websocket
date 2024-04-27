@@ -1,11 +1,12 @@
 package example.micronaut.service
 
 import example.micronaut.mapper.PrintMapper
-import example.micronaut.mapper.PrintMapperImpl
 import example.micronaut.printers.PrintJob
 import example.micronaut.printers.PrintJobRequest
 import io.micronaut.websocket.WebSocketSession
 import jakarta.inject.Singleton
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 @Singleton
 class JobService(
@@ -36,8 +37,8 @@ class JobService(
         webSocketSessions.remove(session)
     }
 
-    fun broadcastUpdates() { // Assuming JSON string
-        val updates = jobs.map { job -> mapOf("id" to job.id, "status" to job.status) } // Prepare a suitable update object for WebSocket }
+    fun broadcastUpdates() {
+        val updates = jobs.map { job -> Json.encodeToString(job)}
         webSocketSessions.forEach { it.sendSync(updates) } // Assuming updates are serializable
     }
 }
