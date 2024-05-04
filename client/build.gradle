@@ -30,6 +30,9 @@ dependencies {
     implementation("io.micronaut.sql:micronaut-jdbc-hikari")
     implementation("io.micronaut:micronaut-websocket")
 
+    compileOnly("io.micronaut:micronaut-http-client")
+    testImplementation("io.micronaut:micronaut-http-client")
+    runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin")
 
 
     // Kotlin & Kotlinx Serialization
@@ -43,7 +46,10 @@ dependencies {
 
     // Database
     runtimeOnly("com.mysql:mysql-connector-j")
-    runtimeOnly("org.yaml:snakeyaml")
+
+    // Flyway
+    implementation("io.micronaut.flyway:micronaut-flyway:latest")
+    runtimeOnly("org.flywaydb:flyway-mysql")
 
     //Mapstruct
     implementation("org.mapstruct:mapstruct:${mapstruct_version}")
