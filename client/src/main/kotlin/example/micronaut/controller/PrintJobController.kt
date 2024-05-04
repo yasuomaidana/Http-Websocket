@@ -7,6 +7,7 @@ import io.micronaut.http.annotation.Body
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.Post
+import io.micronaut.serde.annotation.Serdeable
 import io.micronaut.views.View
 
 import java.time.LocalDateTime
@@ -58,4 +59,5 @@ class PrintJobController(
     fun jobsTemperaturePage(){}
 }
 
+@Serdeable
 data class PrintJobResponse(val status: String, val message: String, val startTime: LocalDateTime? = null, val estimatedFinishTime: LocalDateTime? = null)
