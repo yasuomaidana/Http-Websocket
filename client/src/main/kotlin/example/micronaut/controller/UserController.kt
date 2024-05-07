@@ -20,10 +20,6 @@ class UserController {
     @Post
     @Secured("isAnonymous()")
     fun createUser(@Body user: User): HttpResponse<User> {
-        return try{
-            HttpResponse.created(userRepository.save(user))
-        } catch (e:DataAccessException){
-            HttpResponse.badRequest()
-        }
+        return HttpResponse.created(userRepository.save(user))
     }
 }
