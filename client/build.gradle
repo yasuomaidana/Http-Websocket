@@ -26,13 +26,15 @@ dependencies {
     kapt("io.micronaut.serde:micronaut-serde-processor")
     implementation("io.micronaut.serde:micronaut-serde-jackson") // Keep Jackson
     implementation("io.micronaut.kotlin:micronaut-kotlin-runtime")
-    implementation("io.micronaut.data:micronaut-data-jdbc")
-    implementation("io.micronaut.sql:micronaut-jdbc-hikari")
     implementation("io.micronaut:micronaut-websocket")
 
     compileOnly("io.micronaut:micronaut-http-client")
     testImplementation("io.micronaut:micronaut-http-client")
     runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin")
+
+    // Micronaut Security
+    annotationProcessor("io.micronaut.security:micronaut-security-annotations")
+    implementation("io.micronaut.security:micronaut-security")
 
 
     // Kotlin & Kotlinx Serialization
@@ -46,6 +48,8 @@ dependencies {
 
     // Database
     runtimeOnly("com.mysql:mysql-connector-j")
+    implementation("io.micronaut.data:micronaut-data-jdbc")
+    implementation("io.micronaut.sql:micronaut-jdbc-hikari")
 
     // Flyway
     implementation("io.micronaut.flyway:micronaut-flyway:latest")
@@ -57,6 +61,8 @@ dependencies {
 
     // If using SnakeYAML
     runtimeOnly("org.yaml:snakeyaml")
+
+    runtimeOnly("com.h2database:h2")
 }
 
 

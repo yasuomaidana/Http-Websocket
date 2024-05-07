@@ -1,0 +1,2 @@
+ALTER TABLE user ADD CONSTRAINT unique_username UNIQUE (username); -- Enforce username uniqueness
+ALTER TABLE user ADD COLUMN roles JSON NULL; -- Add a roles column (Adjust to your database's data type for storing an array or list)
