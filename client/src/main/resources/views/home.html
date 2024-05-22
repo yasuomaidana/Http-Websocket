@@ -7,10 +7,21 @@
 <body>
     <h1>Welcome!</h1>
 
-    <div>
-        <a th:href="@{/login}">Login</a>
-    </div>
+<!--    <div th:if="${authenticated}">-->
+<!--        <a href="/logout">Logout</a>-->
+<!--    </div>-->
 
-    <a th:href="@{/register}">Register</a>
+<!--    <div th:if="${!authenticated}">-->
+<!--        <a href="/login">Login</a>-->
+<!--        <a href="/register">Register</a>-->
+<!--    </div>-->
+
+
+    <a th:href="@{/login}" th:if="${!isAuthenticated}">Login</a>
+    <a th:href="@{/logout}" th:if="${isAuthenticated}">Logout</a>
+    <a th:href="@{/register}" th:if="${!isAuthenticated}">Register</a>
+    <a th:href="@{/register/admin}" th:if="${isAuthenticated && isAdmin}">Register Admin</a>
+
+<!--    <a th:href="@{/register}">Register</a>-->
 </body>
 </html>
