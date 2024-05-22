@@ -9,5 +9,10 @@ import io.micronaut.security.rules.SecurityRule.IS_ANONYMOUS
 @Controller("$USER_BASE_ID/books")
 @Secured(IS_ANONYMOUS)
 class BookController: User2Controller() {
-    override fun getAll(userId: Int): String = "All books for user $userId"
+
+    override fun getAll(userId: Int, sortBy: String, sortOrder: String):String{
+        val orderString = if (sortOrder == "asc") "ascending" else "descending"
+        return "All books for user $userId sorted by $sortBy in $orderString order"
+    }
+
 }
