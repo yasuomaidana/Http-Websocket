@@ -1,8 +1,13 @@
 import asyncio
 import json
+from dataclasses import asdict
 from typing import Callable, Coroutine, Dict
 
 import websockets
+
+from DTO.answerDTO import AnswerDTO
+from DTO.errorDTO import WebSocketError
+from DTO.led_data import LedData
 
 Handler = Callable[[websockets.WebSocketServerProtocol, str], Coroutine]  # Type alias for handlers
 
@@ -64,15 +69,17 @@ def main():
 
     # Register your LED path handler
     @server.route("/led")
-    async def led_handler(websocket: websockets.WebSocketServerProtocol, path: str):
+    async def led_handler(websocket: websockets.WebSocketServerProtocol, _):
         async for message in websocket:
-            data = json.loads(message)
-            value = int(data["slider"])
-            print(f"LED value: {value}")
-            if value > 75:
-                await websocket.send("LED_ON")
-            else:
-                await websocket.send("LED_OFF")
+            try:
+                data = json.loads(message)
+                led_data = LedData(**data)
+                value = led_data.slider
+                print(f"LED value: {value}")
+                await websocket.send(json.dumps(asdict(AnswerDTO("OK", "LED_ON" if value > 75 else "LED_OFF"))))
+            except (json.JSONDecodeError, TypeError) as e:
+                error = WebSocketError("Invalid message format")
+                await websocket.send(json.dumps(error.to_dict()))
 
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)

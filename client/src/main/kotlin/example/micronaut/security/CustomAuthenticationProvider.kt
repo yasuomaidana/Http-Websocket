@@ -18,8 +18,9 @@ class CustomAuthenticationProvider<b>: HttpRequestAuthenticationProvider<HttpReq
         authRequest: AuthenticationRequest<String, String>?
     ): AuthenticationResponse {
         val user = authRequest?.identity?.let { userRepo.findByUsername(it) }
+        val roles = user?.roles?.map { rol-> rol.replace("[\"","").replace("\"]","") }
         return if (user != null && user.password == authRequest.secret) {
-            AuthenticationResponse.success(user.username)
+            AuthenticationResponse.success(user.username, roles)
         } else {
             AuthenticationResponse.failure("Invalid username or password")
         }

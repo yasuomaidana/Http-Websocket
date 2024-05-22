@@ -7,12 +7,14 @@ import io.micronaut.http.annotation.Body
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.Post
+import io.micronaut.security.annotation.Secured
 import io.micronaut.serde.annotation.Serdeable
 import io.micronaut.views.View
 
 import java.time.LocalDateTime
 
 @Controller("/job")
+@Secured("isAnonymous()")
 class PrintJobController(
     private val printerService: PrinterService,
     private val jobService: JobService

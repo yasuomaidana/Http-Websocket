@@ -11,14 +11,10 @@ import io.micronaut.http.MutableHttpResponse
 import io.micronaut.http.annotation.Filter
 import io.micronaut.http.filter.HttpServerFilter
 import io.micronaut.http.filter.ServerFilterChain
-import jakarta.inject.Inject
 import org.reactivestreams.Publisher
 
 @Filter("/jobs/status")
 class CustomWebSocketAuthenticationProvider: HttpServerFilter {
-
-    @Inject
-    lateinit var userRepo: UserRepository
 
     override fun doFilter(request: HttpRequest<*>?, chain: ServerFilterChain?): Publisher<MutableHttpResponse<*>> {
         if (request == null || chain == null) {

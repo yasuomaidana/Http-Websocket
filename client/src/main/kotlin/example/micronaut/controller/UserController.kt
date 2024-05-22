@@ -2,7 +2,6 @@ package example.micronaut.controller
 
 import example.micronaut.entities.User
 import example.micronaut.repository.UserRepository
-import io.micronaut.data.exceptions.DataAccessException
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.annotation.Body
 import io.micronaut.http.annotation.Controller
