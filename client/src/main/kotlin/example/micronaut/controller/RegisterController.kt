@@ -9,6 +9,7 @@ import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.Post
 import io.micronaut.security.annotation.Secured
 import io.micronaut.security.rules.SecurityRule.IS_AUTHENTICATED
+import io.micronaut.views.View
 import jakarta.annotation.security.RolesAllowed
 import jakarta.inject.Inject
 
@@ -20,15 +21,13 @@ class RegisterController {
     lateinit var userRepository: UserRepository
 
     @Get
-    fun getRegistrationForm(): HttpResponse<String> {
-        return HttpResponse.ok("This is the registration form.")
-    }
+    @View("registrationForm")
+    fun getRegistrationForm(): Map<String, Any> = emptyMap()
 
     @Get("/admin")
     @Secured("admin")
-    fun getAdminRegistrationForm(): HttpResponse<String> {
-        return HttpResponse.ok("This is the admin registration form.")
-    }
+    @View("registrationForm")
+    fun getAdminRegistrationForm(): Map<String, Any> = mapOf("isAdmin" to true)
 
     @Post
     fun registerUser(@Body user: User): HttpResponse<String> {

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User Registration</title>
+</head>
+<body>
+    <h1>Register a New User</h1>
+    <form method="post" action="register">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br><br>
+
+        <label th:if="${isAdmin}" for="roles">Roles (comma-separated):</label>
+        <input th:if="${isAdmin}" type="text" id="roles" name="roles"><br><br>
+
+        <button type="submit">Register</button>
+    </form>
+</body>
+</html>
