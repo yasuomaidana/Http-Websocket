@@ -20,6 +20,11 @@ micronaut:
         generator:
           refresh-token:
             secret: "${JWT_GENERATOR_SIGNATURE_SECRET:pleaseChangeThisSecretForANewOne}"
+      generator:
+        access-token:
+          expiration: 15
+        refresh-token:
+          expiration: 60
   server:
     cors:
       enabled: true
