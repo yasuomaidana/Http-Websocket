@@ -1,4 +1,4 @@
-CREATE TABLE refresh_tokens (
+CREATE TABLE refresh_token (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(255) NOT NULL,
     refresh_token VARCHAR(255) NOT NULL,
@@ -6,4 +6,4 @@ CREATE TABLE refresh_tokens (
     date_created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE UNIQUE INDEX uk_refresh_tokens_refresh_token ON refresh_tokens (refresh_token);
+CREATE UNIQUE INDEX uk_refresh_tokens_refresh_token ON refresh_token (refresh_token);

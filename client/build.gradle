@@ -36,6 +36,8 @@ dependencies {
     annotationProcessor("io.micronaut.security:micronaut-security-annotations")
     implementation("io.micronaut.security:micronaut-security")
     implementation("io.micronaut.security:micronaut-security-jwt")
+    implementation('io.projectreactor:reactor-core:3.4.17')
+
 
 
     // Kotlin & Kotlinx Serialization

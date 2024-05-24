@@ -4,10 +4,12 @@ import io.micronaut.data.annotation.DateCreated
 import io.micronaut.data.annotation.GeneratedValue
 import io.micronaut.data.annotation.Id
 import io.micronaut.data.annotation.MappedEntity
+import io.micronaut.serde.annotation.Serdeable
 import java.time.Instant
 import jakarta.validation.constraints.NotBlank
 
 @MappedEntity
+@Serdeable
 data class RefreshToken(
 
     @field:Id

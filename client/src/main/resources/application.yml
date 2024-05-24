@@ -9,7 +9,7 @@ micronaut:
         mapping: /public/**/*
         enabled: true
   security:
-    authentication: cookie
+    authentication: bearer
     enabled: true
     token:
       jwt:
