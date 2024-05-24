@@ -2,7 +2,6 @@ package example.micronaut.security
 
 import example.micronaut.repository.UserRepository
 import io.micronaut.http.HttpRequest
-import io.micronaut.http.cookie.Cookie
 import io.micronaut.security.authentication.AuthenticationRequest
 import io.micronaut.security.authentication.AuthenticationResponse
 import io.micronaut.security.authentication.provider.HttpRequestAuthenticationProvider
