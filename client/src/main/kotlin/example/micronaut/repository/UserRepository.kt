@@ -6,7 +6,6 @@ import io.micronaut.data.model.query.builder.sql.Dialect
 import io.micronaut.data.repository.PageableRepository
 
 @JdbcRepository(dialect=Dialect.MYSQL)
-abstract class UserRepository:PageableRepository<User, Long>{
-
-    abstract fun findByUsername(username: String): User?
+interface UserRepository:PageableRepository<User, Long>{
+    fun findByUsername(username: String): User?
 }
