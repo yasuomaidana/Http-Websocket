@@ -21,4 +21,6 @@ interface RefreshTokenRepository : CrudRepository<RefreshToken, Long> {
     fun updateByUsername(@NotBlank username: String,
                          revoked: Boolean): Long
     fun deleteByUsername(@NotBlank username: String): Long
+
+     fun findByUsername(username: String): List<RefreshToken>
 }
