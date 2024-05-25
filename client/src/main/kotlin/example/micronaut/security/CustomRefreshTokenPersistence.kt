@@ -21,7 +21,13 @@ class CustomRefreshTokenPersistence(
     override fun persistToken(event: RefreshTokenGeneratedEvent?) {
         if (event?.refreshToken != null && event.authentication?.name != null) {
             val payload = event.refreshToken
-//            refreshTokenRepository.deleteByUsername(event.authentication.name)
+            val existingTokens = refreshTokenRepository.findByUsername(event.authentication.name)
+            if (existingTokens.size>=3) {
+                val oldestToken = existingTokens.minByOrNull { it.dateCreated!! }
+                if (oldestToken != null) {
+                    refreshTokenRepository.delete(oldestToken)
+                }
+            }
             refreshTokenRepository.save(event.authentication.name, payload, false)
         }
     }
@@ -35,7 +41,6 @@ class CustomRefreshTokenPersistence(
                 if (revoked) {
                     emitter.error(OauthErrorResponseException(INVALID_GRANT, "refresh token revoked", null))
                 } else {
-//                    refreshTokenRepository.delete(tokenOpt.get())
                     emitter.next(Authentication.build(username))
                     emitter.complete()
                 }
