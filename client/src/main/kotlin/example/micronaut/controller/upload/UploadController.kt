@@ -1,6 +1,6 @@
 package example.micronaut.controller.upload
 
-import io.micronaut.http.MediaType.MULTIPART_FORM_DATA
+import io.micronaut.http.MediaType.*
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Part
 import io.micronaut.http.annotation.Post
@@ -14,17 +14,18 @@ import java.net.URLConnection
 @Secured(IS_ANONYMOUS)
 class UploadController {
 
+    private val allowedMimeTypes = listOf(IMAGE_JPEG, IMAGE_PNG, IMAGE_GIF)
+
     @Post("/file", consumes = [MULTIPART_FORM_DATA])
     fun uploadFile(@Part file: CompletedFileUpload): String {
         val fileName = file.filename
         val bytes = file.bytes
 
-
         // Validate the image file type
-    val mimeType = getMimeType(bytes)
-    if (!mimeType.startsWith("image/")) {
-        throw IllegalArgumentException("Invalid file type: $mimeType")
-    }
+        val mimeType = getMimeType(bytes)
+        if (!allowedMimeTypes.contains(mimeType)) {
+            throw IllegalArgumentException("Invalid file type: $mimeType")
+        }
 
         return "Image uploaded successfully"
     }
@@ -33,5 +34,5 @@ class UploadController {
 private fun getMimeType(bytes: ByteArray): String {
     val byteArrayInputStream = ByteArrayInputStream(bytes)
     val mimeType = URLConnection.guessContentTypeFromStream(byteArrayInputStream)
-    return mimeType ?: "application/octet-stream"
+    return mimeType ?: APPLICATION_OCTET_STREAM
 }
