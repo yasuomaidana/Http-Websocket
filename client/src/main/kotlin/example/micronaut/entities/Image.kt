@@ -1,17 +1,18 @@
 package example.micronaut.entities
 
+import io.micronaut.core.annotation.Introspected
 import io.micronaut.data.annotation.GeneratedValue
 import io.micronaut.data.annotation.Id
 import io.micronaut.data.annotation.MappedEntity
 
 @MappedEntity
+@Introspected
 data class Image(
     @field:Id
     @GeneratedValue
     val id: Long? = null,
     val name: String,
     val data: ByteArray,
-    val type: String // Store the image file type (e.g., image/jpeg, image/png)
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -22,7 +23,6 @@ data class Image(
         if (id != other.id) return false
         if (name != other.name) return false
         if (!data.contentEquals(other.data)) return false
-        if (type != other.type) return false
 
         return true
     }
@@ -31,7 +31,14 @@ data class Image(
         var result = id?.hashCode() ?: 0
         result = 31 * result + name.hashCode()
         result = 31 * result + data.contentHashCode()
-        result = 31 * result + type.hashCode()
         return result
+    }
+
+    fun isValidImageExtension(): Boolean {
+        val extension = name.substringAfterLast('.')
+        return when (extension.lowercase()) {
+            "jpg", "jpeg", "png", "gif" -> true
+            else -> false
+        }
     }
 }
