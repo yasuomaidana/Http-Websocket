@@ -1,5 +1,7 @@
 package example.micronaut.controller.upload
 
+import example.micronaut.entities.Image
+import example.micronaut.repository.ImageRepository
 import io.micronaut.http.MediaType.*
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Part
@@ -12,7 +14,9 @@ import java.net.URLConnection
 
 @Controller("/upload")
 @Secured(IS_ANONYMOUS)
-class UploadController {
+class UploadController (
+    private val imageRepository: ImageRepository
+){
 
     private val allowedMimeTypes = listOf(IMAGE_JPEG, IMAGE_PNG, IMAGE_GIF)
 
@@ -20,13 +24,13 @@ class UploadController {
     fun uploadFile(@Part file: CompletedFileUpload): String {
         val fileName = file.filename
         val bytes = file.bytes
-
+        val image = Image(null, fileName, bytes)
         // Validate the image file type
         val mimeType = getMimeType(bytes)
-        if (!allowedMimeTypes.contains(mimeType)) {
+        if (!allowedMimeTypes.contains(mimeType) or !image.isValidImageExtension()) {
             throw IllegalArgumentException("Invalid file type: $mimeType")
         }
-
+        imageRepository.save(image)
         return "Image uploaded successfully"
     }
 }

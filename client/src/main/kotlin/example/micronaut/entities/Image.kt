@@ -1,15 +1,18 @@
 package example.micronaut.entities
 
 import io.micronaut.core.annotation.Introspected
+import io.micronaut.core.annotation.Nullable
 import io.micronaut.data.annotation.GeneratedValue
 import io.micronaut.data.annotation.Id
 import io.micronaut.data.annotation.MappedEntity
+import io.micronaut.data.annotation.Transient
 
 @MappedEntity
 @Introspected
 data class Image(
     @field:Id
     @GeneratedValue
+    @Nullable
     val id: Long? = null,
     val name: String,
     val data: ByteArray,
@@ -34,6 +37,7 @@ data class Image(
         return result
     }
 
+    @Transient
     fun isValidImageExtension(): Boolean {
         val extension = name.substringAfterLast('.')
         return when (extension.lowercase()) {
