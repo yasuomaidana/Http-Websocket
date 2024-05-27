@@ -74,10 +74,16 @@ dependencies {
     runtimeOnly("com.h2database:h2")
 }
 
+kapt {
+    arguments {
+        arg("mapstruct.defaultComponentModel", "jakarta")
+    }
+}
 
 application {
     mainClass.set("example.micronaut.ApplicationKt")
 }
+
 java {
     sourceCompatibility = JavaVersion.toVersion("${jvmTarget}")
 }
