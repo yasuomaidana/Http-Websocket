@@ -3,8 +3,6 @@ package example.micronaut.controller
 
 import example.micronaut.dto.RegisterUserRequest
 import example.micronaut.entities.user.ADMIN_ROLE
-import example.micronaut.entities.user.RoleEnum
-import example.micronaut.entities.user.User
 import example.micronaut.repository.UserRepository
 import example.micronaut.security.passwordencoder.PasswordEncoder
 import example.micronaut.service.UserService
