@@ -2,6 +2,8 @@ package example.micronaut.controller
 
 
 import example.micronaut.dto.RegisterUserRequest
+import example.micronaut.entities.user.ADMIN_ROLE
+import example.micronaut.entities.user.RoleEnum
 import example.micronaut.entities.user.User
 import example.micronaut.repository.UserRepository
 import example.micronaut.security.passwordencoder.PasswordEncoder
@@ -35,7 +37,7 @@ class RegisterController {
     fun getRegistrationForm(): Map<String, Any> = emptyMap()
 
     @Get("/admin")
-    @Secured("admin")
+    @Secured(ADMIN_ROLE)
     @View("registrationForm")
     fun getAdminRegistrationForm(): Map<String, Any> = mapOf("isAdmin" to true)
 
@@ -43,12 +45,12 @@ class RegisterController {
     @Secured(IS_ANONYMOUS)
     fun registerUser(@Body registerUserRequest: RegisterUserRequest):
             HttpResponse<String> {
-        userService.registerUserWithRoles(registerUserRequest)
+        userService.registerUser(registerUserRequest)
         return HttpResponse.ok("User registered successfully.")
     }
 
     @Post("/admin")
-    @RolesAllowed("admin")
+    @RolesAllowed(ADMIN_ROLE)
     fun registerUserWithRoles(@Body registerUserRequest: RegisterUserRequest): HttpResponse<String> {
         userService.registerUserWithRoles(registerUserRequest)
         return HttpResponse.ok("User with roles registered successfully.")
