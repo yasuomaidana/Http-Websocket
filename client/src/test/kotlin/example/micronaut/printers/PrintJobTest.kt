@@ -1,5 +1,6 @@
 package example.micronaut.printers
 
+import example.micronaut.dto.PrintJobRequest
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 

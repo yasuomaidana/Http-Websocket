@@ -2,7 +2,7 @@ package example.micronaut.service
 
 import example.micronaut.mapper.PrintMapper
 import example.micronaut.printers.PrintJob
-import example.micronaut.printers.PrintJobRequest
+import example.micronaut.dto.PrintJobRequest
 import io.micronaut.websocket.WebSocketSession
 import jakarta.inject.Singleton
 import kotlinx.serialization.encodeToString

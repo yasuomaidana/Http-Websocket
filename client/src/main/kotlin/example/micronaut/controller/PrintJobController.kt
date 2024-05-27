@@ -1,6 +1,6 @@
 package example.micronaut.controller
 
-import example.micronaut.printers.PrintJobRequest
+import example.micronaut.dto.PrintJobRequest
 import example.micronaut.service.JobService
 import example.micronaut.service.PrinterService
 import io.micronaut.http.annotation.Body

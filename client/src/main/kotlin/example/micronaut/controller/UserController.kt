@@ -1,6 +1,6 @@
 package example.micronaut.controller
 
-import example.micronaut.entities.User
+import example.micronaut.entities.user.User
 import example.micronaut.repository.UserRepository
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.annotation.Body

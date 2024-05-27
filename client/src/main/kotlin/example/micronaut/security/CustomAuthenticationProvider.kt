@@ -1,7 +1,6 @@
 package example.micronaut.security
 
 import example.micronaut.repository.UserRepository
-import example.micronaut.security.passwordencoder.BCryptPasswordEncoder
 import example.micronaut.security.passwordencoder.PasswordEncoder
 import io.micronaut.http.HttpRequest
 import io.micronaut.security.authentication.AuthenticationRequest
@@ -24,7 +23,7 @@ class CustomAuthenticationProvider<b>: HttpRequestAuthenticationProvider<HttpReq
         authRequest: AuthenticationRequest<String, String>?
     ): AuthenticationResponse {
         val user = authRequest?.identity?.let { userRepo.findByUsername(it) }
-        val roles = user?.roles?.map { rol-> rol.replace("[\"","").replace("\"]","") }
+        val roles = user?.roles?.map { it.name.toString()}
         return if (user != null && passwordEncoder.matches(authRequest.secret, user.password)) {
             AuthenticationResponse.success(user.username, roles)
         } else {
