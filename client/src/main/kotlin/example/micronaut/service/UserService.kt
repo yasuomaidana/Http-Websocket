@@ -3,15 +3,10 @@ package example.micronaut.service
 import example.micronaut.dto.RegisterUserRequest
 import example.micronaut.entities.Book
 import example.micronaut.entities.UserBookId
-import example.micronaut.entities.user.Role
 import example.micronaut.entities.user.RoleEnum
 import example.micronaut.entities.user.User
 import example.micronaut.mapper.UserMapper
-import example.micronaut.repository.BookRepository
-import example.micronaut.repository.RoleRepository
-import example.micronaut.repository.UserBookRepository
-import example.micronaut.repository.UserRepository
-import example.micronaut.security.passwordencoder.PasswordEncoder
+import example.micronaut.repository.*
 import jakarta.inject.Singleton
 
 @Singleton
