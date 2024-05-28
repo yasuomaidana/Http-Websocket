@@ -1,6 +1,7 @@
 package example.micronaut.service
 
-import example.micronaut.dto.RegisterUserRequest
+import example.micronaut.dto.register.AddRolesToUserRequest
+import example.micronaut.dto.register.RegisterUserRequest
 import example.micronaut.entities.Book
 import example.micronaut.entities.UserBookId
 import example.micronaut.entities.user.RoleEnum
@@ -8,6 +9,7 @@ import example.micronaut.entities.user.User
 import example.micronaut.mapper.UserMapper
 import example.micronaut.repository.*
 import jakarta.inject.Singleton
+import javassist.NotFoundException
 
 @Singleton
 class UserService(

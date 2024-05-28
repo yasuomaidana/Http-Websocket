@@ -1,6 +1,6 @@
 package example.micronaut.mapper
 
-import example.micronaut.dto.RegisterUserRequest
+import example.micronaut.dto.register.RegisterUserRequest
 import example.micronaut.entities.user.Role
 import example.micronaut.entities.user.User
 import example.micronaut.security.passwordencoder.PasswordEncoder
