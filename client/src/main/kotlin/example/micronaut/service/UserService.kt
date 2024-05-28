@@ -5,6 +5,7 @@ import example.micronaut.entities.Book
 import example.micronaut.entities.UserBookId
 import example.micronaut.entities.user.RoleEnum
 import example.micronaut.entities.user.User
+import example.micronaut.entities.user.userrole.UserRoleId
 import example.micronaut.mapper.RoleMapper
 import example.micronaut.mapper.UserMapper
 import example.micronaut.repository.*
@@ -65,4 +66,18 @@ class UserService(
         }
         return user
     }
+
+    fun removeRolesFromUser(username: String, roleNames: List<String>?): User {
+        val user = userRepository.findByUsername(username) ?: throw NotFoundException("User not found")
+        val roles = roleMapper.toRoles(roleNames ?: emptyList())
+
+        if (roles.isEmpty()) {
+            userRolesRepository.deleteByUserId(user.id!!)
+        } else {
+            user.roles?.filter { roles.contains(it) }?.forEach { role ->
+                userRolesRepository.deleteById(UserRoleId(user.id!!, role.id!!))
+            }
+        }
+            return user
+        }
 }
