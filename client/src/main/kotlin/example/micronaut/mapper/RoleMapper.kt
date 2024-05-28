@@ -37,11 +37,16 @@ abstract class RoleMapper {
     }
 
     @AfterMapping
-    fun toRoleWithNullCheckBefore(roleName: String): Role? {
+    fun getExistingRole(roleName: String): Role? {
         toRoleEnum(roleName)?.let {
             return roleRepository.findByName(it)
         }
         return null
+    }
+
+    @AfterMapping
+    fun getExistingRole(name: RoleEnum): Role? {
+        return roleRepository.findByName(name)
     }
 
     @AfterMapping
