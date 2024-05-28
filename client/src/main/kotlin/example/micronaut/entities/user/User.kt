@@ -24,7 +24,7 @@ data class User(
         inverseJoinColumns = [JoinColumn(name = "role_id")])
     @Relation(value = MANY_TO_MANY,
         cascade =  [Relation.Cascade.ALL])
-    val roles: List<Role>?,
+    val roles: Set<Role>?,
 
     @Relation(value = Relation.Kind.ONE_TO_ONE)
     val profile: Profile?
