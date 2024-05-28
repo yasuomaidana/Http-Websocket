@@ -34,4 +34,11 @@ class AdminRegisterController:BaseRegisterController() {
         userService.addRolesToUser(addRolesToUserRequest.username, addRolesToUserRequest.roles)
         return HttpResponse.ok("User with roles registered successfully.")
     }
+
+    @Delete("/remove-roles")
+    fun removeRolesFromUser(@Body removeRolesFromUserRequest: ModifyUserRolesRequest): HttpResponse<String> {
+        userService.removeRolesFromUser(removeRolesFromUserRequest.username, removeRolesFromUserRequest.roles)
+        return HttpResponse.ok("User roles removed successfully.")
+    }
+
 }
