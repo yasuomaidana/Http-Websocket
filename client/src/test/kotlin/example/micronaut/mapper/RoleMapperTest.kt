@@ -57,4 +57,13 @@ class RoleMapperTest {
         assertTrue(result.contains(adminRole))
         assertTrue(result.contains(userRole))
     }
+
+    @Test
+    fun `test toRole with RoleEnum`() {
+        val roleEnum = RoleEnum.ADMIN
+        val role = roleMapper.toRole(roleEnum)
+
+        assertNotNull(role)
+        assertEquals(roleEnum, role.name)
+    }
 }
