@@ -53,7 +53,13 @@ class UserService(
 
     fun addRolesToUser(username: String, roleNames: List<String>): User {
         val user = userRepository.findByUsername(username) ?: throw NotFoundException("User not found")
-        val roles = roleRepository.findByNameIn(roleNames.map { RoleEnum.valueOf(it) })
+        val roles = roleNames.mapNotNull { roleName ->
+                try {
+                    roleRepository.findByName(RoleEnum.valueOf(roleName))
+                } catch (e: IllegalArgumentException) {
+                    null
+                }
+            }
 
         val existingRoles = user.roles?.toSet() ?: emptySet()
         val newRoles = roles.toSet() - existingRoles
