@@ -1,11 +1,11 @@
 package example.micronaut.service
 
-import example.micronaut.dto.register.AddRolesToUserRequest
 import example.micronaut.dto.register.RegisterUserRequest
 import example.micronaut.entities.Book
 import example.micronaut.entities.UserBookId
 import example.micronaut.entities.user.RoleEnum
 import example.micronaut.entities.user.User
+import example.micronaut.mapper.RoleMapper
 import example.micronaut.mapper.UserMapper
 import example.micronaut.repository.*
 import jakarta.inject.Singleton
@@ -18,7 +18,8 @@ class UserService(
     private val userBookRepository: UserBookRepository,
     private val roleRepository: RoleRepository,
     private val userMapper: UserMapper,
-    private val  userRolesRepository: UserRolesRepository
+    private val  userRolesRepository: UserRolesRepository,
+    private val roleMapper: RoleMapper
 ) {
     fun getBooksForUser(userId: Long):List<Book>{
         val userBooks = userBookRepository.findByUserId(userId)
@@ -53,16 +54,10 @@ class UserService(
 
     fun addRolesToUser(username: String, roleNames: List<String>): User {
         val user = userRepository.findByUsername(username) ?: throw NotFoundException("User not found")
-        val roles = roleNames.mapNotNull { roleName ->
-                try {
-                    roleRepository.findByName(RoleEnum.valueOf(roleName))
-                } catch (e: IllegalArgumentException) {
-                    null
-                }
-            }
+        val roles = roleMapper.toRoles(roleNames)
 
-        val existingRoles = user.roles?.toSet() ?: emptySet()
-        val newRoles = roles.toSet() - existingRoles
+        val existingRoles = user.roles ?: emptySet()
+        val newRoles = roles - existingRoles
 
         if (newRoles.isNotEmpty()) {
             val updatedUser = userMapper.toUser(user, newRoles)
