@@ -27,5 +27,11 @@ abstract class UserMapper {
             expression = "java(passwordEncoder.encode(userRegisterUserRequest.getPassword()))")
     )
     abstract fun toUser(userRegisterUserRequest: RegisterUserRequest,
-               roles:List<Role>): User
+                        roles:List<Role>): User
+
+    @Mappings(
+        Mapping(target = "roles",
+            source = "roles")
+    )
+    abstract fun toUser(user: User, roles: Set<Role>): User
 }
