@@ -15,7 +15,8 @@ class UserService(
     private val bookRepository: BookRepository,
     private val userBookRepository: UserBookRepository,
     private val roleRepository: RoleRepository,
-    private val userMapper: UserMapper
+    private val userMapper: UserMapper,
+    private val  userRolesRepository: UserRolesRepository
 ) {
     fun getBooksForUser(userId: Long):List<Book>{
         val userBooks = userBookRepository.findByUserId(userId)
@@ -39,5 +40,12 @@ class UserService(
         val user = userMapper.toUser(registerUserRequest, roles)
         val savedUser =  userRepository.save(user)
         return savedUser
+    }
+    fun deleteUserByUsername(username: String){
+        userRepository.findByUsername(username)
+            .takeIf { it != null }?.let {
+                userRolesRepository.deleteByUserId(it.id!!)
+                userRepository.delete(it)
+            }
     }
 }
