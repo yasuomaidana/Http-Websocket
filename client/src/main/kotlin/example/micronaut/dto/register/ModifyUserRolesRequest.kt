@@ -5,7 +5,7 @@ import io.micronaut.serde.annotation.Serdeable
 
 @Introspected
 @Serdeable
-data class AddRolesToUserRequest(
+data class ModifyUserRolesRequest(
     val username:String,
-    val roles:List<String>
+    val roles:List<String>?
 )

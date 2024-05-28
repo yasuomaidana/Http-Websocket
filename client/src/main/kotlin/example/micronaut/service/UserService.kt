@@ -53,9 +53,9 @@ class UserService(
             }
     }
 
-    fun addRolesToUser(username: String, roleNames: List<String>): User {
+    fun addRolesToUser(username: String, roleNames: List<String>?): User {
         val user = userRepository.findByUsername(username) ?: throw NotFoundException("User not found")
-        val roles = roleMapper.toRoles(roleNames)
+        val roles = roleMapper.toRoles(roleNames ?: emptyList())
 
         val existingRoles = user.roles ?: emptySet()
         val newRoles = roles - existingRoles

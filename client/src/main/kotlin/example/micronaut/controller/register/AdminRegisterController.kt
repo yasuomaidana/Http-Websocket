@@ -1,6 +1,6 @@
 package example.micronaut.controller.register
 
-import example.micronaut.dto.register.AddRolesToUserRequest
+import example.micronaut.dto.register.ModifyUserRolesRequest
 import example.micronaut.dto.register.RegisterUserRequest
 import example.micronaut.entities.user.ADMIN_ROLE
 import io.micronaut.http.HttpResponse
@@ -30,7 +30,7 @@ class AdminRegisterController:BaseRegisterController() {
     }
 
     @Put("/add-roles")
-    fun addRolesToUser(@Body addRolesToUserRequest: AddRolesToUserRequest): HttpResponse<String> {
+    fun addRolesToUser(@Body addRolesToUserRequest: ModifyUserRolesRequest): HttpResponse<String> {
         userService.addRolesToUser(addRolesToUserRequest.username, addRolesToUserRequest.roles)
         return HttpResponse.ok("User with roles registered successfully.")
     }
