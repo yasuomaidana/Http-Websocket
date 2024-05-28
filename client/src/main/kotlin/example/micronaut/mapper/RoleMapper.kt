@@ -5,6 +5,7 @@ import example.micronaut.entities.user.RoleEnum
 import example.micronaut.repository.RoleRepository
 import jakarta.inject.Inject
 import org.mapstruct.*
+import java.util.*
 
 @Mapper
 abstract class RoleMapper {
@@ -25,6 +26,10 @@ abstract class RoleMapper {
     )
     abstract fun toRole(name:String): Role?
 
+    abstract  fun toRoles(names: List<String>): Set<Role>
+
+    abstract fun toRole(name: RoleEnum): Role
+
 
     @Condition(appliesTo=[ConditionStrategy.SOURCE_PARAMETERS])
     fun isRoleEnumValid(name: String): Boolean {
@@ -37,6 +42,11 @@ abstract class RoleMapper {
             return roleRepository.findByName(it)
         }
         return null
+    }
+
+    @AfterMapping
+    fun removeNullRoles(@MappingTarget set: MutableSet<Role>) {
+        set.removeIf(Objects::isNull)
     }
 
 }
