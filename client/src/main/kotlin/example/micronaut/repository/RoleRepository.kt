@@ -9,4 +9,5 @@ import io.micronaut.data.repository.CrudRepository
 @JdbcRepository(dialect = MYSQL)
 interface RoleRepository: CrudRepository<Role, Long> {
     fun findByName(name: RoleEnum): Role?
+    fun findByNameIn(names: List<RoleEnum>): Set<Role>
 }

@@ -1,6 +1,6 @@
 package example.micronaut.mapper
 
-import example.micronaut.dto.RegisterUserRequest
+import example.micronaut.dto.register.RegisterUserRequest
 import example.micronaut.entities.user.Role
 import example.micronaut.entities.user.User
 import example.micronaut.security.passwordencoder.PasswordEncoder
@@ -27,5 +27,11 @@ abstract class UserMapper {
             expression = "java(passwordEncoder.encode(userRegisterUserRequest.getPassword()))")
     )
     abstract fun toUser(userRegisterUserRequest: RegisterUserRequest,
-               roles:List<Role>): User
+                        roles:List<Role>): User
+
+    @Mappings(
+        Mapping(target = "roles",
+            source = "roles")
+    )
+    abstract fun toUser(user: User, roles: Set<Role>): User
 }

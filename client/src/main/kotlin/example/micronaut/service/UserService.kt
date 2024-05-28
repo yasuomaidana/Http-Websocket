@@ -1,13 +1,16 @@
 package example.micronaut.service
 
-import example.micronaut.dto.RegisterUserRequest
+import example.micronaut.dto.register.RegisterUserRequest
 import example.micronaut.entities.Book
 import example.micronaut.entities.UserBookId
 import example.micronaut.entities.user.RoleEnum
 import example.micronaut.entities.user.User
+import example.micronaut.entities.user.userrole.UserRoleId
+import example.micronaut.mapper.RoleMapper
 import example.micronaut.mapper.UserMapper
 import example.micronaut.repository.*
 import jakarta.inject.Singleton
+import javassist.NotFoundException
 
 @Singleton
 class UserService(
@@ -16,7 +19,8 @@ class UserService(
     private val userBookRepository: UserBookRepository,
     private val roleRepository: RoleRepository,
     private val userMapper: UserMapper,
-    private val  userRolesRepository: UserRolesRepository
+    private val  userRolesRepository: UserRolesRepository,
+    private val roleMapper: RoleMapper
 ) {
     fun getBooksForUser(userId: Long):List<Book>{
         val userBooks = userBookRepository.findByUserId(userId)
@@ -48,4 +52,32 @@ class UserService(
                 userRepository.delete(it)
             }
     }
+
+    fun addRolesToUser(username: String, roleNames: List<String>?): User {
+        val user = userRepository.findByUsername(username) ?: throw NotFoundException("User not found")
+        val roles = roleMapper.toRoles(roleNames ?: emptyList())
+
+        val existingRoles = user.roles ?: emptySet()
+        val newRoles = roles - existingRoles
+
+        if (newRoles.isNotEmpty()) {
+            val updatedUser = userMapper.toUser(user, newRoles)
+            return userRepository.update(updatedUser)
+        }
+        return user
+    }
+
+    fun removeRolesFromUser(username: String, roleNames: List<String>?): User {
+        val user = userRepository.findByUsername(username) ?: throw NotFoundException("User not found")
+        val roles = roleMapper.toRoles(roleNames ?: emptyList())
+
+        if (roles.isEmpty()) {
+            userRolesRepository.deleteByUserId(user.id!!)
+        } else {
+            user.roles?.filter { roles.contains(it) }?.forEach { role ->
+                userRolesRepository.deleteById(UserRoleId(user.id!!, role.id!!))
+            }
+        }
+            return user
+        }
 }
