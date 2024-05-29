@@ -1,4 +1,4 @@
-package example.micronaut.configuration
+package example.micronaut.configuration.refreshtoken
 
 import io.micronaut.context.annotation.ConfigurationProperties
 import io.micronaut.core.annotation.Introspected
@@ -7,7 +7,7 @@ import kotlin.time.Duration
 
 @Introspected
 @ConfigurationProperties(RefreshTokenConfigurationProperties.PREFIX)
-class CustomRefreshTokenConfiguration {
+class RefreshTokenExpirationConfiguration {
     var expirationTime: Duration? = Duration.ZERO
     fun setExpirationTime(expirationTime: String) {
         this.expirationTime = Duration.parse(expirationTime)
