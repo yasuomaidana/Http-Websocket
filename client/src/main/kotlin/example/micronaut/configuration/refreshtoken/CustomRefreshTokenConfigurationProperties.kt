@@ -17,8 +17,10 @@ import kotlin.time.Duration
 @Requires(property = "$PREFIX.enabled", notEquals = StringUtils.FALSE)
 @ConfigurationProperties(PREFIX)
 class CustomRefreshTokenConfigurationProperties: CustomRefreshTokenConfiguration {
+
     override var expirationTime: Duration = Duration.ZERO
-    @JvmField
+
+
     var enabled: Boolean = DEFAULT_ENABLED
     @JvmField
     var  jwsAlgorithm: JWSAlgorithm = DEFAULT_JWS_ALGORITHM
@@ -27,15 +29,7 @@ class CustomRefreshTokenConfigurationProperties: CustomRefreshTokenConfiguration
     @JvmField
     var base64: Boolean = DEFAULT_BASE64
 
-    override fun getJwsAlgorithm(): JWSAlgorithm {
-        return jwsAlgorithm
-    }
-
-    override fun getSecret(): String {
-        return secret
-    }
-
-    override fun isBase64(): Boolean {
-        return base64
-    }
+    override fun getJwsAlgorithm() = jwsAlgorithm
+    override fun getSecret() = secret
+    override fun isBase64() = base64
 }
