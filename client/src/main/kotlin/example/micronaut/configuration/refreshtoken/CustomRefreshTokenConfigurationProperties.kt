@@ -19,7 +19,7 @@ import kotlin.time.Duration
 class CustomRefreshTokenConfigurationProperties: CustomRefreshTokenConfiguration {
 
     override var expirationTime: Duration = Duration.ZERO
-
+    override var maximumAge: Duration? = null
 
     var enabled: Boolean = DEFAULT_ENABLED
     @JvmField
