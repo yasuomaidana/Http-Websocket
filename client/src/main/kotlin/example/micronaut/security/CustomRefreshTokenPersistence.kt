@@ -1,5 +1,7 @@
 package example.micronaut.security
 
+import example.micronaut.configuration.refreshtoken.CustomRefreshTokenConfigurationProperties
+import example.micronaut.entities.RefreshToken
 import example.micronaut.repository.RefreshTokenRepository
 import io.micronaut.security.authentication.Authentication
 import io.micronaut.security.errors.OauthErrorResponseException
@@ -10,25 +12,34 @@ import jakarta.inject.Singleton
 import org.reactivestreams.Publisher
 import reactor.core.publisher.Flux
 import reactor.core.publisher.FluxSink
+import java.time.Instant
 
 @Singleton
 class CustomRefreshTokenPersistence(
     private val refreshTokenRepository: RefreshTokenRepository,
+    private val refreshTokenConfiguration: CustomRefreshTokenConfigurationProperties
 
-)
-    : RefreshTokenPersistence {
+    ) : RefreshTokenPersistence {
 
     override fun persistToken(event: RefreshTokenGeneratedEvent?) {
         if (event?.refreshToken != null && event.authentication?.name != null) {
             val payload = event.refreshToken
             val existingTokens = refreshTokenRepository.findByUsername(event.authentication.name)
-            if (existingTokens.size>=3) {
-                val oldestToken = existingTokens.minByOrNull { it.dateCreated!! }
+            if (existingTokens.size >= 3) {
+                val oldestToken = existingTokens.minByOrNull { it.dateCreated }
                 if (oldestToken != null) {
-                    refreshTokenRepository.delete(oldestToken)
+                    oldestToken.revoked = true
+                    refreshTokenRepository.update(oldestToken)
                 }
             }
-            refreshTokenRepository.save(event.authentication.name, payload, false)
+            val expiresOn = Instant.now()
+                .plusSeconds(refreshTokenConfiguration.expirationTime.inWholeSeconds)
+            val refreshToken = RefreshToken(
+                username = event.authentication.name,
+                refreshToken = payload,
+                expiresOn = expiresOn
+            )
+            refreshTokenRepository.save(refreshToken)
         }
     }
 
@@ -37,10 +48,22 @@ class CustomRefreshTokenPersistence(
         return Flux.create({ emitter: FluxSink<Authentication> ->
             val tokenOpt = refreshTokenRepository.findByRefreshToken(refreshToken)
             if (tokenOpt.isPresent) {
-                val (_, username, _, revoked) = tokenOpt.get()
+                val token = tokenOpt.get()
+                val (_, username, _, revoked, dateCreated, expiresOn) = token
+                val maxExpiresOn = dateCreated
+                    .plusSeconds(refreshTokenConfiguration.maximumAge?.inWholeSeconds ?:
+                    refreshTokenConfiguration.expirationTime.inWholeSeconds)
                 if (revoked) {
                     emitter.error(OauthErrorResponseException(INVALID_GRANT, "refresh token revoked", null))
-                } else {
+                }
+                else if(expiresOn.let { it != null && it.isBefore(Instant.now())} &&
+                    maxExpiresOn.isBefore(Instant.now())
+                    ) {
+                    emitter.error(OauthErrorResponseException(INVALID_GRANT, "refresh token expired", null))
+                }
+                else {
+                    token.expiresOn = Instant.now().plusSeconds(refreshTokenConfiguration.expirationTime.inWholeSeconds)
+                    refreshTokenRepository.update(token)
                     emitter.next(Authentication.build(username))
                     emitter.complete()
                 }
