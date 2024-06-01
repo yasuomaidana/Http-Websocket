@@ -11,8 +11,7 @@ import java.util.*
 
 @Singleton
 @Replaces(SignedRefreshTokenGenerator::class)
-class CustomRefreshTokenGenerator(config: RefreshTokenConfiguration?,
-    private val refreshTokenConfiguration: CustomRefreshTokenConfiguration
+class CustomRefreshTokenGenerator(config: RefreshTokenConfiguration?
 ) : SignedRefreshTokenGenerator(config) {
 
     override fun generate(authentication: Authentication?, token: String?): Optional<String> {
