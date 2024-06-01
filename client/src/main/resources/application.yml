@@ -49,3 +49,7 @@ netty:
   default:
     allocator:
       max-order: 3
+app:
+  token-cleaning:
+    cleaning-period: PT1M
+    delay-delete: PT1M
