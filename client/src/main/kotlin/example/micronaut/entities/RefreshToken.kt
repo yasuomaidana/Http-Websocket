@@ -17,14 +17,15 @@ data class RefreshToken(
     var id: Long? = null,
 
     @NotBlank
-    var username: String,
+    val username: String,
 
     @NotBlank
-    var refreshToken: String,
+    val refreshToken: String,
 
-    var revoked: Boolean,
+    var revoked: Boolean = false,
 
     @DateCreated
-    var dateCreated: Instant? = null
+    val dateCreated: Instant = Instant.now(),
 
+    var expiresOn: Instant? = null
 )
