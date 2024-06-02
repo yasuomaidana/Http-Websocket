@@ -26,11 +26,12 @@ class CustomRefreshTokenPersistence(
             val payload = event.refreshToken
             val existingTokens = refreshTokenRepository.findByUsername(event.authentication.name)
             if (existingTokens.size >= 3) {
-                val oldestToken = existingTokens.minByOrNull { it.dateCreated }
-                if (oldestToken != null) {
-                    oldestToken.revoked = true
-                    refreshTokenRepository.update(oldestToken)
-                }
+                existingTokens.
+                filter { it -> it.dateCreated ==  existingTokens.minOf { it.dateCreated } }
+                    .forEach {
+                        it.revoked = true
+                        refreshTokenRepository.update(it)
+                    }
             }
             val expiresOn = Instant.now()
                 .plusSeconds(refreshTokenConfiguration.expirationTime.inWholeSeconds)
@@ -59,6 +60,8 @@ class CustomRefreshTokenPersistence(
                 else if(expiresOn.let { it != null && it.isBefore(Instant.now())} &&
                     maxExpiresOn.isBefore(Instant.now())
                     ) {
+                    token.revoked = true
+                    refreshTokenRepository.update(token)
                     emitter.error(OauthErrorResponseException(INVALID_GRANT, "refresh token expired", null))
                 }
                 else {
