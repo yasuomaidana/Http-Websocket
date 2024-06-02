@@ -5,9 +5,7 @@ import io.micronaut.http.annotation.Get
 import io.micronaut.security.annotation.Secured
 import io.micronaut.security.authentication.Authentication
 import io.micronaut.security.rules.SecurityRule.IS_ANONYMOUS
-import io.micronaut.security.rules.SecurityRule.IS_AUTHENTICATED
 import io.micronaut.views.View
-import java.security.Principal
 
 @Controller("/")
 @Secured(IS_ANONYMOUS)
@@ -35,7 +33,4 @@ class HomeController {
     @View("login")
     fun login(): Map<String, Any> = emptyMap()
 
-    @Get
-    @Secured(IS_AUTHENTICATED)
-    fun home2(principal: Principal?) = mapOf("username" to principal?.name.orEmpty())
 }
