@@ -17,11 +17,16 @@ class AuthController(
 
     @Post("/logout")
     @Secured(IS_AUTHENTICATED)
-    fun logout(@Body refreshToken: RefreshToken): String {
-        refreshTokenG.validate(refreshToken.refreshToken)
-            .ifPresent { token: String ->
-            refreshTokenRepository.findByRefreshToken(token)
-                .ifPresent { refreshTokenRepository.delete(it) }
+    fun logout(@Body refreshToken: RefreshToken?): String {
+        refreshToken?.let { it ->
+            refreshTokenG.validate(it.refreshToken)
+                .ifPresent { token: String ->
+                refreshTokenRepository.findByRefreshToken(token)
+                    .ifPresent {
+                        it.revoked = true
+                        refreshTokenRepository.update(it)
+                    }
+            }
         }
         return "Logged out"
     }
