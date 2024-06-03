@@ -18,8 +18,9 @@ import kotlin.time.Duration
 @ConfigurationProperties(PREFIX)
 class CustomRefreshTokenConfigurationProperties: CustomRefreshTokenConfiguration {
 
-    override var expirationTime: Duration = Duration.ZERO
-    override var maximumAge: Duration? = null
+    override var expirationTime: Duration = Duration.parse(DEFAULT_EXPIRATION_TIME)
+
+    override var maximumAge: Duration = Duration.parse(DEFAULT_MAXIMUM_AGE)
 
     var enabled: Boolean = DEFAULT_ENABLED
     @JvmField
@@ -32,4 +33,9 @@ class CustomRefreshTokenConfigurationProperties: CustomRefreshTokenConfiguration
     override fun getJwsAlgorithm() = jwsAlgorithm
     override fun getSecret() = secret
     override fun isBase64() = base64
+
+    companion object {
+        const val DEFAULT_EXPIRATION_TIME = "PT1H"
+        const val DEFAULT_MAXIMUM_AGE = "PT2H"
+    }
 }
