@@ -12,6 +12,7 @@ import kotlin.time.Duration
 
 
 @Singleton
+@Transactional
 class TokenCleanerScheduler(
     private val refreshTokenRepository: RefreshTokenRepository,
 
@@ -25,7 +26,6 @@ class TokenCleanerScheduler(
     private val logger = LoggerFactory.getLogger(TokenCleanerScheduler::class.java)
 
     @Scheduled(fixedDelay = "\${$CLEANING_PERIOD}")
-    @Transactional
     fun cleanExpiredTokens() {
         logger.info("Cleaning expired tokens")
         val revokedTokens = refreshTokenRepository.findByRevoked(true)
