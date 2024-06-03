@@ -1,0 +1,17 @@
+micronaut:
+  security:
+    authentication: bearer
+    enabled: true
+    token:
+      jwt:
+        signatures:
+          secret:
+            generator:
+              secret: "${JWT_GENERATOR_SIGNATURE_SECRET:pleaseChangeThisSecretForANewOne}"
+        generator:
+          refresh-token:
+            expiration-time: PT15H
+            maximumAge: P30D
+      generator:
+        access-token:
+          expiration: 3600
