@@ -37,43 +37,70 @@ class CustomRefreshTokenPersistenceTest {
 
     }
 
-//    @Test
-//    fun testGetAuthenticationRevokedToken() {
-//        val refreshToken = RefreshToken(
-//            username = "testUser",
-//            refreshToken = "testRefreshToken",
-//            revoked = true
-//        )
-//        Mockito.`when`(refreshTokenRepository.findByRefreshToken("testRefreshToken")).thenReturn(Optional.of(refreshToken))
-//
-//        val authentication = customRefreshTokenPersistence.getAuthentication("testRefreshToken").blockFirst()
-//        Assertions.assertNull(authentication)
-//    }
-//
-//    @Test
-//    fun testGetAuthenticationExpiredToken() {
-//        val refreshToken = RefreshToken(
-//            username = "testUser",
-//            refreshToken = "testRefreshToken",
-//            expiresOn = Instant.now().minusSeconds(60)
-//        )
-//        Mockito.`when`(refreshTokenRepository.findByRefreshToken("testRefreshToken")).thenReturn(Optional.of(refreshToken))
-//
-//        val authentication = customRefreshTokenPersistence.getAuthentication("testRefreshToken").blockFirst()
-//        Assertions.assertNull(authentication)
-//        Mockito.verify(refreshTokenRepository, times(1)).update(refreshToken)
-//    }
-@Test
-fun testGetAuthenticationExpiredToken() {
+    private fun verifyError(token: String, errorCode: String, errorDescription: String) {
+        var authentication: Authentication? = null
+        var error: Throwable? = null
+        customRefreshTokenPersistence.getAuthentication(token).subscribe(object : Subscriber<Authentication> {
+            override fun onSubscribe(s: Subscription) {
+                s.request(1)
+            }
+
+            override fun onNext(t: Authentication) {
+                authentication = t
+            }
+
+            override fun onError(t: Throwable) {
+                error = t
+            }
+
+            override fun onComplete() {
+            }
+        })
+
+        assertNull(authentication)
+        assertNotNull(error)
+        assertTrue(error is OauthErrorResponseException)
+        assertNotNull((error as OauthErrorResponseException).error)
+        assertEquals(errorCode, (error as OauthErrorResponseException).error.errorCode)
+        assertEquals(errorDescription, (error as OauthErrorResponseException).errorDescription)
+    }
+
+    @Test
+fun testGetAuthenticationRevokedToken() {
     val refreshToken = RefreshToken(
         username = "testUser",
         refreshToken = "testRefreshToken",
-        expiresOn = Instant.now().minusSeconds(60)
+        revoked = true
+    )
+    Mockito.`when`(refreshTokenRepository.findByRefreshToken("testRefreshToken"))
+        .thenReturn(Optional.of(refreshToken))
+    verifyError(refreshToken.refreshToken, INVALID_GRANT.toString(), "refresh token revoked")
+}
+
+    @Test
+    fun testGetAuthenticationExpiredToken() {
+        val refreshToken = RefreshToken(
+            username = "testUser",
+            refreshToken = "testRefreshToken",
+            expiresOn = Instant.now()
+                .minusSeconds(refreshTokenConfiguration
+                    .expirationTime.inWholeSeconds + 1 ))
+        Mockito.`when`(refreshTokenRepository.findByRefreshToken("testRefreshToken"))
+            .thenReturn(Optional.of(refreshToken))
+
+        verifyError(refreshToken.refreshToken, INVALID_GRANT.toString(), "refresh token expired")
+    }
+
+@Test
+fun testGetAuthenticationValidToken() {
+    val refreshToken = RefreshToken(
+        username = "testUser",
+        refreshToken = "testRefreshToken",
+        expiresOn = Instant.now().plusSeconds(3600*6)
     )
     Mockito.`when`(refreshTokenRepository.findByRefreshToken("testRefreshToken")).thenReturn(Optional.of(refreshToken))
 
-
-    var authentication: Authentication? = null
+    var authentication: Authentication?= null
     var error: Throwable? = null
     customRefreshTokenPersistence.getAuthentication("testRefreshToken").subscribe(object : Subscriber<Authentication> {
         override fun onSubscribe(s: Subscription) {
@@ -88,42 +115,20 @@ fun testGetAuthenticationExpiredToken() {
             error = t
         }
 
-        override fun onComplete() {
-        }
-    })
-
-
-    assertNull(authentication)
-    assertNotNull(error)
-    assertTrue(error is OauthErrorResponseException)
-    assertNotNull((error as OauthErrorResponseException).error)
-    assertEquals(INVALID_GRANT.toString(), (error as OauthErrorResponseException).error.errorCode)
-    assertEquals("refresh token expired", (error as OauthErrorResponseException).errorDescription)
+            override fun onComplete() {
+            }
+        })
+    assertNotNull(authentication)
+    assertNull(error)
     Mockito.verify(refreshTokenRepository, times(1)).update(refreshToken)
 }
-//
-//    @Test
-//    fun testGetAuthenticationValidToken() {
-//        val refreshToken = RefreshToken(
-//            username = "testUser",
-//            refreshToken = "testRefreshToken",
-//            expiresOn = Instant.now().plusSeconds(60)
-//        )
-//        Mockito.`when`(refreshTokenRepository.findByRefreshToken("testRefreshToken")).thenReturn(Optional.of(refreshToken))
-//
-//        val authentication = customRefreshTokenPersistence.getAuthentication("testRefreshToken").blockFirst()
-//        Assertions.assertNotNull(authentication)
-//        Assertions.assertEquals("testUser", authentication.name)
-//        Mockito.verify(refreshTokenRepository, times(1)).update(refreshToken)
-//    }
-//
-//    @Test
-//    fun testGetAuthenticationNonExistingToken() {
-//        Mockito.`when`(refreshTokenRepository.findByRefreshToken("nonExistingToken")).thenReturn(Optional.empty())
-//
-//        val authentication = customRefreshTokenPersistence.getAuthentication("nonExistingToken").blockFirst()
-//        Assertions.assertNull(authentication)
-//    }
+
+@Test
+fun testGetAuthenticationNonExistingToken() {
+    Mockito.`when`(refreshTokenRepository.findByRefreshToken("nonExistingToken")).thenReturn(Optional.empty())
+
+    verifyError("nonExistingToken", INVALID_GRANT.toString(), "refresh token not found")
+}
 
     @Test
     fun testPersistToken() {
