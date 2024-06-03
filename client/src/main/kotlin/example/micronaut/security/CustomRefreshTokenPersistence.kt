@@ -52,12 +52,11 @@ class CustomRefreshTokenPersistence(
                 val token = tokenOpt.get()
                 val (_, username, _, revoked, dateCreated, expiresOn) = token
                 val maxExpiresOn = dateCreated
-                    .plusSeconds(refreshTokenConfiguration.maximumAge?.inWholeSeconds ?:
-                    refreshTokenConfiguration.expirationTime.inWholeSeconds)
+                    .plusSeconds(refreshTokenConfiguration.maximumAge.inWholeSeconds)
                 if (revoked) {
                     emitter.error(OauthErrorResponseException(INVALID_GRANT, "refresh token revoked", null))
                 }
-                else if(expiresOn.let { it != null && it.isBefore(Instant.now())} &&
+                else if(expiresOn.let { it != null && it.isBefore(Instant.now())} ||
                     maxExpiresOn.isBefore(Instant.now())
                     ) {
                     token.revoked = true
