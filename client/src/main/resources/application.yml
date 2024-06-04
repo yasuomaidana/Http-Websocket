@@ -39,6 +39,14 @@ datasources:
     driverClassName: com.mysql.cj.jdbc.Driver
     username: app
     password: app
+
+mongodb:
+  username: "root"
+  password: "root"
+  database: "app"
+  uri: mongodb://${mongodb.username}:${mongodb.password}@localhost:27017
+  package-names:
+    - example.micronaut.entities.mongo
 flyway:
   datasources:
     default:

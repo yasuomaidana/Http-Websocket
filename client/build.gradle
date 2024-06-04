@@ -43,6 +43,7 @@ dependencies {
     //Test
     testImplementation('org.mockito:mockito-core:3.12.4')
     testImplementation('org.junit.jupiter:junit-jupiter:5.8.1')
+    testImplementation('org.testcontainers:mongodb')
 
 
 
@@ -59,6 +60,15 @@ dependencies {
     runtimeOnly("com.mysql:mysql-connector-j")
     implementation("io.micronaut.data:micronaut-data-jdbc")
     implementation("io.micronaut.sql:micronaut-jdbc-hikari")
+
+
+    //MongoDB
+    implementation("io.micronaut.reactor:micronaut-reactor")
+    implementation("io.micronaut.data:micronaut-data-mongodb")
+    implementation("io.micronaut.mongodb:micronaut-mongo-reactive")
+    runtimeOnly("org.mongodb:mongodb-driver-reactivestreams")
+    kapt("io.micronaut.data:micronaut-data-document-processor")
+
 
     // Flyway
     implementation("io.micronaut.flyway:micronaut-flyway:latest")
