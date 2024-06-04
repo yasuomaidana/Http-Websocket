@@ -11,8 +11,9 @@ import java.time.temporal.ChronoUnit
 import kotlin.time.Duration
 
 
+
 @Singleton
-@Transactional
+@Transactional(transactionManager = "default")
 class TokenCleanerScheduler(
     private val refreshTokenRepository: RefreshTokenRepository,
 
