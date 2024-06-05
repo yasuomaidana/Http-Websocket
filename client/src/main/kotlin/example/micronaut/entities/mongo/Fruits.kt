@@ -14,5 +14,5 @@ data class Fruit(
     @BsonId
     var id: String? = null,
     val name:String,
-    val weight:Double,
+    var weight:Double,
 )
