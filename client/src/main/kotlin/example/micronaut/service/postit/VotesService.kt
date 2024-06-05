@@ -8,7 +8,7 @@ import org.bson.types.ObjectId
 import reactor.core.publisher.Mono
 import java.util.*
 
-@Singleton
+//@Singleton
 class VotesService(
     private val votesRepository: VotesRepository,
     private val votesGetRepository: VotesGetRepository

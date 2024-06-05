@@ -5,5 +5,5 @@ import example.micronaut.entities.mongo.postit.Votes
 import io.micronaut.data.repository.CrudRepository
 import org.bson.types.ObjectId
 
-@DefaultMongoRepository
+//@DefaultMongoRepository
 interface VotesGetRepository: CrudRepository<Votes, ObjectId>
