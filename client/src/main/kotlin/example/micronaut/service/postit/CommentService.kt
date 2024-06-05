@@ -11,7 +11,7 @@ import java.util.*
 @Singleton
 class CommentService(
     private val commentRepository: CommentRepository,
-    private val commentGetRepository: CommentGetRepository
+    private val commentGetRepository: CommentGetRepository,
 ) {
     fun createComment(comment: Comment): Mono<Comment> =
         commentRepository.save(comment)
