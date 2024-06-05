@@ -14,4 +14,9 @@ data class Votes(
     var id: ObjectId? = null,
     var likes: Int,
     var dislikes: Int
-)
+){
+    init{
+        require(likes >= 0) { "likes must be greater than or equal to 0" }
+        require(dislikes >= 0) { "dislikes must be greater than or equal to 0" }
+    }
+}
