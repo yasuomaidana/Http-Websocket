@@ -1,9 +1,8 @@
-package example.micronaut.service
+package example.micronaut.service.postit
 
 import example.micronaut.entities.mongo.postit.Votes
-import example.micronaut.repository.VotesGetRepository
-import example.micronaut.repository.VotesRepository
-import io.micronaut.core.annotation.NonNull
+import example.micronaut.repository.postit.comments.votes.VotesGetRepository
+import example.micronaut.repository.postit.comments.votes.VotesRepository
 import jakarta.inject.Singleton
 import org.bson.types.ObjectId
 import reactor.core.publisher.Mono

@@ -1,7 +1,7 @@
-package example.micronaut.service
+package example.micronaut.service.postit
 
 import example.micronaut.entities.mongo.postit.Votes
-import example.micronaut.repository.VotesRepository
+import example.micronaut.repository.postit.comments.votes.VotesRepository
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import jakarta.inject.Inject
 import org.junit.jupiter.api.AfterEach
