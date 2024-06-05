@@ -68,4 +68,56 @@ class CommentServiceTest {
         assertEquals(updatedComment.votes.likes, result.votes.likes)
         assertEquals(updatedComment.votes.dislikes, result.votes.dislikes)
     }
+
+    @Test
+    fun updateLikeComment() {
+        val votes = Votes(likes = 10, dislikes = 2)
+        val comment = Comment(postId = ObjectId(), title = "Test comment", votes = votes)
+        val createdComment = commentService.createComment(comment).block()
+        val result = commentService.updateLikeComment(createdComment!!.id!!, true).block()!!
+        assertNotNull(result)
+        assertEquals(createdComment.id, result.id)
+        assertEquals(createdComment.postId, result.postId)
+        assertEquals(createdComment.votes.likes + 1, result.votes.likes)
+        assertEquals(createdComment.votes.dislikes, result.votes.dislikes)
+    }
+
+    @Test
+    fun updateDisLikeComment() {
+        val votes = Votes(likes = 10, dislikes = 2)
+        val comment = Comment(postId = ObjectId(), title = "Test comment", votes = votes)
+        val createdComment = commentService.createComment(comment).block()
+        val result = commentService.updateDisLikeComment(createdComment!!.id!!, true).block()!!
+        assertNotNull(result)
+        assertEquals(createdComment.id, result.id)
+        assertEquals(createdComment.postId, result.postId)
+        assertEquals(createdComment.votes.likes, result.votes.likes)
+        assertEquals(createdComment.votes.dislikes + 1, result.votes.dislikes)
+    }
+
+    @Test
+    fun removeLikeComment() {
+        val votes = Votes(likes = 10, dislikes = 2)
+        val comment = Comment(postId = ObjectId(), title = "Test comment", votes = votes)
+        val createdComment = commentService.createComment(comment).block()
+        val result = commentService.updateLikeComment(createdComment!!.id!!, false).block()!!
+        assertNotNull(result)
+        assertEquals(createdComment.id, result.id)
+        assertEquals(createdComment.postId, result.postId)
+        assertEquals(maxOf(0, createdComment.votes.likes - 1), result.votes.likes)
+        assertEquals(createdComment.votes.dislikes, result.votes.dislikes)
+    }
+
+    @Test
+    fun removeDisLikeComment() {
+        val votes = Votes(likes = 10, dislikes = 2)
+        val comment = Comment(postId = ObjectId(), title = "Test comment", votes = votes)
+        val createdComment = commentService.createComment(comment).block()
+        val result = commentService.updateDisLikeComment(createdComment!!.id!!, false).block()!!
+        assertNotNull(result)
+        assertEquals(createdComment.id, result.id)
+        assertEquals(createdComment.postId, result.postId)
+        assertEquals(createdComment.votes.likes, result.votes.likes)
+        assertEquals(maxOf(0, createdComment.votes.dislikes - 1), result.votes.dislikes)
+    }
 }

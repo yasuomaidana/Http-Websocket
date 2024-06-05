@@ -25,4 +25,26 @@ class CommentService(
     fun updateComment(updatedComment: Comment):
             Mono<Comment> =
         commentRepository.update(updatedComment)
+
+    fun updateLikeComment(commentId: ObjectId, like: Boolean): Mono<Comment> {
+        return commentGetRepository.findById(commentId).let { comment ->
+            if (comment.isPresent) {
+                val updatedComment = comment.get()
+                updatedComment.votes.likes = maxOf(0, updatedComment.votes.likes + if (like) 1 else -1)
+                return commentRepository.update(updatedComment)
+            }
+            Mono.empty()
+        }
+    }
+
+    fun updateDisLikeComment(commentId: ObjectId, like: Boolean): Mono<Comment> {
+        return commentGetRepository.findById(commentId).let { comment ->
+            if (comment.isPresent) {
+                val updatedComment = comment.get()
+                updatedComment.votes.dislikes = maxOf(0, updatedComment.votes.dislikes + if (like) 1 else -1)
+                return commentRepository.update(updatedComment)
+            }
+            Mono.empty()
+        }
+    }
 }
