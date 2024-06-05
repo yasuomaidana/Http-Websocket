@@ -39,6 +39,8 @@ datasources:
     driverClassName: com.mysql.cj.jdbc.Driver
     username: app
     password: app
+  mongodb:
+    database: "app"
 
 mongodb:
   username: "root"

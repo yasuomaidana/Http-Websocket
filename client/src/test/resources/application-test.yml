@@ -15,5 +15,8 @@ micronaut:
       generator:
         access-token:
           expiration: 3600
+datasources:
+  mongodb:
+    database: "testing"
 mongodb:
   database: "testing"
