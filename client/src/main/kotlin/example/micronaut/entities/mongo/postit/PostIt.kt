@@ -10,7 +10,7 @@ import org.bson.types.ObjectId
 data class PostIt (
     @field:Id
     var id: ObjectId? = null,
-    val title: String,
+    var title: String,
     var content: String,
     val childPostItIds: List<ObjectId>,
     var color: String,
