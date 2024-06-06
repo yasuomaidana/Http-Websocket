@@ -57,6 +57,8 @@ dependencies {
 
 
     // Database
+
+    //MySQL
     runtimeOnly("com.mysql:mysql-connector-j")
     implementation("io.micronaut.data:micronaut-data-jdbc")
     implementation("io.micronaut.sql:micronaut-jdbc-hikari")
@@ -69,6 +71,8 @@ dependencies {
     runtimeOnly("org.mongodb:mongodb-driver-reactivestreams")
     kapt("io.micronaut.data:micronaut-data-document-processor")
 
+    //GraphQL
+    implementation("io.micronaut.graphql:micronaut-graphql")
 
     // Flyway
     implementation("io.micronaut.flyway:micronaut-flyway:latest")
