@@ -22,7 +22,7 @@ import org.reactivestreams.Subscription
 import java.time.Instant
 import java.util.*
 
-@MicronautTest(environments = ["test"])
+@MicronautTest(environments = ["test"], transactional = false)
 class CustomRefreshTokenPersistenceTest {
 
     private lateinit var customRefreshTokenPersistence: CustomRefreshTokenPersistence

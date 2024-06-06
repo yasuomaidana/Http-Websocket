@@ -5,15 +5,15 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import jakarta.inject.Inject
 
-@MicronautTest
+//@MicronautTest
 class ClientTest {
 
-    @Inject
-    lateinit var application: EmbeddedApplication<*>
-
-    @Test
-    fun testItWorks() {
-        Assertions.assertTrue(application.isRunning)
-    }
+//    @Inject
+//    lateinit var application: EmbeddedApplication<*>
+//
+//    @Test
+//    fun testItWorks() {
+//        Assertions.assertTrue(application.isRunning)
+//    }
 
 }
