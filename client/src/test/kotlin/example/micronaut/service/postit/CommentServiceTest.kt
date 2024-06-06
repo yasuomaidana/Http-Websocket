@@ -2,18 +2,26 @@ package example.micronaut.service.postit
 
 import example.micronaut.entities.mongo.postit.Comment
 import example.micronaut.entities.mongo.postit.Votes
+import example.micronaut.repository.postit.comments.CommentRepository
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import jakarta.inject.Inject
 import org.bson.types.ObjectId
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
 
 @MicronautTest(transactional = false)
 class CommentServiceTest {
-
+    @Inject
+    lateinit var commentRepository: CommentRepository
     @Inject
     lateinit var commentService: CommentService
+
+    @AfterEach
+    fun tearDown() {
+        commentRepository.deleteAll().block()
+    }
 
     @Test
     fun createComment() {
