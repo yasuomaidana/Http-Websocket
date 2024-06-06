@@ -4,9 +4,9 @@ plugins {
     id("org.jetbrains.kotlin.kapt") version "${kotlinVersion}"
     id("org.jetbrains.kotlin.plugin.allopen") version "${kotlinVersion}"
     id("com.github.johnrengelman.shadow") version "8.1.1"
-    id("io.micronaut.application") version "4.3.8"
+    id("io.micronaut.application") version "4.4.0"
     id("org.jetbrains.kotlin.plugin.serialization") version "${kotlinVersion}"
-    id("io.micronaut.aot") version "4.3.8"
+    id("io.micronaut.aot") version "4.4.0"
 
 }
 
@@ -81,7 +81,7 @@ dependencies {
     // If using SnakeYAML
     runtimeOnly("org.yaml:snakeyaml")
 
-    aotPlugins(platform("io.micronaut.platform:micronaut-platform:4.4.2"))
+    aotPlugins(platform("io.micronaut.platform:micronaut-platform:4.4.3"))
     aotPlugins("io.micronaut.security:micronaut-security-aot")
 
     runtimeOnly("com.h2database:h2")
