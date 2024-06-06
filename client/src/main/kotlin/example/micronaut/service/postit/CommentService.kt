@@ -27,7 +27,8 @@ class CommentService(
         commentRepository.update(updatedComment)
 
     fun updateLikeComment(commentId: ObjectId, like: Boolean): Mono<Comment> {
-        return commentGetRepository.findById(commentId).let { comment ->
+        return commentGetRepository.findById(commentId)
+            .let { comment ->
             if (comment.isPresent) {
                 val updatedComment = comment.get()
                 updatedComment.votes.likes = maxOf(0, updatedComment.votes.likes + if (like) 1 else -1)
