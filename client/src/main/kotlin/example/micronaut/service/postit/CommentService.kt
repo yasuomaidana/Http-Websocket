@@ -8,6 +8,14 @@ import org.bson.types.ObjectId
 import reactor.core.publisher.Mono
 import java.util.*
 
+/**
+ * Service class for managing Comment objects.
+ *
+ * Note: We use two separate repository interfaces, CommentRepository and CommentGetRepository,
+ * because Micronaut Data MongoDB has different APIs for reactive and non-reactive operations.
+ * CommentRepository is used for reactive operations (e.g., creating, updating, deleting),
+ * while CommentGetRepository is used for non-reactive operations (e.g., retrieving by ID).
+ */
 @Singleton
 class CommentService(
     private val commentRepository: CommentRepository,
