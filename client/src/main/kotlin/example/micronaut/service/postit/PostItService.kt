@@ -32,4 +32,37 @@ class PostItService(
 
     fun updatePostIt(updatedPostIt: PostIt): Mono<PostIt> =
         postItRepository.update(updatedPostIt)
+
+    fun addCommentToPostIt(postItId: ObjectId, commentId: ObjectId): Mono<PostIt> {
+        return postItGetRepository.findById(postItId).let { postIt ->
+            if (postIt.isPresent) {
+                val updatedPostIt = postIt.get()
+                updatedPostIt.commentIds += commentId
+                return postItRepository.update(updatedPostIt)
+            }
+            Mono.empty()
+        }
+    }
+
+    fun removeCommentFromPostIt(postItId: ObjectId, commentId: ObjectId): Mono<PostIt> {
+        return postItGetRepository.findById(postItId).let { postIt ->
+            if (postIt.isPresent) {
+                val updatedPostIt = postIt.get()
+                updatedPostIt.commentIds -= commentId
+                return postItRepository.update(updatedPostIt)
+            }
+            Mono.empty()
+        }
+    }
+
+    fun clearCommentsFromPostIt(postItId: ObjectId): Mono<PostIt> {
+        return postItGetRepository.findById(postItId).let { postIt ->
+            if (postIt.isPresent) {
+                val updatedPostIt = postIt.get()
+                updatedPostIt.commentIds = emptyList()
+                return postItRepository.update(updatedPostIt)
+            }
+            Mono.empty()
+        }
+    }
 }

@@ -14,5 +14,5 @@ data class PostIt (
     var content: String,
     val childPostItIds: List<ObjectId>,
     var color: String,
-    val commentIds: List<ObjectId>
+    var commentIds: List<ObjectId>
 )
