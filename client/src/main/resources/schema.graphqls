@@ -1,0 +1,39 @@
+type Query {
+    postIt(id: ID!): PostIt
+    posts: [PostIt]
+    comment(id: ID!): Comment
+    comments: [Comment]
+}
+
+type Mutation {
+    createPostIt(title: String!, content: String!, color: String!): PostIt
+    updatePostIt(id: ID!, title: String, content: String, color: String): PostIt
+    deletePostIt(id: ID!): Boolean
+    createComment(postId: ID!, title: String!, content: String): Comment
+    updateComment(id: ID!, title: String, content: String): Comment
+    deleteComment(id: ID!): Boolean
+    likeComment(id: ID!): Comment
+    dislikeComment(id: ID!): Comment
+}
+
+type PostIt {
+    id: ID
+    title: String
+    content: String
+    childPostItIds: [ID]
+    color: String
+    commentIds: [ID]
+}
+
+type Comment {
+    id: ID!
+    postId: ID!
+    title: String!
+    content: String
+    votes: Votes!
+}
+
+type Votes {
+    likes: Int!
+    dislikes: Int!
+}
