@@ -65,4 +65,8 @@ class PostItService(
             Mono.empty()
         }
     }
+
+    fun getPosts(): Flux<PostIt> {
+        return postItRepository.findAll()
+    }
 }

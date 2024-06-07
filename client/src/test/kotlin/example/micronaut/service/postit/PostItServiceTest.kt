@@ -133,4 +133,45 @@ class PostItServiceTest {
         val updatedPostIt2 = postItService.clearCommentsFromPostIt(updatedPostIt.id!!).block()!!
         assertTrue(updatedPostIt2.commentIds.isEmpty())
     }
+
+    @Test
+    fun `getPosts returns all posts`() {
+        // Given
+        val postIt1 = PostIt(
+            title = "Test PostIt 1",
+            content = "Test content 1",
+            childPostItIds = emptyList(),
+            color = "red",
+            commentIds = emptyList()
+        )
+        val postIt2 = PostIt(
+            title = "Test PostIt 2",
+            content = "Test content 2",
+            childPostItIds = emptyList(),
+            color = "blue",
+            commentIds = emptyList()
+        )
+        postItService.createPostIt(postIt1).block()
+        postItService.createPostIt(postIt2).block()
+
+        // When
+        val posts = postItService.getPosts().collectList().block()!!
+
+        // Then
+        assertEquals(2, posts.size)
+        assertTrue(posts.containsAll(listOf(postIt1, postIt2)))
+    }
+
+    @Test
+    fun `getPosts returns empty list when no posts exist`() {
+        // Given
+        // No posts created
+
+        // When
+        val posts = postItService.getPosts().collectList().block()!!
+
+        // Then
+        assertTrue(posts.isEmpty())
+    }
+
 }
