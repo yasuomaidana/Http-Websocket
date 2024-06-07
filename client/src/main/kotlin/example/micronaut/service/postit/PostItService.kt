@@ -1,7 +1,6 @@
 package example.micronaut.service.postit
 
 import example.micronaut.entities.mongo.postit.PostIt
-import example.micronaut.repository.postit.PostItGetRepository
 import example.micronaut.repository.postit.PostItRepository
 import jakarta.inject.Singleton
 import org.bson.types.ObjectId
@@ -18,8 +17,7 @@ import reactor.core.publisher.Mono
  */
 @Singleton
 class PostItService(
-    private val postItRepository: PostItRepository,
-    private val postItGetRepository: PostItGetRepository,
+    private val postItRepository: PostItRepository
 ) {
     fun createPostIt(postIt: PostIt): Mono<PostIt> =
         postItRepository.save(postIt)
@@ -33,40 +31,25 @@ class PostItService(
     fun updatePostIt(updatedPostIt: PostIt): Mono<PostIt> =
         postItRepository.update(updatedPostIt)
 
-    fun addCommentToPostIt(postItId: ObjectId, commentId: ObjectId): Mono<PostIt> {
-        return postItGetRepository.findById(postItId).let { postIt ->
-            if (postIt.isPresent) {
-                val updatedPostIt = postIt.get()
-                updatedPostIt.commentIds += commentId
-                return postItRepository.update(updatedPostIt)
-            }
-            Mono.empty()
+    fun addCommentToPostIt(postItId: ObjectId, commentId: ObjectId): Mono<PostIt> =
+        getPostIt(postItId).flatMap { postIt ->
+            postIt.commentIds += commentId
+            postItRepository.update(postIt)
         }
-    }
 
-    fun removeCommentFromPostIt(postItId: ObjectId, commentId: ObjectId): Mono<PostIt> {
-        return postItGetRepository.findById(postItId).let { postIt ->
-            if (postIt.isPresent) {
-                val updatedPostIt = postIt.get()
-                updatedPostIt.commentIds -= commentId
-                return postItRepository.update(updatedPostIt)
-            }
-            Mono.empty()
+    fun removeCommentFromPostIt(postItId: ObjectId, commentId: ObjectId): Mono<PostIt> =
+        getPostIt(postItId).flatMap { postIt ->
+            postIt.commentIds -= commentId
+            postItRepository.update(postIt)
         }
-    }
 
-    fun clearCommentsFromPostIt(postItId: ObjectId): Mono<PostIt> {
-        return postItGetRepository.findById(postItId).let { postIt ->
-            if (postIt.isPresent) {
-                val updatedPostIt = postIt.get()
-                updatedPostIt.commentIds = emptyList()
-                return postItRepository.update(updatedPostIt)
-            }
-            Mono.empty()
+
+    fun clearCommentsFromPostIt(postItId: ObjectId): Mono<PostIt> =
+        getPostIt(postItId).flatMap { postIt ->
+            postIt.commentIds = emptyList()
+            postItRepository.update(postIt)
         }
-    }
 
-    fun getPosts(): Flux<PostIt> {
-        return postItRepository.findAll()
-    }
+    fun getPosts(): Flux<PostIt> = postItRepository.findAll()
+
 }
