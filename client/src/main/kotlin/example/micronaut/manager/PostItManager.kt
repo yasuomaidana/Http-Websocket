@@ -7,7 +7,6 @@ import example.micronaut.service.postit.PostItService
 import jakarta.inject.Singleton
 import org.bson.types.ObjectId
 import reactor.core.publisher.Mono
-import kotlin.jvm.optionals.getOrNull
 
 @Singleton
 class PostItManager(
@@ -28,9 +27,8 @@ class PostItManager(
         return postItService.removeCommentFromPostIt(postItId, commentId)
     }
 
-    fun getPostIt(id: ObjectId): PostIt? {
-        return postItService.getPostIt(id).getOrNull()
-    }
+    fun getPostIt(id: ObjectId) = postItService.getPostIt(id)
+
 
     fun getPostIt(id:String) = getPostIt(ObjectId(id))
 }
