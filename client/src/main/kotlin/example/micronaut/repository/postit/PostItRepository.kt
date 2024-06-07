@@ -6,4 +6,6 @@ import io.micronaut.data.repository.reactive.ReactorCrudRepository
 import org.bson.types.ObjectId
 
 @DefaultMongoRepository
-interface PostItRepository: ReactorCrudRepository<PostIt, ObjectId>
+interface PostItRepository: ReactorCrudRepository<PostIt, ObjectId>{
+    fun find(id: ObjectId): Publisher<PostIt> = findById(id)
+}

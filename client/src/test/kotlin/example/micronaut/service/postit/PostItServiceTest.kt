@@ -51,8 +51,9 @@ class PostItServiceTest {
             commentIds = emptyList()
         )
         val createdPostIt = postItService.createPostIt(postIt).block()!!
-        val retrievedPostIt = postItService.getPostIt(createdPostIt.id!!)
-        assertTrue(retrievedPostIt.isPresent)
+        val retrievedPostIt = postItService.getPostIt(createdPostIt.id!!).block()!!
+        assertNotNull(retrievedPostIt)
+        assertEquals(createdPostIt.id, retrievedPostIt.id)
     }
 
     @Test

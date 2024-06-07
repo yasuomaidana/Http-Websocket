@@ -5,8 +5,8 @@ import example.micronaut.repository.postit.PostItGetRepository
 import example.micronaut.repository.postit.PostItRepository
 import jakarta.inject.Singleton
 import org.bson.types.ObjectId
+import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
-import java.util.*
 
 /**
  * Service class for managing PostIt objects.
@@ -24,8 +24,8 @@ class PostItService(
     fun createPostIt(postIt: PostIt): Mono<PostIt> =
         postItRepository.save(postIt)
 
-    fun getPostIt(id: ObjectId): Optional<PostIt> =
-        postItGetRepository.findById(id)
+    fun getPostIt(id: ObjectId): Mono<PostIt> =
+        Mono.from(postItRepository.find(id))
 
     fun deletePostIt(id: ObjectId): Mono<Long> =
         postItRepository.deleteById(id)
