@@ -11,6 +11,15 @@ micronaut:
   security:
     authentication: bearer
     enabled: true
+    intercept-url-map:
+      -
+        pattern: /graphql
+        access:
+          - isAnonymous()
+      -
+        pattern: /graphiql
+        access:
+          - isAnonymous()
     token:
       jwt:
         signatures:
@@ -39,8 +48,6 @@ datasources:
     driverClassName: com.mysql.cj.jdbc.Driver
     username: app
     password: app
-  mongodb:
-    database: "app"
 
 mongodb:
   username: "root"
@@ -64,3 +71,11 @@ app:
   token-cleaning:
     cleaning-period: PT1M
     delay-delete: PT1M
+
+graphql:
+  enabled: true
+  graphiql: # enables the /graphiql endpoint to test calls against your graph.
+    enabled: true
+    path: /graphiql
+#  schema:
+#    locations: classpath:schema.graphqls
