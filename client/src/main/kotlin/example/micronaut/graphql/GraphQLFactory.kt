@@ -1,7 +1,7 @@
 package example.micronaut.graphql
 
-import example.micronaut.graphql.fetcher.CreatePostItFetcher
-import example.micronaut.graphql.fetcher.PostItFetcher
+import example.micronaut.graphql.fetcher.postsIt.CreatePostItFetcher
+import example.micronaut.graphql.fetcher.postsIt.PostItFetcher
 import graphql.GraphQL
 import graphql.schema.idl.RuntimeWiring
 import graphql.schema.idl.SchemaGenerator

@@ -1,4 +1,4 @@
-package example.micronaut.graphql.fetcher
+package example.micronaut.graphql.fetcher.postsIt.comments
 
 import example.micronaut.entities.mongo.postit.Comment
 import example.micronaut.service.postit.CommentService
