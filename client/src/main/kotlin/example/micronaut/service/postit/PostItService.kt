@@ -7,14 +7,6 @@ import org.bson.types.ObjectId
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
-/**
- * Service class for managing PostIt objects.
- *
- * Note: We use two separate repository interfaces, PostItRepository and PostItGetRepository,
- * because Micronaut Data MongoDB has different APIs for reactive and non-reactive operations.
- * PostItRepository is used for reactive operations (e.g., creating, updating, deleting),
- * while PostItGetRepository is used for non-reactive operations (e.g., retrieving by ID).
- */
 @Singleton
 class PostItService(
     private val postItRepository: PostItRepository
