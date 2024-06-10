@@ -2,6 +2,9 @@ package example.micronaut.graphql
 
 import example.micronaut.graphql.fetcher.postsIt.CreatePostItFetcher
 import example.micronaut.graphql.fetcher.postsIt.PostItFetcher
+import example.micronaut.graphql.fetcher.postsIt.PostsFetcher
+import example.micronaut.graphql.fetcher.postsIt.comments.CommentFetcher
+import example.micronaut.graphql.fetcher.postsIt.comments.CreateCommentFetcher
 import graphql.GraphQL
 import graphql.schema.idl.RuntimeWiring
 import graphql.schema.idl.SchemaGenerator
@@ -19,8 +22,12 @@ class GraphQLFactory {
 
     @Bean
     @Singleton
-    fun graphQL(resourceResolver: ResourceResolver, postItFetcher: PostItFetcher,
-                createPostItFetcher: CreatePostItFetcher
+    fun graphQL(resourceResolver: ResourceResolver,
+                postItFetcher: PostItFetcher,
+                createPostItFetcher: CreatePostItFetcher,
+                postsFetcher: PostsFetcher,
+                commentFetcher: CommentFetcher,
+                createCommentFetcher: CreateCommentFetcher
     ): GraphQL {
 
         val schemaParser = SchemaParser()
@@ -38,9 +45,14 @@ class GraphQLFactory {
         // Create the runtime wiring.
         val runtimeWiring = RuntimeWiring.newRuntimeWiring()
                 .type("Query") { typeWiring -> typeWiring
-                        .dataFetcher("postIt", postItFetcher) }
+                        .dataFetcher("postIt", postItFetcher)
+                        .dataFetcher("posts", postsFetcher)
+                    .dataFetcher("comment", commentFetcher)
+                }
                 .type("Mutation") { typeWiring -> typeWiring
-                        .dataFetcher("createPostIt", createPostItFetcher) }
+                        .dataFetcher("createPostIt", createPostItFetcher)
+                        .dataFetcher("createComment", createCommentFetcher)
+                }
                 .build()
 
         // Create the executable schema.
