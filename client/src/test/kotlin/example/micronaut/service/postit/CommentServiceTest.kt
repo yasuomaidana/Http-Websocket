@@ -42,13 +42,13 @@ class CommentServiceTest {
         val votes = Votes(likes = 10, dislikes = 2)
         val comment = Comment(postId = ObjectId(), title = "Title", content = "Test comment", votes = votes)
         val createdComment = commentService.createComment(comment).block()
-        val result = commentService.getComment(createdComment!!.id!!)
-        assertTrue(result.isPresent)
-        assertEquals(createdComment.id, result.get().id)
-        assertEquals(createdComment.postId, result.get().postId)
-        assertEquals(createdComment.content, result.get().content)
-        assertEquals(createdComment.votes.likes, result.get().votes.likes)
-        assertEquals(createdComment.votes.dislikes, result.get().votes.dislikes)
+        val result = commentService.getComment(createdComment!!.id!!).block()!!
+        assertNotNull(result)
+        assertEquals(createdComment.id, result.id)
+        assertEquals(createdComment.postId, result.postId)
+        assertEquals(createdComment.content, result.content)
+        assertEquals(createdComment.votes.likes, result.votes.likes)
+        assertEquals(createdComment.votes.dislikes, result.votes.dislikes)
     }
 
     @Test
@@ -58,8 +58,8 @@ class CommentServiceTest {
         val createdComment = commentService.createComment(comment).block()
         val deletedCount = commentService.deleteComment(createdComment!!.id!!).block()!!
         assertEquals(1, deletedCount)
-        val result = commentService.getComment(createdComment.id!!)
-        assertFalse(result.isPresent)
+        val result = commentService.getComment(createdComment.id!!).block()
+        assertNull(result)
     }
 
     @Test
