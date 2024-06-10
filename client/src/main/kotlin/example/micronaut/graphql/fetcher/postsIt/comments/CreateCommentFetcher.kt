@@ -1,18 +1,18 @@
 package example.micronaut.graphql.fetcher.postsIt.comments
 
 import example.micronaut.entities.mongo.postit.Comment
-import example.micronaut.service.postit.CommentService
+import example.micronaut.manager.PostItManager
 import graphql.schema.DataFetcher
 import graphql.schema.DataFetchingEnvironment
 import jakarta.inject.Singleton
-import org.bson.types.ObjectId
 
 @Singleton
-class CreateCommentFetcher(private val commentService: CommentService) : DataFetcher<Comment> {
+class CreateCommentFetcher(private val postItManager: PostItManager) : DataFetcher<Comment> {
     override fun get(env: DataFetchingEnvironment): Comment? {
-        val postId = env.getArgument<ObjectId>("postId")
+        val postId = env.getArgument<String>("postId")!!
         val title = env.getArgument<String>("title")!!
-        val content = env.getArgument<String>("content")!!
-        return commentService.createComment(Comment(null, postId, title, content)).block()
+        val content = env.getArgument<String>("content")
+        val comment = Comment(postId, title, content)
+        return postItManager.addCommentToPostIt(postId, comment).thenReturn(comment).toFuture().get()
     }
 }
