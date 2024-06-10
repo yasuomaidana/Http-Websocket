@@ -17,6 +17,10 @@ class PostItManager(
         return postItService.createPostIt(postIt)
     }
 
+    fun addCommentToPostIt(postItId: String, comment: Comment): Mono<PostIt> {
+        return addCommentToPostIt(ObjectId(postItId), comment)
+    }
+
     fun addCommentToPostIt(postItId: ObjectId, comment: Comment): Mono<PostIt> {
         return commentService.createComment(comment).flatMap { createdComment ->
             postItService.addCommentToPostIt(postItId, createdComment.id!!)
@@ -31,4 +35,9 @@ class PostItManager(
 
 
     fun getPostIt(id:String) = getPostIt(ObjectId(id))
+
+    fun getPosts() = postItService.getPosts()
+
+    fun getComment(id: String) = commentService.getComment(id)
+    fun getComment(id: ObjectId) = commentService.getComment(id)
 }
