@@ -13,7 +13,10 @@ class PostsFetcher(
     private val postItMapper: PostItMapper
 ) : DataFetcher<List<PostItDTO>> {
     override fun get(environment: DataFetchingEnvironment?): List<PostItDTO> {
-        return postItManager.getPosts().collectList().toFuture().get()
-            .map {postItMapper.toPostItDTO(it)  }
+        val offset = environment?.getArgument("offset") as Int? ?: 0
+        val limit = environment?.getArgument("limit") as Int? ?: 10
+
+        return postItManager.getPosts(offset,limit)?.toFuture()?.get()
+            ?.map { postItMapper.toPostItDTO(it) }?.content?.toList() ?: emptyList()
     }
 }

@@ -36,7 +36,7 @@ class PostItManager(
 
     fun getPostIt(id:String) = getPostIt(ObjectId(id))
 
-    fun getPosts() = postItService.getPosts()
+    fun getPosts(offset: Int, limit: Int) = postItService.getPosts(offset, limit)
 
     fun getComment(id: String) = commentService.getComment(id)
     fun getComment(id: ObjectId) = commentService.getComment(id)

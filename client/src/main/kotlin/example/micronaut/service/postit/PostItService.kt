@@ -2,6 +2,8 @@ package example.micronaut.service.postit
 
 import example.micronaut.entities.mongo.postit.PostIt
 import example.micronaut.repository.postit.PostItRepository
+import io.micronaut.data.model.Page
+import io.micronaut.data.model.Pageable
 import jakarta.inject.Singleton
 import org.bson.types.ObjectId
 import reactor.core.publisher.Flux
@@ -44,4 +46,6 @@ class PostItService(
 
     fun getPosts(): Flux<PostIt> = postItRepository.findAll()
 
+    fun getPosts(offset:Int, limit: Int): Mono<Page<PostIt>>? =
+        postItRepository.findAll(Pageable.from(offset, limit))
 }
