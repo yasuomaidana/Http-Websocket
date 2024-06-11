@@ -1,6 +1,5 @@
 package example.micronaut.graphql.fetcher.postsIt
 
-import example.micronaut.entities.mongo.postit.PostIt
 import example.micronaut.graphql.dto.PostItDTO
 import example.micronaut.graphql.mapper.PostItMapper
 import example.micronaut.manager.PostItManager
