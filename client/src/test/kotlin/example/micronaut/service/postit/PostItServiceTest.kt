@@ -175,4 +175,40 @@ class PostItServiceTest {
         assertTrue(posts.isEmpty())
     }
 
+    @Test
+    fun getByIds() {
+        // Given
+        val postIt1 = PostIt(
+            title = "Test PostIt 1",
+            content = "Test content 1",
+            childPostItIds = emptyList(),
+            color = "red",
+            commentIds = emptyList()
+        )
+        val postIt2 = PostIt(
+            title = "Test PostIt 2",
+            content = "Test content 2",
+            childPostItIds = emptyList(),
+            color = "blue",
+            commentIds = emptyList()
+        )
+        val createdPostIt1 = postItService.createPostIt(postIt1).block()!!
+        val createdPostIt2 = postItService.createPostIt(postIt2).block()!!
+
+        // When
+        var posts = postItService.getByIds(listOf(createdPostIt1.id!!, createdPostIt2.id!!), 0, 10).block()!!.content
+
+        // Then
+        assertEquals(2, posts.size)
+        assertTrue(posts.containsAll(listOf(createdPostIt1, createdPostIt2)))
+
+        posts = postItService.getByIds(listOf(createdPostIt1.id!!, createdPostIt2.id!!), 0, 1).block()!!.content
+        assertEquals(1, posts.size)
+        assertEquals(createdPostIt1, posts[0])
+
+        posts = postItService.getByIds(listOf(createdPostIt1.id!!, createdPostIt2.id!!), 1, 1).block()!!.content
+        assertEquals(1, posts.size)
+        assertEquals(createdPostIt2, posts[0])
+    }
+
 }

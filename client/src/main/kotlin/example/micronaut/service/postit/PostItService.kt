@@ -46,6 +46,9 @@ class PostItService(
 
     fun getPosts(): Flux<PostIt> = postItRepository.findAll()
 
+    fun getByIds(ids: List<ObjectId>, offset: Int=0, limit: Int=10): Mono<Page<PostIt>> =
+        postItRepository.findByIdIn(ids, Pageable.from(offset, limit))
+
     fun getPosts(offset:Int, limit: Int): Mono<Page<PostIt>>? =
         postItRepository.findAll(Pageable.from(offset, limit))
 
