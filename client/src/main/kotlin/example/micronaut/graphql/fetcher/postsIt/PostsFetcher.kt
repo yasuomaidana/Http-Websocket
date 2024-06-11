@@ -17,6 +17,6 @@ class PostsFetcher(
         val limit = environment?.getArgument("limit") as Int? ?: 10
 
         return postItManager.getPosts(offset,limit)?.toFuture()?.get()
-            ?.map { postItMapper.toPostItDTO(it) }?.content?.toList() ?: emptyList()
+            ?.map { postItMapper.toPostItDTO(it, limit) }?.content?.toList() ?: emptyList()
     }
 }

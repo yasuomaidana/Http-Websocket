@@ -27,6 +27,8 @@ type PostIt {
     childPosts: [PostIt]
     color: String
     comments: [Comment]
+    totalPages:Int,
+    currentPage:Int
 }
 
 type Comment {

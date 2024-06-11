@@ -11,5 +11,7 @@ data class PostItDTO (
     var content: String,
     val childPosts: List<PostItDTO>,
     var color: String,
-    var comments: List<Comment>
+    var comments: List<Comment>,
+    var totalPages:Int,
+    var currentPage:Int
 )
