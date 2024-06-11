@@ -3,6 +3,8 @@ package example.micronaut.graphql.mapper
 import example.micronaut.entities.mongo.postit.Comment
 import example.micronaut.entities.mongo.postit.PostIt
 import example.micronaut.manager.PostItManager
+import io.micronaut.data.model.Page
+import io.micronaut.data.model.Pageable
 import org.bson.types.ObjectId
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
@@ -55,6 +57,14 @@ class PostItMapperTest {
 
         Mockito.`when`(postItManager.getComment(any(ObjectId::class.java)?: ObjectId()))
             .thenReturn(Mono.just(returnedComment))
+
+        Mockito.`when`(postItManager.getPostsByIds(postIt.childPostItIds,
+            0, 10))
+            .thenReturn(Mono.just(Page.of(listOf(returnedPostIt,returnedPostIt), Pageable.from(0), 2)))
+
+        Mockito.`when`(postItManager.getPostsByIds( emptyList(),
+            0, 10))
+            .thenReturn(Mono.just(Page.of(emptyList(), Pageable.from(0), 0)))
 
         val postItDTO = postItMapper.toPostItDTO(postIt)
         assertNotNull(postItDTO)
