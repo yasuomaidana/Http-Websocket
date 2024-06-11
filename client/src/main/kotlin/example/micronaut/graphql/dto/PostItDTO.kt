@@ -13,5 +13,6 @@ data class PostItDTO (
     var color: String,
     var comments: List<Comment>,
     var totalPages:Int,
-    var currentPage:Int
+    var currentPage:Int,
+    var totalChildPosts:Long
 )

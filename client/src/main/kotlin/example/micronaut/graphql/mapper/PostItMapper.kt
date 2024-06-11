@@ -25,7 +25,8 @@ abstract class PostItMapper {
         Mapping(target = "totalPages", expression = "java(childPosts.getTotalPages())"),
         Mapping(target = "currentPage", expression = "java(childPosts.getPageNumber())"),
         Mapping(target = "id", source = "postId.id"),
-        Mapping(target = "content", source = "postId.content")
+        Mapping(target = "content", source = "postId.content"),
+        Mapping(target="totalChildPosts", expression="java(childPosts.getTotalSize())")
     )
     abstract fun toPostItDTO(postId: PostIt, childPosts: Page<PostIt>,kids:Int): PostItDTO
 
