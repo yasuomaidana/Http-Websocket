@@ -4,8 +4,8 @@ import io.micronaut.core.annotation.Introspected
 
 @Introspected
 data class PostItPageDTO(
-    val content: List<PostItDTO> = emptyList(),
-    val totalPages: Int = 0,
-    val currentPage: Int = 0,
-    val totalElements: Long = 0
+    var content: List<PostItDTO> = emptyList(),
+    var totalPages: Int = 0,
+    var currentPage: Int = 0,
+    var totalPosts: Long = 0
 )

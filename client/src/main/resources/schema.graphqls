@@ -43,7 +43,7 @@ type PostItPage {
     content: [PostIt]
     totalPages: Int
     currentPage: Int
-    totalElements: Int
+    totalPosts: Int
 }
 
 type Votes {
