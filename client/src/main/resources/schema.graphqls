@@ -20,9 +20,9 @@ type PostIt {
     id: ID
     title: String
     content: String
-    childPostItIds: [ID]
+    childPosts: [PostIt]
     color: String
-    commentIds: [ID]
+    comments: [Comment]
 }
 
 type Comment {
