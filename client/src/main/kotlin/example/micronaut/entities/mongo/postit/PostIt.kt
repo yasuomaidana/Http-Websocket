@@ -12,7 +12,7 @@ data class PostIt (
     var id: ObjectId? = null,
     var title: String,
     var content: String,
-    val childPostItIds: List<ObjectId> = emptyList(),
+    var childPostItIds: List<ObjectId> = emptyList(),
     var color: String,
     var commentIds: List<ObjectId> = emptyList()
 )
