@@ -1,6 +1,6 @@
 type Query {
     postIt(id: ID!): PostIt
-    posts(offset: Int, limit:Int): [PostIt]
+    posts(offset: Int, limit:Int): PostItPage
     comment(id: ID!): Comment
     comments: [Comment]
 }
@@ -28,7 +28,8 @@ type PostIt {
     color: String
     comments: [Comment]
     totalPages:Int,
-    currentPage:Int
+    currentPage:Int,
+    totalChildPosts:Int
 }
 
 type Comment {
@@ -37,6 +38,12 @@ type Comment {
     title: String!
     content: String
     votes: Votes!
+}
+type PostItPage {
+    content: [PostIt]
+    totalPages: Int
+    currentPage: Int
+    totalElements: Int
 }
 
 type Votes {

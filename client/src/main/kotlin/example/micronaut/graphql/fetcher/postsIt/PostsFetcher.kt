@@ -1,6 +1,6 @@
 package example.micronaut.graphql.fetcher.postsIt
 
-import example.micronaut.graphql.dto.PostItDTO
+import example.micronaut.graphql.dto.PostItPageDTO
 import example.micronaut.graphql.mapper.PostItMapper
 import example.micronaut.manager.PostItManager
 import graphql.schema.DataFetcher
@@ -11,12 +11,17 @@ import jakarta.inject.Singleton
 class PostsFetcher(
     private val postItManager: PostItManager,
     private val postItMapper: PostItMapper
-) : DataFetcher<List<PostItDTO>> {
-    override fun get(environment: DataFetchingEnvironment?): List<PostItDTO> {
+) : DataFetcher<PostItPageDTO> {
+    override fun get(environment: DataFetchingEnvironment?): PostItPageDTO{
         val offset = environment?.getArgument("offset") as Int? ?: 0
         val limit = environment?.getArgument("limit") as Int? ?: 10
 
-        return postItManager.getPosts(offset,limit)?.toFuture()?.get()
-            ?.map { postItMapper.toPostItDTO(it, limit) }?.content?.toList() ?: emptyList()
+        val page = postItManager.getPosts(offset,limit)?.toFuture()?.get()
+
+        return PostItPageDTO(page?.content?.map {
+            postItMapper.toPostItDTO(it, limit, offset)
+        }  ?: emptyList()
+            , page?.totalPages?:0, page?.pageNumber?:0,
+            page?.totalSize?:0)
     }
 }
