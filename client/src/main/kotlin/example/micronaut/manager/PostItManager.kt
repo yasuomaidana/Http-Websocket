@@ -40,4 +40,16 @@ class PostItManager(
 
     fun getComment(id: String) = commentService.getComment(id)
     fun getComment(id: ObjectId) = commentService.getComment(id)
+
+    fun createChildPostIt(parentId: ObjectId, childPostIt: PostIt) = postItService.createChildPostIt(parentId, childPostIt)
+    fun createChildPostIt(postItId: String, childPostIt: PostIt) = createChildPostIt(ObjectId(postItId), childPostIt)
+
+    fun addChildPostIt(postItId: ObjectId, childPostItId: ObjectId) = postItService.addChildPostIt(postItId, childPostItId)
+    fun addChildPostIt(postItId: String, childPostItId: String) = addChildPostIt(ObjectId(postItId), ObjectId(childPostItId))
+
+    fun removeChildPostIt(postItId: ObjectId, childPostItId: ObjectId) = postItService.removeChildPostIt(postItId, childPostItId)
+    fun removeChildPostIt(postItId: String, childPostItId: String) = removeChildPostIt(ObjectId(postItId), ObjectId(childPostItId))
+
+    fun changeParentPostIt(parentId:ObjectId, childPostItId: ObjectId, newParentPostItId: ObjectId) = postItService.changeParentPostIt(parentId,childPostItId, newParentPostItId)
+    fun changeParentPostIt(parentId:String, childPostItId: String, newParentPostItId: String) = changeParentPostIt(ObjectId(parentId), ObjectId(childPostItId), ObjectId(newParentPostItId))
 }

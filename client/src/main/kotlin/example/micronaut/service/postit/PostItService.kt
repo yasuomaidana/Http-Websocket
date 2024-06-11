@@ -48,4 +48,32 @@ class PostItService(
 
     fun getPosts(offset:Int, limit: Int): Mono<Page<PostIt>>? =
         postItRepository.findAll(Pageable.from(offset, limit))
+
+    fun addChildPostIt(postItId: ObjectId, childPostItId: ObjectId): Mono<PostIt> =
+        getPostIt(postItId).flatMap { postIt ->
+            postIt.childPostItIds += childPostItId
+            postItRepository.update(postIt)
+        }
+
+    fun createChildPostIt(postItId: ObjectId, childPostIt: PostIt): Mono<PostIt> =
+        createPostIt(childPostIt).flatMap { createdChildPostIt ->
+            addChildPostIt(postItId, createdChildPostIt.id!!)
+        }
+
+    fun removeChildPostIt(postItId: ObjectId, childPostItId: ObjectId): Mono<PostIt> =
+        getPostIt(postItId).flatMap { postIt ->
+            postIt.childPostItIds -= childPostItId
+            postItRepository.update(postIt)
+        }
+
+    fun changeParentPostIt(parentId: ObjectId, childId: ObjectId, newParentId:ObjectId): Mono<PostIt> =
+        getPostIt(parentId).flatMap { parentPostIt ->
+            parentPostIt.childPostItIds -= childId
+            postItRepository.update(parentPostIt)
+        }.flatMap {
+            getPostIt(newParentId).flatMap { newParentPostIt ->
+                newParentPostIt.childPostItIds += childId
+                postItRepository.update(newParentPostIt)
+            }
+        }
 }
