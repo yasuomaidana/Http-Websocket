@@ -3,6 +3,7 @@ package example.micronaut.graphql.mapper
 import example.micronaut.entities.mongo.postit.Comment
 import example.micronaut.entities.mongo.postit.PostIt
 import example.micronaut.graphql.dto.PostItDTO
+import example.micronaut.graphql.dto.PostItPageDTO
 import example.micronaut.manager.PostItManager
 import io.micronaut.data.model.Page
 import jakarta.inject.Inject
@@ -36,7 +37,14 @@ abstract class PostItMapper {
         return toPostItDTO(postIt, postsPages,kids)
     }
 
-    @Named("postItIdsToPostIts")
+    @Mappings(
+        Mapping(target = "content", expression = "java(postItIdToPostIt(postsPage, limit))"),
+        Mapping(target = "totalPages", expression = "java(postsPage.getTotalPages())"),
+        Mapping(target = "currentPage", expression = "java(postsPage.getPageNumber())"),
+        Mapping(target = "totalPosts", expression = "java(postsPage.getTotalSize())")
+    )
+    abstract fun toPostItPageDTO(postsPage:Page<PostIt>, limit: Int): PostItPageDTO
+
     fun postItIdToPostIt(childPosts: Page<PostIt>, kids: Int): List<PostItDTO> {
         return Flux.fromIterable(childPosts)
             .map { toPostItDTO(it, kids) }
