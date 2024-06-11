@@ -1,8 +1,6 @@
 package example.micronaut.graphql
 
-import example.micronaut.graphql.fetcher.postsIt.CreatePostItFetcher
-import example.micronaut.graphql.fetcher.postsIt.PostItFetcher
-import example.micronaut.graphql.fetcher.postsIt.PostsFetcher
+import example.micronaut.graphql.fetcher.postsIt.*
 import example.micronaut.graphql.fetcher.postsIt.comments.CommentFetcher
 import example.micronaut.graphql.fetcher.postsIt.comments.CreateCommentFetcher
 import graphql.GraphQL
@@ -27,7 +25,11 @@ class GraphQLFactory {
                 createPostItFetcher: CreatePostItFetcher,
                 postsFetcher: PostsFetcher,
                 commentFetcher: CommentFetcher,
-                createCommentFetcher: CreateCommentFetcher
+                createCommentFetcher: CreateCommentFetcher,
+                addChildPostItFetcher: AddChildPostItFetcher,
+                createChildPostItFetcher: CreateChildPostItFetcher,
+                removeChildPostItFetcher: AddChildPostItFetcher,
+                changeParentPostItFetcher: AddChildPostItFetcher
     ): GraphQL {
 
         val schemaParser = SchemaParser()
@@ -52,6 +54,10 @@ class GraphQLFactory {
                 .type("Mutation") { typeWiring -> typeWiring
                         .dataFetcher("createPostIt", createPostItFetcher)
                         .dataFetcher("createComment", createCommentFetcher)
+                        .dataFetcher("addChildPostIt", addChildPostItFetcher)
+                        .dataFetcher("createChildPostIt", createChildPostItFetcher)
+                        .dataFetcher("removeChildPostIt", removeChildPostItFetcher)
+                        .dataFetcher("changeParentPostIt", changeParentPostItFetcher)
                 }
                 .build()
 
