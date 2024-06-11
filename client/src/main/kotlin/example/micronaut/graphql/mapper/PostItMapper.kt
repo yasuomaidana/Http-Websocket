@@ -25,9 +25,9 @@ abstract class PostItMapper {
     abstract fun toPostItDTO(postId: PostIt): PostItDTO
 
     @Named("postItIdsToPostIts")
-    fun postItIdToPostIt(postItIds: List<ObjectId>): List<PostIt> {
+    fun postItIdToPostIt(postItIds: List<ObjectId>): List<PostItDTO> {
         return Flux.fromIterable(postItIds)
-            .flatMap { postItManager.getPostIt(it) }
+            .flatMap { postItManager.getPostIt(it).map { jt -> toPostItDTO(jt) }}
             .collectList()
             .toFuture()
             .get()
