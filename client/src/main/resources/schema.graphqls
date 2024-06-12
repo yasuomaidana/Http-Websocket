@@ -24,12 +24,9 @@ type PostIt {
     id: ID
     title: String
     content: String
-    childPosts: [PostIt]
+    childPosts: PostItPage
     color: String
-    comments: [Comment]
-    totalPages:Int,
-    currentPage:Int,
-    totalChildPosts:Int
+    comments: CommentPage
 }
 
 type Comment {
@@ -39,6 +36,14 @@ type Comment {
     content: String
     votes: Votes!
 }
+
+type CommentPage {
+    content: [Comment]
+    totalPages: Int
+    currentPage: Int
+    totalComments: Int
+}
+
 type PostItPage {
     content: [PostIt]
     totalPages: Int

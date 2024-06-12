@@ -9,9 +9,9 @@ data class PostItDTO (
     var id: ObjectId? = null,
     var title: String,
     var content: String,
-    val childPosts: List<PostItDTO>,
+    val childPosts: PostItPageDTO,
     var color: String,
-    var comments: List<Comment>,
+    var comments: CommentPageDTO,
     var totalPages:Int,
     var currentPage:Int,
     var totalChildPosts:Long
