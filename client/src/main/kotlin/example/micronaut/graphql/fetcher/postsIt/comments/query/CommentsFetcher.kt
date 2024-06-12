@@ -1,4 +1,4 @@
-package example.micronaut.graphql.fetcher.postsIt.comments
+package example.micronaut.graphql.fetcher.postsIt.comments.query
 
 import example.micronaut.graphql.dto.CommentPageDTO
 import example.micronaut.graphql.mapper.CommentMapper

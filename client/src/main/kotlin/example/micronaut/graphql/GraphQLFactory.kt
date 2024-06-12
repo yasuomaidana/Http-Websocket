@@ -1,9 +1,13 @@
 package example.micronaut.graphql
 
-import example.micronaut.graphql.fetcher.postsIt.*
-import example.micronaut.graphql.fetcher.postsIt.comments.CommentFetcher
-import example.micronaut.graphql.fetcher.postsIt.comments.CommentsFetcher
-import example.micronaut.graphql.fetcher.postsIt.comments.CreateCommentFetcher
+import example.micronaut.graphql.fetcher.postsIt.comments.query.CommentFetcher
+import example.micronaut.graphql.fetcher.postsIt.comments.query.CommentsFetcher
+import example.micronaut.graphql.fetcher.postsIt.comments.mutator.CreateCommentFetcher
+import example.micronaut.graphql.fetcher.postsIt.mutator.AddChildPostItFetcher
+import example.micronaut.graphql.fetcher.postsIt.mutator.CreateChildPostItFetcher
+import example.micronaut.graphql.fetcher.postsIt.mutator.CreatePostItFetcher
+import example.micronaut.graphql.fetcher.postsIt.query.PostItFetcher
+import example.micronaut.graphql.fetcher.postsIt.query.PostsFetcher
 import graphql.GraphQL
 import graphql.schema.idl.RuntimeWiring
 import graphql.schema.idl.SchemaGenerator

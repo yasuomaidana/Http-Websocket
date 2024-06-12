@@ -1,4 +1,4 @@
-package example.micronaut.graphql.fetcher.postsIt
+package example.micronaut.graphql.fetcher.postsIt.query
 
 import example.micronaut.graphql.dto.PostItPageDTO
 import example.micronaut.graphql.mapper.PostItMapper

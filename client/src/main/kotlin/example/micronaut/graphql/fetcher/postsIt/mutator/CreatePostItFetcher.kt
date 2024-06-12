@@ -1,4 +1,4 @@
-package example.micronaut.graphql.fetcher.postsIt
+package example.micronaut.graphql.fetcher.postsIt.mutator
 
 import example.micronaut.entities.mongo.postit.PostIt
 import example.micronaut.manager.PostItManager

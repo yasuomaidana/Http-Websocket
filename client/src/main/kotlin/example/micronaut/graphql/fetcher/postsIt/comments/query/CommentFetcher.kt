@@ -1,8 +1,7 @@
-package example.micronaut.graphql.fetcher.postsIt.comments
+package example.micronaut.graphql.fetcher.postsIt.comments.query
 
 import example.micronaut.entities.mongo.postit.Comment
 import example.micronaut.manager.PostItManager
-import example.micronaut.service.postit.CommentService
 import graphql.schema.DataFetcher
 import graphql.schema.DataFetchingEnvironment
 import jakarta.inject.Singleton
