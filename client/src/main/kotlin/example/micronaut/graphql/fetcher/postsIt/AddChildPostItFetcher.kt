@@ -16,6 +16,6 @@ class AddChildPostItFetcher(
         val parentId = environment?.getArgument("parentId") as String
         val childId = environment.getArgument("childId") as String
 
-        return postItManager.addChildPostIt(parentId, childId).map { postItMapper.toPostItDTO(it) }.toFuture().get()
+        return postItManager.addChildPostIt(parentId, childId).map { postItMapper.postItToPostItDTO(it) }.toFuture().get()
     }
 }

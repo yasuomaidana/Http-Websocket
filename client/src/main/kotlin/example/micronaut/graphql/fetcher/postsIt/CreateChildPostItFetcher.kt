@@ -20,6 +20,6 @@ class CreateChildPostItFetcher (
         val color = environment.getArgument("color") as String
 
         val childPostIt = PostIt(title = title, content = content, color = color)
-        return postItManager.createChildPostIt(parentId, childPostIt).map { postItMapper.toPostItDTO(it) }.toFuture().get()
+        return postItManager.createChildPostIt(parentId, childPostIt).map { postItMapper.postItToPostItDTO(it) }.toFuture().get()
     }
 }

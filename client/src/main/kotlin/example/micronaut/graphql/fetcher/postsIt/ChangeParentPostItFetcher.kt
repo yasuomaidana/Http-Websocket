@@ -16,6 +16,6 @@ class ChangeParentPostItFetcher(
         val parentId = environment?.getArgument<String>("parentId")!!
         val childId = environment.getArgument<String>("childId")!!
         val newParentId = environment.getArgument<String>("newParentId")!!
-        return postItManager.changeParentPostIt(parentId, childId, newParentId).map { postItMapper.toPostItDTO(it) }.toFuture().get()
+        return postItManager.changeParentPostIt(parentId, childId, newParentId).map { postItMapper.postItToPostItDTO(it) }.toFuture().get()
     }
 }

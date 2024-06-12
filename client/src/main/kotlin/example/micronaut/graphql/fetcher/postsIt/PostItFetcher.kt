@@ -15,6 +15,6 @@ class PostItFetcher(
     override fun get(env: DataFetchingEnvironment): PostItDTO {
         // Use the postItManager to add a comment to a Post-it
         val postItId = env.getArgument<String>("id")!!
-        return postItMapper.toPostItDTO(postItManager.getPostIt(postItId).toFuture().get())
+        return postItMapper.postItToPostItDTO(postItManager.getPostIt(postItId).toFuture().get())
     }
 }

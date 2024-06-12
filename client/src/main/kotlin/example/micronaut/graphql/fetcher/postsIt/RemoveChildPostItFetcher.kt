@@ -16,6 +16,6 @@ class RemoveChildPostItFetcher(
         val parentId = environment?.getArgument<String>("parentId")!!
         val childId = environment.getArgument<String>("childId")!!
 
-        return postItManager.removeChildPostIt(parentId, childId).map { postItMapper.toPostItDTO(it) }.toFuture().get()
+        return postItManager.removeChildPostIt(parentId, childId).map { postItMapper.postItToPostItDTO(it) }.toFuture().get()
     }
 }
