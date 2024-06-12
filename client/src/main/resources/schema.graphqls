@@ -1,6 +1,7 @@
 type Query {
     postIt(id: ID!): PostIt
     posts(offset: Int, limit:Int): PostItPage
+    posts(offset: Int, limit:Int, commentLimit:Int): PostItPage
     comment(id: ID!): Comment
     comments: [Comment]
 }

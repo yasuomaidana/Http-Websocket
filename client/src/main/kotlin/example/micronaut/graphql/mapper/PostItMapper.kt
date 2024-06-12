@@ -23,30 +23,30 @@ abstract class PostItMapper {
     lateinit var commentMapper: CommentMapper
 
     @Mappings(
-        Mapping(target = "childPosts", expression = "java(postItPageToDTO(childPosts, kids))"),
-        Mapping(target = "comments", expression="java(commentIdsToCommentsPage(postId.getCommentIds(), kids))"),
+        Mapping(target = "childPosts", expression = "java(postItPageToDTO(childPosts, kids, commentKids))"),
+        Mapping(target = "comments", expression="java(commentIdsToCommentsPage(postId.getCommentIds(), commentKids))"),
         Mapping(target = "id", source = "postId.id"),
         Mapping(target = "content", source = "postId.content"),
     )
-    abstract fun postItToPostItDTO(postId: PostIt, childPosts: Page<PostIt>,kids:Int): PostItDTO
+    abstract fun postItToPostItDTO(postId: PostIt, childPosts: Page<PostIt>,kids:Int, commentKids:Int): PostItDTO
 
-    fun postItToPostItDTO(postIt:PostIt, kids:Int=10, offset:Int=0): PostItDTO {
+    fun postItToPostItDTO(postIt:PostIt, kids:Int=10, offset:Int=0, commentKids:Int=10): PostItDTO {
         val postsPages = postItManager.getPostsByIds(postIt.childPostItIds, offset, kids).toFuture().get()
 
-        return postItToPostItDTO(postIt, postsPages,kids)
+        return postItToPostItDTO(postIt, postsPages,kids,commentKids)
     }
 
     @Mappings(
-        Mapping(target = "content", expression = "java(postItPageToListDTO(postsPage, postsLimit))"),
+        Mapping(target = "content", expression = "java(postItPageToListDTO(postsPage, postsLimit,commentKids))"),
         Mapping(target = "totalPages", expression = "java(postsPage.getTotalPages())"),
         Mapping(target = "currentPage", expression = "java(postsPage.getPageNumber())"),
         Mapping(target = "totalPosts", expression = "java(postsPage.getTotalSize())")
     )
-    abstract fun postItPageToDTO(postsPage:Page<PostIt>, postsLimit: Int): PostItPageDTO
+    abstract fun postItPageToDTO(postsPage:Page<PostIt>, postsLimit: Int,commentKids:Int=10): PostItPageDTO
 
-    fun postItPageToListDTO(childPosts: Page<PostIt>, kids: Int): List<PostItDTO> {
+    fun postItPageToListDTO(childPosts: Page<PostIt>, kids: Int,commentKids:Int): List<PostItDTO> {
         return Flux.fromIterable(childPosts)
-            .map { postItToPostItDTO(it, kids, 0) }
+            .map { postItToPostItDTO(it, kids, 0, commentKids) }
             .collectList()
             .toFuture()
             .get()

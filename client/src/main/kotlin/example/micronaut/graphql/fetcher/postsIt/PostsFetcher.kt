@@ -14,9 +14,10 @@ class PostsFetcher(
 ) : DataFetcher<PostItPageDTO> {
     override fun get(environment: DataFetchingEnvironment?): PostItPageDTO{
         val offset = environment?.getArgument("offset") as Int? ?: 0
-        val limit = environment?.getArgument("limit") as Int? ?: 10
+        val childPostLimit = environment?.getArgument<Int>("childPostLimit") as Int? ?: 10
+        val commentLimit = environment?.getArgument<Int>("commentLimit") as Int? ?: 10
 
-        return postItManager.getPosts(offset,limit)?.toFuture()?.get()
-            ?.let { postItMapper.postItPageToDTO(it,limit) } ?: PostItPageDTO()
+        return postItManager.getPosts(offset,childPostLimit)?.toFuture()?.get()
+            ?.let { postItMapper.postItPageToDTO(it,childPostLimit,commentLimit) } ?: PostItPageDTO()
     }
 }
