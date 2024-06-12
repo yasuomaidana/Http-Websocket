@@ -16,5 +16,5 @@ abstract class CommentMapper {
         Mapping(target = "currentPage", expression = "java(commentsPage.getPageNumber())"),
         Mapping(target = "totalComments", expression = "java(commentsPage.getTotalSize())")
     )
-    abstract fun toCommentPageDTO(commentsPage: Page<Comment>) : CommentPageDTO
+    abstract fun commentPageToCommentPageDTO(commentsPage: Page<Comment>) : CommentPageDTO
 }
