@@ -1,6 +1,5 @@
 package example.micronaut.graphql.dto
 
-import example.micronaut.entities.mongo.postit.Comment
 import io.micronaut.core.annotation.Introspected
 import org.bson.types.ObjectId
 
