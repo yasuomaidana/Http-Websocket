@@ -26,17 +26,7 @@ class GraphQLFactory {
     @Bean
     @Singleton
     fun graphQL(resourceResolver: ResourceResolver,
-                postItFetcher: PostItFetcher,
-                createPostItFetcher: CreatePostItFetcher,
-                postsFetcher: PostsFetcher,
-                commentFetcher: CommentFetcher,
-                commentsFetcher: CommentsFetcher,
-                createCommentFetcher: CreateCommentFetcher,
-                addChildPostItFetcher: AddChildPostItFetcher,
-                createChildPostItFetcher: CreateChildPostItFetcher,
-                removeChildPostItFetcher: AddChildPostItFetcher,
-                changeParentPostItFetcher: AddChildPostItFetcher
-    ): GraphQL {
+                graphQLFetcherLoader: GraphQLFetcherLoader): GraphQL {
 
         val schemaParser = SchemaParser()
         val schemaGenerator = SchemaGenerator()
@@ -52,19 +42,11 @@ class GraphQLFactory {
 
         // Create the runtime wiring.
         val runtimeWiring = RuntimeWiring.newRuntimeWiring()
-                .type("Query") { typeWiring -> typeWiring
-                        .dataFetcher("postIt", postItFetcher)
-                        .dataFetcher("posts", postsFetcher)
-                    .dataFetcher("comment", commentFetcher)
-                    .dataFetcher("comments", commentsFetcher)
+                .type("Query"){
+                    it.dataFetchers(graphQLFetcherLoader.queryDict)
                 }
-                .type("Mutation") { typeWiring -> typeWiring
-                        .dataFetcher("createPostIt", createPostItFetcher)
-                        .dataFetcher("createComment", createCommentFetcher)
-                        .dataFetcher("addChildPostIt", addChildPostItFetcher)
-                        .dataFetcher("createChildPostIt", createChildPostItFetcher)
-                        .dataFetcher("removeChildPostIt", removeChildPostItFetcher)
-                        .dataFetcher("changeParentPostIt", changeParentPostItFetcher)
+                .type("Mutation") {
+                    it.dataFetchers(graphQLFetcherLoader.mutationDict)
                 }
                 .build()
 
