@@ -23,38 +23,43 @@ abstract class PostItMapper {
     lateinit var commentMapper: CommentMapper
 
     @Mappings(
-        Mapping(target = "childPosts", expression = "java(postItPageToDTO(childPosts, kids, commentKids))"),
-        Mapping(target = "comments", expression="java(commentIdsToCommentsPage(postId.getCommentIds(), commentKids))"),
+        Mapping(target = "childPosts", expression = "java(postItPageToDTO(childPosts, kids, commentKids,offset,commentOffset))"),
+        Mapping(target = "comments", expression="java(commentIdsToCommentsPage(postId.getCommentIds(), commentKids,commentOffset))"),
         Mapping(target = "id", source = "postId.id"),
         Mapping(target = "content", source = "postId.content"),
     )
-    abstract fun postItToPostItDTO(postId: PostIt, childPosts: Page<PostIt>,kids:Int, commentKids:Int): PostItDTO
+    abstract fun postItToPostItDTO(postId: PostIt, childPosts: Page<PostIt>,kids:Int, commentKids:Int,
+    offset: Int, commentOffset: Int): PostItDTO
 
-    fun postItToPostItDTO(postIt:PostIt, kids:Int=10, offset:Int=0, commentKids:Int=10): PostItDTO {
+    fun postItToPostItDTO(postIt:PostIt, kids:Int=10, offset:Int=0, commentKids:Int=10,commentOffset:Int=0): PostItDTO {
         val postsPages = postItManager.getPostsByIds(postIt.childPostItIds, offset, kids).toFuture().get()
 
-        return postItToPostItDTO(postIt, postsPages,kids,commentKids)
+        return postItToPostItDTO(postIt, postsPages,kids,commentKids,offset, commentOffset)
     }
 
     @Mappings(
-        Mapping(target = "content", expression = "java(postItPageToListDTO(postsPage, postsLimit,commentKids))"),
+        Mapping(target = "content", expression = "java(postItPageToListDTO(postsPage, postsLimit, commentKids,postOffset,commentOffset))"),
         Mapping(target = "totalPages", expression = "java(postsPage.getTotalPages())"),
         Mapping(target = "currentPage", expression = "java(postsPage.getPageNumber())"),
         Mapping(target = "totalPosts", expression = "java(postsPage.getTotalSize())")
     )
-    abstract fun postItPageToDTO(postsPage:Page<PostIt>, postsLimit: Int,commentKids:Int=10): PostItPageDTO
+    abstract fun postItPageToDTO(postsPage:Page<PostIt>,
+                                 postsLimit: Int,
+                                 commentKids:Int=10,
+                                 postOffset:Int = 0,
+                                 commentOffset: Int=0): PostItPageDTO
 
-    fun postItPageToListDTO(childPosts: Page<PostIt>, kids: Int,commentKids:Int): List<PostItDTO> {
+    fun postItPageToListDTO(childPosts: Page<PostIt>, kids: Int,commentKids:Int=10, offset: Int=0, commentOffset: Int=0): List<PostItDTO> {
         return Flux.fromIterable(childPosts)
-            .map { postItToPostItDTO(it, kids, 0, commentKids) }
+            .map { postItToPostItDTO(it, kids, offset, commentKids,commentOffset) }
             .collectList()
             .toFuture()
             .get()
     }
 
-    fun commentIdsToCommentsPage(commentIds: List<ObjectId>, commentLimit:Int): CommentPageDTO
+    fun commentIdsToCommentsPage(commentIds: List<ObjectId>, commentLimit:Int, commentOffset:Int): CommentPageDTO
     =
-        postItManager.getComments(commentIds, 0, commentLimit).toFuture().get().let {
+        postItManager.getComments(commentIds, commentOffset, commentLimit).toFuture().get().let {
              commentMapper.commentPageToCommentPageDTO(it)
         }
 

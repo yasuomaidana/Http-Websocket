@@ -15,6 +15,11 @@ class PostItFetcher(
     override fun get(env: DataFetchingEnvironment): PostItDTO {
         // Use the postItManager to add a comment to a Post-it
         val postItId = env.getArgument<String>("id")!!
-        return postItMapper.postItToPostItDTO(postItManager.getPostIt(postItId).toFuture().get())
+        val childPostLimit = env.getArgument<Int>("childPostLimit")  ?: 10
+        val commentLimit = env.getArgument<Int>("commentLimit")  ?: 10
+        val childOffset = env.getArgument<Int>("childOffset") ?: 0
+        val commentOffset = env.getArgument<Int>("commentOffset") ?: 0
+        return postItMapper.postItToPostItDTO(postItManager.getPostIt(postItId).toFuture().get()
+        ,childPostLimit,childOffset,commentLimit,commentOffset)
     }
 }
