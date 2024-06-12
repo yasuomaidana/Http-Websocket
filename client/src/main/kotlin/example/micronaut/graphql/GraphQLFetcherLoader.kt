@@ -12,19 +12,18 @@ import jakarta.inject.Singleton
 @Singleton
 class GraphQLFetcherLoader(
     //Queries
-    private val postItFetcher: PostItFetcher,
-    private val postsFetcher: PostsFetcher,
-    private val commentFetcher: CommentFetcher,
-    private val commentsFetcher: CommentsFetcher,
+    postItFetcher: PostItFetcher,
+    postsFetcher: PostsFetcher,
+    commentFetcher: CommentFetcher,
+    commentsFetcher: CommentsFetcher,
     //Mutators
-    private val addChildPostItFetcher: AddChildPostItFetcher,
-    private val changeParentPostItFetcher: ChangeParentPostItFetcher,
-    private val createChildPostItFetcher: CreateChildPostItFetcher,
-    private val createPostItFetcher: CreatePostItFetcher,
-    private val removeChildPostItFetcher: RemoveChildPostItFetcher,
-
-    private val createCommentFetcher: CreateCommentFetcher,
-    ) {
+    addChildPostItFetcher: AddChildPostItFetcher,
+    changeParentPostItFetcher: ChangeParentPostItFetcher,
+    createChildPostItFetcher: CreateChildPostItFetcher,
+    createPostItFetcher: CreatePostItFetcher,
+    removeChildPostItFetcher: RemoveChildPostItFetcher,
+    createCommentFetcher: CreateCommentFetcher,
+) {
 
     val queryDict: Map<String, DataFetcher<*>> = mapOf(
         "postIt" to postItFetcher,
