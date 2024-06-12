@@ -2,6 +2,8 @@ package example.micronaut.service.postit
 
 import example.micronaut.entities.mongo.postit.Comment
 import example.micronaut.repository.postit.comments.CommentRepository
+import io.micronaut.data.model.Page
+import io.micronaut.data.model.Pageable
 import jakarta.inject.Singleton
 import org.bson.types.ObjectId
 import reactor.core.publisher.Mono
@@ -37,4 +39,7 @@ class CommentService(
             updateComment(comment)
         }
     }
+
+    fun getComments(ids: List<ObjectId>, offset:Int, limit:Int): Mono<Page<Comment>> =
+        commentRepository.findByIdIn(ids, Pageable.from(offset, limit))
 }

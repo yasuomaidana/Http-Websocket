@@ -54,4 +54,6 @@ class PostItManager(
     fun changeParentPostIt(parentId:String, childPostItId: String, newParentPostItId: String) = changeParentPostIt(ObjectId(parentId), ObjectId(childPostItId), ObjectId(newParentPostItId))
 
     fun getPostsByIds(ids: List<ObjectId>, offset: Int, limit: Int) = postItService.getByIds(ids, offset, limit)
+
+    fun getComments(ids: List<ObjectId>, offset: Int, limit: Int) = commentService.getComments(ids, offset, limit)
 }
