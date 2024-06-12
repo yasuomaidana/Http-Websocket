@@ -2,7 +2,7 @@ type Query {
     postIt(id: ID!, childPostLimit:Int, commentLimit:Int, childOffset:Int, commentOffset:Int): PostIt
     posts(offset: Int, limit:Int, commentLimit:Int): PostItPage
     comment(id: ID!): Comment
-    comments: [Comment]
+    comments(postId:ID!, offset:Int, limit:Int): CommentPage
 }
 
 type Mutation {

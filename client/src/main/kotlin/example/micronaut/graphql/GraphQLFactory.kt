@@ -2,6 +2,7 @@ package example.micronaut.graphql
 
 import example.micronaut.graphql.fetcher.postsIt.*
 import example.micronaut.graphql.fetcher.postsIt.comments.CommentFetcher
+import example.micronaut.graphql.fetcher.postsIt.comments.CommentsFetcher
 import example.micronaut.graphql.fetcher.postsIt.comments.CreateCommentFetcher
 import graphql.GraphQL
 import graphql.schema.idl.RuntimeWiring
@@ -25,6 +26,7 @@ class GraphQLFactory {
                 createPostItFetcher: CreatePostItFetcher,
                 postsFetcher: PostsFetcher,
                 commentFetcher: CommentFetcher,
+                commentsFetcher: CommentsFetcher,
                 createCommentFetcher: CreateCommentFetcher,
                 addChildPostItFetcher: AddChildPostItFetcher,
                 createChildPostItFetcher: CreateChildPostItFetcher,
@@ -50,6 +52,7 @@ class GraphQLFactory {
                         .dataFetcher("postIt", postItFetcher)
                         .dataFetcher("posts", postsFetcher)
                     .dataFetcher("comment", commentFetcher)
+                    .dataFetcher("comments", commentsFetcher)
                 }
                 .type("Mutation") { typeWiring -> typeWiring
                         .dataFetcher("createPostIt", createPostItFetcher)

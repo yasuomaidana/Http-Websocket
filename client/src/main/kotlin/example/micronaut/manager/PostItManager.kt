@@ -56,4 +56,9 @@ class PostItManager(
     fun getPostsByIds(ids: List<ObjectId>, offset: Int, limit: Int) = postItService.getByIds(ids, offset, limit)
 
     fun getComments(ids: List<ObjectId>, offset: Int, limit: Int) = commentService.getComments(ids, offset, limit)
+
+    fun getCommentFromPostIt(postItId: ObjectId, offset: Int, limit: Int) = getPostIt(postItId).flatMap { postIt ->
+        getComments(postIt.commentIds, offset, limit)
+    }
+    fun getCommentFromPostIt(postItId: String, offset: Int, limit: Int) = getCommentFromPostIt(ObjectId(postItId), offset, limit)
 }
