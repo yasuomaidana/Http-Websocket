@@ -1,6 +1,7 @@
 package example.micronaut.graphql
 
 import graphql.GraphQL
+import graphql.language.FieldDefinition
 import graphql.schema.idl.RuntimeWiring
 import graphql.schema.idl.SchemaGenerator
 import graphql.schema.idl.SchemaParser
@@ -14,6 +15,8 @@ import java.io.InputStreamReader
 
 @Factory
 class GraphQLFactory {
+
+    private val logger = org.slf4j.LoggerFactory.getLogger(GraphQLFactory::class.java)
 
     @Bean
     @Singleton
@@ -32,6 +35,8 @@ class GraphQLFactory {
             )
         ))
 
+        validateFetchers(typeRegistry, graphQLFetcherLoader)
+
         // Create the runtime wiring.
         val runtimeWiring = RuntimeWiring.newRuntimeWiring()
                 .type("Query"){
@@ -47,5 +52,29 @@ class GraphQLFactory {
 
         // Return the GraphQL bean.
         return GraphQL.newGraphQL(graphQLSchema).build()
+    }
+
+    private fun validateFetchers(typeRegistry: TypeDefinitionRegistry, graphQLFetcherLoader: GraphQLFetcherLoader){
+        // Get the query and mutation types from the schema.
+        val queryType = typeRegistry.getType("Query").get()
+        val mutationType = typeRegistry.getType("Mutation").get()
+
+        // Get the fields in the query and mutation types.
+        val queryFields = queryType.children.filterIsInstance<FieldDefinition>()
+        val mutationFields = mutationType.children.filterIsInstance<FieldDefinition>()
+
+        // Check for missing fetchers.
+        queryFields.forEach { field ->
+            if (!graphQLFetcherLoader.queryDict.containsKey(field.name)) {
+                logger.warn("Missing query fetcher for field ${field.name}")
+            }
+        }
+
+        mutationFields.forEach { field ->
+            if (!graphQLFetcherLoader.mutationDict.containsKey(field.name)) {
+                logger.warn("Missing mutation fetcher for field ${field.name}")
+            }
+        }
+
     }
 }
