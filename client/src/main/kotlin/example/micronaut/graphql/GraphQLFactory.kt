@@ -1,5 +1,6 @@
 package example.micronaut.graphql
 
+import example.micronaut.graphql.handler.CustomDataFetcherExceptionHandler
 import graphql.GraphQL
 import graphql.language.FieldDefinition
 import graphql.schema.idl.RuntimeWiring
@@ -21,7 +22,8 @@ class GraphQLFactory {
     @Bean
     @Singleton
     fun graphQL(resourceResolver: ResourceResolver,
-                graphQLFetcherLoader: GraphQLFetcherLoader): GraphQL {
+                graphQLFetcherLoader: GraphQLFetcherLoader,
+                customDataFetcherExceptionHandler: CustomDataFetcherExceptionHandler): GraphQL {
 
         val schemaParser = SchemaParser()
         val schemaGenerator = SchemaGenerator()
@@ -51,7 +53,9 @@ class GraphQLFactory {
         val graphQLSchema = schemaGenerator.makeExecutableSchema(typeRegistry, runtimeWiring)
 
         // Return the GraphQL bean.
-        return GraphQL.newGraphQL(graphQLSchema).build()
+        return GraphQL.newGraphQL(graphQLSchema)
+            .defaultDataFetcherExceptionHandler(customDataFetcherExceptionHandler)
+            .build()
     }
 
     private fun validateFetchers(typeRegistry: TypeDefinitionRegistry, graphQLFetcherLoader: GraphQLFetcherLoader){
