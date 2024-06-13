@@ -61,4 +61,7 @@ class PostItManager(
         getComments(postIt.commentIds, offset, limit)
     }
     fun getCommentFromPostIt(postItId: String, offset: Int, limit: Int) = getCommentFromPostIt(ObjectId(postItId), offset, limit)
+
+    fun deletePostIt(id: ObjectId) = postItService.deletePostIt(id)
+    fun deletePostIt(id: String) = deletePostIt(ObjectId(id))
 }
