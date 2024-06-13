@@ -14,5 +14,6 @@ data class PostIt (
     var content: String,
     var childPostItIds: List<ObjectId> = emptyList(),
     var color: String,
-    var commentIds: List<ObjectId> = emptyList()
+    var commentIds: List<ObjectId> = emptyList(),
+    val createdBy: String
 )
