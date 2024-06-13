@@ -29,7 +29,8 @@ class PostItMapperTest {
         content = "Test content",
         childPostItIds = listOf(ObjectId(), ObjectId()),
         color = "red",
-        commentIds = listOf(ObjectId(), ObjectId())
+        commentIds = listOf(ObjectId(), ObjectId()),
+        createdBy = "testUser"
     )
 
     private val returnedPostIt = PostIt(
@@ -38,7 +39,8 @@ class PostItMapperTest {
         content = "Test content",
         childPostItIds = emptyList(),
         color = "green",
-        commentIds = emptyList()
+        commentIds = emptyList(),
+        createdBy = "testUser"
     )
 
     private val returnedComment = Comment(

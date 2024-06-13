@@ -31,7 +31,7 @@ class PostItManagerTest {
 
     @Test
     fun testCreatePostIt() {
-        val postIt = PostIt(title = "Test PostIt", content = "Test content", childPostItIds = emptyList(), color = "red", commentIds = emptyList())
+        val postIt = PostIt(title = "Test PostIt", content = "Test content", childPostItIds = emptyList(), color = "red", commentIds = emptyList(), createdBy = "testUser")
         val createdPostIt = postItManager.createPostIt(postIt).block()!!
         assertNotNull(createdPostIt)
         assertNotNull(createdPostIt.id)
@@ -39,7 +39,7 @@ class PostItManagerTest {
 
     @Test
     fun testAddCommentToPostIt() {
-        val postIt = PostIt(title = "Test PostIt", content = "Test content", childPostItIds = emptyList(), color = "red", commentIds = emptyList())
+        val postIt = PostIt(title = "Test PostIt", content = "Test content", childPostItIds = emptyList(), color = "red", commentIds = emptyList(), createdBy = "testUser")
         val createdPostIt = postItManager.createPostIt(postIt).block()!!
         val comment = Comment(postId = createdPostIt.id!!, title = "Test comment", content = "Test comment content")
         val updatedPostIt = postItManager.addCommentToPostIt(createdPostIt.id!!, comment).block()!!
@@ -48,7 +48,7 @@ class PostItManagerTest {
 
     @Test
     fun testRemoveCommentFromPostIt() {
-        val postIt = PostIt(title = "Test PostIt", content = "Test content", childPostItIds = emptyList(), color = "red", commentIds = emptyList())
+        val postIt = PostIt(title = "Test PostIt", content = "Test content", childPostItIds = emptyList(), color = "red", commentIds = emptyList(), createdBy = "testUser")
         val createdPostIt = postItManager.createPostIt(postIt).block()!!
         val comment = Comment(postId = createdPostIt.id!!, title = "Test comment", content = "Test comment content")
         val updatedPostIt = postItManager.addCommentToPostIt(createdPostIt.id!!, comment).block()!!

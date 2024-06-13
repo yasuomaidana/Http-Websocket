@@ -34,7 +34,8 @@ class PostItServiceTest {
             content = "Test content",
             childPostItIds = emptyList(),
             color = "red",
-            commentIds = emptyList()
+            commentIds = emptyList(),
+            createdBy = "testUser"
         )
         val createdPostIt = postItService.createPostIt(postIt).block()!!
         assertNotNull(createdPostIt)
@@ -48,7 +49,8 @@ class PostItServiceTest {
             content = "Test content",
             childPostItIds = emptyList(),
             color = "red",
-            commentIds = emptyList()
+            commentIds = emptyList(),
+            createdBy = "testUser"
         )
         val createdPostIt = postItService.createPostIt(postIt).block()!!
         val retrievedPostIt = postItService.getPostIt(createdPostIt.id!!).block()!!
@@ -63,7 +65,8 @@ class PostItServiceTest {
             content = "Test content",
             childPostItIds = emptyList(),
             color = "red",
-            commentIds = emptyList()
+            commentIds = emptyList(),
+            createdBy = "testUser"
         )
         val createdPostIt = postItService.createPostIt(postIt).block()!!
         val deletedCount = postItService.deletePostIt(createdPostIt.id!!).block()!!
@@ -77,7 +80,8 @@ class PostItServiceTest {
             content = "Test content",
             childPostItIds = emptyList(),
             color = "red",
-            commentIds = emptyList()
+            commentIds = emptyList(),
+            createdBy = "testUser"
         )
         val createdPostIt = postItService.createPostIt(postIt).block()!!
         createdPostIt.title = "Updated title"
@@ -92,7 +96,8 @@ class PostItServiceTest {
             content = "Test content",
             childPostItIds = emptyList(),
             color = "red",
-            commentIds = emptyList()
+            commentIds = emptyList(),
+            createdBy = "testUser"
         )
         val createdPostIt = postItService.createPostIt(postIt).block()!!
         val comment = Comment(postId = createdPostIt.id!!, title = "Test comment", content = "Test comment content")
@@ -108,7 +113,8 @@ class PostItServiceTest {
             content = "Test content",
             childPostItIds = emptyList(),
             color = "red",
-            commentIds = emptyList()
+            commentIds = emptyList(),
+            createdBy = "testUser"
         )
         val createdPostIt = postItService.createPostIt(postIt).block()!!
         val comment = Comment(postId = createdPostIt.id!!, title = "Test comment", content = "Test comment content")
@@ -125,7 +131,8 @@ class PostItServiceTest {
             content = "Test content",
             childPostItIds = emptyList(),
             color = "red",
-            commentIds = emptyList()
+            commentIds = emptyList(),
+            createdBy = "testUser"
         )
         val createdPostIt = postItService.createPostIt(postIt).block()!!
         val comment = Comment(postId = createdPostIt.id!!, title = "Test comment", content = "Test comment content")
@@ -143,14 +150,16 @@ class PostItServiceTest {
             content = "Test content 1",
             childPostItIds = emptyList(),
             color = "red",
-            commentIds = emptyList()
+            commentIds = emptyList(),
+            createdBy = "testUser"
         )
         val postIt2 = PostIt(
             title = "Test PostIt 2",
             content = "Test content 2",
             childPostItIds = emptyList(),
             color = "blue",
-            commentIds = emptyList()
+            commentIds = emptyList(),
+            createdBy = "testUser"
         )
         postItService.createPostIt(postIt1).block()
         postItService.createPostIt(postIt2).block()
@@ -183,14 +192,16 @@ class PostItServiceTest {
             content = "Test content 1",
             childPostItIds = emptyList(),
             color = "red",
-            commentIds = emptyList()
+            commentIds = emptyList(),
+            createdBy = "testUser"
         )
         val postIt2 = PostIt(
             title = "Test PostIt 2",
             content = "Test content 2",
             childPostItIds = emptyList(),
             color = "blue",
-            commentIds = emptyList()
+            commentIds = emptyList(),
+            createdBy = "testUser"
         )
         val createdPostIt1 = postItService.createPostIt(postIt1).block()!!
         val createdPostIt2 = postItService.createPostIt(postIt2).block()!!
