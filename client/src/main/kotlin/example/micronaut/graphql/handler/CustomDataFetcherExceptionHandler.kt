@@ -24,7 +24,7 @@ class CustomDataFetcherExceptionHandler:DataFetcherExceptionHandler {
         val supportedErrors = listOf(ForbiddenException::class.java,
             NotFoundException::class.java, NullIdException::class.java,
             UserNotAuthenticatedException::class.java)
-        if (supportedErrors.contains(exception::class.java)) {
+        if (supportedErrors.contains((exception.cause ?: exception)::class.java)) {
             logger.error(exception.message)
             val error = GraphqlErrorBuilder.newError()
                 .message(exception.message)
