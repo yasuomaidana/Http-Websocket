@@ -10,7 +10,7 @@ import org.bson.types.ObjectId
 data class Comment(
     @field:Id
     var id: ObjectId? = null,
-    val postId: ObjectId,
+    var postId: ObjectId,
     var title: String,
     var content: String?= null,
     val createdBy: String,

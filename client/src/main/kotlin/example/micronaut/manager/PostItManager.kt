@@ -67,4 +67,25 @@ class PostItManager(
 
     fun deleteComment(id: ObjectId) = commentService.deleteComment(id)
     fun deleteComment(id: String) = deleteComment(ObjectId(id))
+
+    fun updatePostIt(id: String, title: String?, content: String?, color: String?) =
+        getPostIt(id).flatMap { postIt ->
+            postIt.title = title ?: postIt.title
+            postIt.content = content ?: postIt.content
+            postIt.color = color ?: postIt.color
+            postItService.updatePostIt(postIt)
+        }
+
+    fun changeCommentPostIt(commentId: ObjectId, newPostItId: ObjectId): Mono<Comment>
+    = postItService.assertExists(newPostItId).then(
+        commentService.getComment(commentId).flatMap { comment ->
+            postItService.removeCommentFromPostIt(comment.postId, commentId)
+                .flatMap { postItService.addCommentToPostIt(newPostItId, commentId)}
+                .flatMap { comment.postId = newPostItId; commentService.updateComment(comment)}
+        }
+    )
+
+
+    fun changeCommentPostIt(commentId: String, newPostItId: String) =
+        changeCommentPostIt(ObjectId(commentId), ObjectId(newPostItId))
 }
