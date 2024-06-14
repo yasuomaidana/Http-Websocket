@@ -33,7 +33,7 @@ micronaut:
             secret: "${JWT_GENERATOR_SIGNATURE_SECRET:pleaseChangeThisSecretForANewOne}"
       generator:
         access-token:
-          expiration: 3600
+          expiration: 86400
   server:
     cors:
       enabled: true
