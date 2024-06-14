@@ -1,4 +1,4 @@
-package example.micronaut.graphql.fetcher.postsIt.mutator
+package example.micronaut.graphql.fetcher.postsIt.comments.mutator
 
 import example.micronaut.entities.mongo.postit.Comment
 import example.micronaut.exception.NullIdException

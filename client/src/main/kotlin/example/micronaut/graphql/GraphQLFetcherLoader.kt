@@ -1,5 +1,6 @@
 package example.micronaut.graphql
 
+import example.micronaut.graphql.fetcher.postsIt.comments.mutator.ChangeCommentPostItFetcher
 import example.micronaut.graphql.fetcher.postsIt.comments.mutator.CreateCommentFetcher
 import example.micronaut.graphql.fetcher.postsIt.comments.mutator.DeleteCommentFetcher
 import example.micronaut.graphql.fetcher.postsIt.query.PostItFetcher
