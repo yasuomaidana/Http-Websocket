@@ -9,6 +9,7 @@ type Mutation {
     createPostIt(title: String!, content: String!, color: String!): PostIt
     updatePostIt(id: ID!, title: String, content: String, color: String): PostIt
     deletePostIt(id: ID!): Boolean
+    deletePostIt(id: ID!): Float
     createComment(postId: ID!, title: String!, content: String): Comment
     updateComment(id: ID!, title: String, content: String): Comment
     deleteComment(id: ID!): Boolean
