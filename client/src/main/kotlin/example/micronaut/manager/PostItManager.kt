@@ -2,7 +2,6 @@ package example.micronaut.manager
 
 import example.micronaut.entities.mongo.postit.Comment
 import example.micronaut.entities.mongo.postit.PostIt
-import example.micronaut.exception.NotFoundException
 import example.micronaut.service.postit.CommentService
 import example.micronaut.service.postit.PostItService
 import jakarta.inject.Singleton
@@ -22,20 +21,15 @@ class PostItManager(
         return addCommentToPostIt(ObjectId(postItId), comment)
     }
 
-    fun addCommentToPostIt(postItId: ObjectId, comment: Comment): Mono<PostIt> {
-        postItService.checkPostItExists(postItId).toFuture().get().let {
-            if (!it) {
-                throw NotFoundException(type = "PostIt", id = postItId.toString())
-            }
-            return commentService.createComment(comment).flatMap { createdComment ->
+    fun addCommentToPostIt(postItId: ObjectId, comment: Comment): Mono<PostIt> =
+        commentService.createComment(comment).flatMap { createdComment ->
                 postItService.addCommentToPostIt(postItId, createdComment.id!!)
             }
-        }
-    }
 
-    fun removeCommentFromPostIt(postItId: ObjectId, commentId: ObjectId): Mono<PostIt> {
-        return postItService.removeCommentFromPostIt(postItId, commentId)
-    }
+    fun removeCommentFromPostIt(postItId: ObjectId, commentId: ObjectId): Mono<PostIt> =
+        commentService.assertExits(commentId).flatMap {
+            postItService.removeCommentFromPostIt(postItId, commentId)
+        }
 
     fun getPostIt(id: ObjectId) = postItService.getPostIt(id)
 
