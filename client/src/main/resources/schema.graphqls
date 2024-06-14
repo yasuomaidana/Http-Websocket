@@ -8,13 +8,13 @@ type Query {
 type Mutation {
     createPostIt(title: String!, content: String!, color: String!): PostIt
     updatePostIt(id: ID!, title: String, content: String, color: String): PostIt
-    deletePostIt(id: ID!): Boolean
     deletePostIt(id: ID!): Float
     createComment(postId: ID!, title: String!, content: String): Comment
     updateComment(id: ID!, title: String, content: String): Comment
     deleteComment(id: ID!): Boolean
     likeComment(id: ID!): Comment
     dislikeComment(id: ID!): Comment
+    changeCommentPostIt(id: ID!, newPostItId: ID!): Comment
     deleteComment(id: ID!): Float
     addChildPostIt(parentId: ID!, childId: ID!): PostIt
     createChildPostIt(parentId: ID!, title: String!, content: String!, color: String!): PostIt
