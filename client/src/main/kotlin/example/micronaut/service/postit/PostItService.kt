@@ -79,4 +79,7 @@ class PostItService(
                 postItRepository.update(newParentPostIt)
             }
         }
+
+    fun checkPostItExists(id: ObjectId): Mono<Boolean> =
+        postItRepository.existsById(id)
 }
