@@ -18,12 +18,7 @@ class PostItService(
         postItRepository.save(postIt)
 
     fun getPostIt(id: ObjectId): Mono<PostIt> =
-        checkPostItExists(id).flatMap {
-            if (!it) {
-                throw NotFoundException("PostIt", id.toString())
-            }
-            Mono.from(postItRepository.find(id))
-        }
+        assertExists(id).flatMap { Mono.from(postItRepository.find(id)) }
 
     fun deletePostIt(id: ObjectId): Mono<Long> =
         postItRepository.deleteById(id)
@@ -60,14 +55,14 @@ class PostItService(
 
     fun addChildPostIt(postItId: ObjectId, childPostItId: ObjectId): Mono<PostIt> =
         getPostIt(postItId).flatMap { postIt ->
-            checkPostItExists(childPostItId).flatMap {
+            checkExists(childPostItId).flatMap {
                 postIt.childPostItIds += childPostItId
                 postItRepository.update(postIt)
             }
         }
 
     fun createChildPostIt(postItId: ObjectId, childPostIt: PostIt): Mono<PostIt> =
-        checkPostItExists(postItId).flatMap {
+        checkExists(postItId).flatMap {
             createPostIt(childPostIt).flatMap { createdChildPostIt ->
                 addChildPostIt(postItId, createdChildPostIt.id!!)
             }
@@ -75,17 +70,25 @@ class PostItService(
 
     fun removeChildPostIt(postItId: ObjectId, childPostItId: ObjectId): Mono<PostIt> =
         getPostIt(postItId).flatMap { postIt ->
-            checkPostItExists(childPostItId).flatMap {
+            checkExists(childPostItId).flatMap {
                 postIt.childPostItIds -= childPostItId
                 postItRepository.update(postIt)
             }
         }
 
     fun changeParentPostIt(parentId: ObjectId, childId: ObjectId, newParentId: ObjectId): Mono<PostIt> =
-        checkPostItExists(parentId).zipWith(checkPostItExists(childId)).zipWith(checkPostItExists(newParentId)).then(
+        checkExists(parentId).zipWith(checkExists(childId)).zipWith(checkExists(newParentId)).then(
             removeChildPostIt(parentId, childId).then(addChildPostIt(newParentId, childId))
         )
 
-    fun checkPostItExists(id: ObjectId): Mono<Boolean> =
+    fun checkExists(id: ObjectId): Mono<Boolean> =
         postItRepository.existsById(id)
+
+    fun assertExists(id: ObjectId): Mono<Boolean> =
+        checkExists(id).flatMap {
+            if (!it) {
+                throw NotFoundException("PostIt", id.toString())
+            }
+            Mono.just(it)
+        }
 }
