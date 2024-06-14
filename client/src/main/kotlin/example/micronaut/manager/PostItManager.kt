@@ -6,6 +6,8 @@ import example.micronaut.service.postit.CommentService
 import example.micronaut.service.postit.PostItService
 import jakarta.inject.Singleton
 import org.bson.types.ObjectId
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import reactor.core.publisher.Mono
 
 @Singleton
@@ -13,6 +15,8 @@ class PostItManager(
     private val postItService: PostItService,
     private val commentService: CommentService
 ) {
+    private val logger: Logger = LoggerFactory.getLogger(PostItManager::class.java)
+
     fun createPostIt(postIt: PostIt): Mono<PostIt> {
         return postItService.createPostIt(postIt)
     }
@@ -76,12 +80,19 @@ class PostItManager(
 
     fun deleteComment(id: String) = deleteComment(ObjectId(id))
 
-    fun updatePostIt(id: String, title: String?, content: String?, color: String?) =
+    fun updatePostIt(id: String, title: String?, content: String?, color: String?): Mono<PostIt> =
         getPostIt(id).flatMap { postIt ->
             postIt.title = title ?: postIt.title
             postIt.content = content ?: postIt.content
             postIt.color = color ?: postIt.color
             postItService.updatePostIt(postIt)
+        }
+
+    fun updateComment(id: String, title: String?, content: String?): Mono<Comment> =
+        getComment(id).flatMap { comment ->
+            comment.title = title ?: comment.title
+            comment.content = content ?: comment.content
+            commentService.updateComment(comment)
         }
 
     fun changeCommentPostIt(commentId: ObjectId, newPostItId: ObjectId): Mono<Comment>
