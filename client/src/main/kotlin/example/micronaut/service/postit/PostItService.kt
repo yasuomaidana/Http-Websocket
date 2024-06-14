@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono
 
 @Singleton
 class PostItService(
-    private val postItRepository: PostItRepository
+    private val postItRepository: PostItRepository,
 ) {
     fun createPostIt(postIt: PostIt): Mono<PostIt> =
         postItRepository.save(postIt)
@@ -52,39 +52,39 @@ class PostItService(
 
     fun getPosts(): Flux<PostIt> = postItRepository.findAll()
 
-    fun getByIds(ids: List<ObjectId>, offset: Int=0, limit: Int=10): Mono<Page<PostIt>> =
+    fun getByIds(ids: List<ObjectId>, offset: Int = 0, limit: Int = 10): Mono<Page<PostIt>> =
         postItRepository.findByIdIn(ids, Pageable.from(offset, limit))
 
-    fun getPosts(offset:Int, limit: Int): Mono<Page<PostIt>>? =
+    fun getPosts(offset: Int, limit: Int): Mono<Page<PostIt>>? =
         postItRepository.findAll(Pageable.from(offset, limit))
 
     fun addChildPostIt(postItId: ObjectId, childPostItId: ObjectId): Mono<PostIt> =
         getPostIt(postItId).flatMap { postIt ->
-            postIt.childPostItIds += childPostItId
-            postItRepository.update(postIt)
+            checkPostItExists(childPostItId).flatMap {
+                postIt.childPostItIds += childPostItId
+                postItRepository.update(postIt)
+            }
         }
 
     fun createChildPostIt(postItId: ObjectId, childPostIt: PostIt): Mono<PostIt> =
-        createPostIt(childPostIt).flatMap { createdChildPostIt ->
-            addChildPostIt(postItId, createdChildPostIt.id!!)
+        checkPostItExists(postItId).flatMap {
+            createPostIt(childPostIt).flatMap { createdChildPostIt ->
+                addChildPostIt(postItId, createdChildPostIt.id!!)
+            }
         }
 
     fun removeChildPostIt(postItId: ObjectId, childPostItId: ObjectId): Mono<PostIt> =
         getPostIt(postItId).flatMap { postIt ->
-            postIt.childPostItIds -= childPostItId
-            postItRepository.update(postIt)
-        }
-
-    fun changeParentPostIt(parentId: ObjectId, childId: ObjectId, newParentId:ObjectId): Mono<PostIt> =
-        getPostIt(parentId).flatMap { parentPostIt ->
-            parentPostIt.childPostItIds -= childId
-            postItRepository.update(parentPostIt)
-        }.flatMap {
-            getPostIt(newParentId).flatMap { newParentPostIt ->
-                newParentPostIt.childPostItIds += childId
-                postItRepository.update(newParentPostIt)
+            checkPostItExists(childPostItId).flatMap {
+                postIt.childPostItIds -= childPostItId
+                postItRepository.update(postIt)
             }
         }
+
+    fun changeParentPostIt(parentId: ObjectId, childId: ObjectId, newParentId: ObjectId): Mono<PostIt> =
+        checkPostItExists(parentId).zipWith(checkPostItExists(childId)).zipWith(checkPostItExists(newParentId)).then(
+            removeChildPostIt(parentId, childId).then(addChildPostIt(newParentId, childId))
+        )
 
     fun checkPostItExists(id: ObjectId): Mono<Boolean> =
         postItRepository.existsById(id)
