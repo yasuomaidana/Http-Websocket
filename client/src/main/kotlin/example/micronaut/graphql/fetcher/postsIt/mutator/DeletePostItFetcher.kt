@@ -2,9 +2,6 @@ package example.micronaut.graphql.fetcher.postsIt.mutator
 
 import example.micronaut.entities.user.ADMIN_ROLE
 import example.micronaut.exception.ForbiddenException
-import example.micronaut.exception.NotFoundException
-import example.micronaut.exception.NullIdException
-import example.micronaut.exception.UserNotAuthenticatedException
 import example.micronaut.manager.PostItManager
 import graphql.schema.DataFetcher
 import graphql.schema.DataFetchingEnvironment
