@@ -28,6 +28,7 @@ type PostIt {
     childPosts: PostItPage
     color: String
     comments: CommentPage
+    createdBy: String
 }
 
 type Comment {
@@ -35,6 +36,7 @@ type Comment {
     postId: ID!
     title: String!
     content: String
+    createdBy: String
     votes: Votes!
 }
 

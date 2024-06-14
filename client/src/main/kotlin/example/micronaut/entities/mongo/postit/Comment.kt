@@ -13,11 +13,13 @@ data class Comment(
     val postId: ObjectId,
     var title: String,
     var content: String?= null,
+    val createdBy: String,
     val votes: Votes = Votes(likes = 0, dislikes = 0)
 ){
     constructor(
         postId: String,
         title: String,
-        content: String?
-    ): this(null, ObjectId(postId), title, content)
+        content: String?,
+        createdBy: String
+    ): this(null, ObjectId(postId), title, content, createdBy)
 }
