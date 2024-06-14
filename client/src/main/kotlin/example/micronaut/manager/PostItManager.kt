@@ -65,7 +65,15 @@ class PostItManager(
     fun deletePostIt(id: ObjectId) = postItService.deletePostIt(id)
     fun deletePostIt(id: String) = deletePostIt(ObjectId(id))
 
-    fun deleteComment(id: ObjectId) = commentService.deleteComment(id)
+    fun deleteComment(id: ObjectId):Mono<Long> =
+        commentService.getComment(id).flatMap { comment ->
+            postItService.removeCommentFromPostIt(comment.postId, comment.id!!)
+                .onErrorResume { error ->
+                    logger.warn("Error removing comment from post-it", error)
+                    Mono.empty()}
+                .then(commentService.deleteComment(id))
+        }
+
     fun deleteComment(id: String) = deleteComment(ObjectId(id))
 
     fun updatePostIt(id: String, title: String?, content: String?, color: String?) =
