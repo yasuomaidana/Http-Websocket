@@ -1,6 +1,7 @@
 package example.micronaut.graphql.fetcher.postsIt.mutator
 
 import example.micronaut.entities.mongo.postit.PostIt
+import example.micronaut.exception.UserNotAuthenticatedException
 import example.micronaut.manager.PostItManager
 import graphql.schema.DataFetcher
 import graphql.schema.DataFetchingEnvironment
@@ -24,7 +25,7 @@ class CreatePostItFetcher(
         val color = env.getArgument<String>("color") ?: throw IllegalArgumentException("Color cannot be null")
 
 
-        val username = securityService.username().orElseGet { throw IllegalArgumentException("User not authenticated") }
+        val username = securityService.username().orElseGet { throw UserNotAuthenticatedException() }
 
 
         // Create a new PostIt object with the title, content, and color fields set
