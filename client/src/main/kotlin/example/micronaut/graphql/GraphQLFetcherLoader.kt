@@ -1,6 +1,7 @@
 package example.micronaut.graphql
 
 import example.micronaut.graphql.fetcher.postsIt.comments.mutator.CreateCommentFetcher
+import example.micronaut.graphql.fetcher.postsIt.comments.mutator.DeleteCommentFetcher
 import example.micronaut.graphql.fetcher.postsIt.query.PostItFetcher
 import example.micronaut.graphql.fetcher.postsIt.query.PostsFetcher
 import example.micronaut.graphql.fetcher.postsIt.comments.query.CommentFetcher
@@ -24,6 +25,7 @@ class GraphQLFetcherLoader(
     removeChildPostItFetcher: RemoveChildPostItFetcher,
     createCommentFetcher: CreateCommentFetcher,
     deletePostItFetcher: DeletePostItFetcher,
+    deleteCommentFetcher: DeleteCommentFetcher
 ) {
 
     val queryDict: Map<String, DataFetcher<*>> = mapOf(
@@ -40,6 +42,7 @@ class GraphQLFetcherLoader(
         "createPostIt" to createPostItFetcher,
         "removeChildPostIt" to removeChildPostItFetcher,
         "createComment" to createCommentFetcher,
-        "deletePostIt" to deletePostItFetcher
+        "deletePostIt" to deletePostItFetcher,
+        "deleteComment" to deleteCommentFetcher
     )
 }

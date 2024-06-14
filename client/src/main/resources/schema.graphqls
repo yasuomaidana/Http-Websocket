@@ -15,6 +15,7 @@ type Mutation {
     deleteComment(id: ID!): Boolean
     likeComment(id: ID!): Comment
     dislikeComment(id: ID!): Comment
+    deleteComment(id: ID!): Float
     addChildPostIt(parentId: ID!, childId: ID!): PostIt
     createChildPostIt(parentId: ID!, title: String!, content: String!, color: String!): PostIt
     removeChildPostIt(parentId: ID!, childId: ID!): PostIt
