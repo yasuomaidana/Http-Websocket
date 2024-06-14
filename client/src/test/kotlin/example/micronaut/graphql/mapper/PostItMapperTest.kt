@@ -46,7 +46,8 @@ class PostItMapperTest {
     private val returnedComment = Comment(
         content = "Test comment",
         postId = ObjectId(),
-        title = "Test title"
+        title = "Test title",
+        createdBy = "testUser"
     )
 
     init {

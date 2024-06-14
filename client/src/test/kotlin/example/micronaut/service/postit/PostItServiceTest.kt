@@ -100,7 +100,7 @@ class PostItServiceTest {
             createdBy = "testUser"
         )
         val createdPostIt = postItService.createPostIt(postIt).block()!!
-        val comment = Comment(postId = createdPostIt.id!!, title = "Test comment", content = "Test comment content")
+        val comment = Comment(postId = createdPostIt.id!!, title = "Test comment", content = "Test comment content", createdBy = "testUser" )
         val createdComment = commentService.createComment(comment).block()!!
         val updatedPostIt = postItService.addCommentToPostIt(createdPostIt.id!!, createdComment.id!!).block()!!
         assertTrue(updatedPostIt.commentIds.contains(createdComment.id))
@@ -117,7 +117,7 @@ class PostItServiceTest {
             createdBy = "testUser"
         )
         val createdPostIt = postItService.createPostIt(postIt).block()!!
-        val comment = Comment(postId = createdPostIt.id!!, title = "Test comment", content = "Test comment content")
+        val comment = Comment(postId = createdPostIt.id!!, title = "Test comment", content = "Test comment content", createdBy = "testUser")
         val createdComment = commentService.createComment(comment).block()!!
         val updatedPostIt = postItService.addCommentToPostIt(createdPostIt.id!!, createdComment.id!!).block()!!
         val updatedPostIt2 = postItService.removeCommentFromPostIt(updatedPostIt.id!!, createdComment.id!!).block()!!
@@ -135,7 +135,7 @@ class PostItServiceTest {
             createdBy = "testUser"
         )
         val createdPostIt = postItService.createPostIt(postIt).block()!!
-        val comment = Comment(postId = createdPostIt.id!!, title = "Test comment", content = "Test comment content")
+        val comment = Comment(postId = createdPostIt.id!!, title = "Test comment", content = "Test comment content", createdBy = "testUser")
         val createdComment = commentService.createComment(comment).block()!!
         val updatedPostIt = postItService.addCommentToPostIt(createdPostIt.id!!, createdComment.id!!).block()!!
         val updatedPostIt2 = postItService.clearCommentsFromPostIt(updatedPostIt.id!!).block()!!

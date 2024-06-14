@@ -1,6 +1,7 @@
 package example.micronaut.service.postit
 
 import example.micronaut.entities.mongo.postit.Comment
+import example.micronaut.entities.mongo.postit.PostIt
 import example.micronaut.entities.mongo.postit.Votes
 import example.micronaut.repository.postit.comments.CommentRepository
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
@@ -17,6 +18,8 @@ class CommentServiceTest {
     lateinit var commentRepository: CommentRepository
     @Inject
     lateinit var commentService: CommentService
+    @Inject
+    lateinit var postItService: PostItService
 
     @AfterEach
     fun tearDown() {
@@ -26,7 +29,7 @@ class CommentServiceTest {
     @Test
     fun createComment() {
         val votes = Votes(likes = 10, dislikes = 2)
-        val comment = Comment(postId = ObjectId(), title = "Test comment", content = "Test description", votes = votes)
+        val comment = Comment(postId = ObjectId(), title = "Test comment", content = "Test description", votes = votes, createdBy = "testUser")
         val result = commentService.createComment(comment).block()!!
 
         assertNotNull(result)
@@ -40,7 +43,7 @@ class CommentServiceTest {
     @Test
     fun getComment() {
         val votes = Votes(likes = 10, dislikes = 2)
-        val comment = Comment(postId = ObjectId(), title = "Title", content = "Test comment", votes = votes)
+        val comment = Comment(postId = ObjectId(), title = "Title", content = "Test comment", votes = votes, createdBy = "testUser")
         val createdComment = commentService.createComment(comment).block()
         val result = commentService.getComment(createdComment!!.id!!).block()!!
         assertNotNull(result)
@@ -53,19 +56,21 @@ class CommentServiceTest {
 
     @Test
     fun deleteComment() {
+        val postIt = PostIt(title = "Test PostIt", content = "Test content", childPostItIds = emptyList(), color = "red", commentIds = emptyList(), createdBy = "testUser")
+        val id = postItService.createPostIt(postIt).block()?.id!!
         val votes = Votes(likes = 10, dislikes = 2)
-        val comment = Comment(postId = ObjectId(), title = "Title", content = "Test comment", votes = votes)
+        val comment = Comment(postId = id, title = "Title", content = "Test comment", votes = votes, createdBy = "testUser")
         val createdComment = commentService.createComment(comment).block()
         val deletedCount = commentService.deleteComment(createdComment!!.id!!).block()!!
         assertEquals(1, deletedCount)
-        val result = commentService.getComment(createdComment.id!!).block()
-        assertNull(result)
+        val result = commentService.checkExists(createdComment.id!!).block()
+        assertFalse(result!!)
     }
 
     @Test
     fun updateComment() {
         val votes = Votes(likes = 10, dislikes = 2)
-        val comment = Comment(postId = ObjectId(), title = "Test comment", votes = votes)
+        val comment = Comment(postId = ObjectId(), title = "Test comment", votes = votes, createdBy = "testUser")
         val createdComment = commentService.createComment(comment).block()
         val updatedComment = createdComment!!.copy(title = "Updated comment")
         val result = commentService.updateComment(updatedComment).block()!!
@@ -80,7 +85,7 @@ class CommentServiceTest {
     @Test
     fun updateLikeComment() {
         val votes = Votes(likes = 10, dislikes = 2)
-        val comment = Comment(postId = ObjectId(), title = "Test comment", votes = votes)
+        val comment = Comment(postId = ObjectId(), title = "Test comment", votes = votes, createdBy = "testUser")
         val createdComment = commentService.createComment(comment).block()
         val result = commentService.updateLikeComment(createdComment!!.id!!, true).block()!!
         assertNotNull(result)
@@ -93,7 +98,7 @@ class CommentServiceTest {
     @Test
     fun updateDisLikeComment() {
         val votes = Votes(likes = 10, dislikes = 2)
-        val comment = Comment(postId = ObjectId(), title = "Test comment", votes = votes)
+        val comment = Comment(postId = ObjectId(), title = "Test comment", votes = votes, createdBy = "testUser")
         val createdComment = commentService.createComment(comment).block()
         val result = commentService.updateDisLikeComment(createdComment!!.id!!, true).block()!!
         assertNotNull(result)
@@ -106,7 +111,7 @@ class CommentServiceTest {
     @Test
     fun removeLikeComment() {
         val votes = Votes(likes = 10, dislikes = 2)
-        val comment = Comment(postId = ObjectId(), title = "Test comment", votes = votes)
+        val comment = Comment(postId = ObjectId(), title = "Test comment", votes = votes, createdBy = "testUser")
         val createdComment = commentService.createComment(comment).block()
         val result = commentService.updateLikeComment(createdComment!!.id!!, false).block()!!
         assertNotNull(result)
@@ -119,7 +124,7 @@ class CommentServiceTest {
     @Test
     fun removeDisLikeComment() {
         val votes = Votes(likes = 10, dislikes = 2)
-        val comment = Comment(postId = ObjectId(), title = "Test comment", votes = votes)
+        val comment = Comment(postId = ObjectId(), title = "Test comment", votes = votes, createdBy = "testUser")
         val createdComment = commentService.createComment(comment).block()
         val result = commentService.updateDisLikeComment(createdComment!!.id!!, false).block()!!
         assertNotNull(result)
@@ -132,7 +137,7 @@ class CommentServiceTest {
     @Test
     fun removeLikeCommentToZero() {
         val votes = Votes(likes = 0, dislikes = 2)
-        val comment = Comment(postId = ObjectId(), title = "Test comment", votes = votes)
+        val comment = Comment(postId = ObjectId(), title = "Test comment", votes = votes, createdBy = "testUser")
         val createdComment = commentService.createComment(comment).block()
         val result = commentService.updateLikeComment(createdComment!!.id!!, false).block()!!
         assertNotNull(result)
@@ -145,7 +150,7 @@ class CommentServiceTest {
     @Test
     fun removeDisLikeCommentToZero() {
         val votes = Votes(likes = 10, dislikes = 0)
-        val comment = Comment(postId = ObjectId(), title = "Test comment", votes = votes)
+        val comment = Comment(postId = ObjectId(), title = "Test comment", votes = votes, createdBy = "testUser")
         val createdComment = commentService.createComment(comment).block()
         val result = commentService.updateDisLikeComment(createdComment!!.id!!, false).block()!!
         assertNotNull(result)

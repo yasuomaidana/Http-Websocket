@@ -41,7 +41,7 @@ class PostItManagerTest {
     fun testAddCommentToPostIt() {
         val postIt = PostIt(title = "Test PostIt", content = "Test content", childPostItIds = emptyList(), color = "red", commentIds = emptyList(), createdBy = "testUser")
         val createdPostIt = postItManager.createPostIt(postIt).block()!!
-        val comment = Comment(postId = createdPostIt.id!!, title = "Test comment", content = "Test comment content")
+        val comment = Comment(postId = createdPostIt.id!!, title = "Test comment", content = "Test comment content", createdBy = "testUser")
         val updatedPostIt = postItManager.addCommentToPostIt(createdPostIt.id!!, comment).block()!!
         assertTrue(updatedPostIt.commentIds.contains(comment.id))
     }
@@ -50,7 +50,7 @@ class PostItManagerTest {
     fun testRemoveCommentFromPostIt() {
         val postIt = PostIt(title = "Test PostIt", content = "Test content", childPostItIds = emptyList(), color = "red", commentIds = emptyList(), createdBy = "testUser")
         val createdPostIt = postItManager.createPostIt(postIt).block()!!
-        val comment = Comment(postId = createdPostIt.id!!, title = "Test comment", content = "Test comment content")
+        val comment = Comment(postId = createdPostIt.id!!, title = "Test comment", content = "Test comment content", createdBy = "testUser")
         val updatedPostIt = postItManager.addCommentToPostIt(createdPostIt.id!!, comment).block()!!
         val updatedPostIt2 = postItManager.removeCommentFromPostIt(updatedPostIt.id!!, comment.id!!).block()!!
         assertFalse(updatedPostIt2.commentIds.contains(comment.id))
