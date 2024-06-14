@@ -1,6 +1,7 @@
 package example.micronaut.service.postit
 
 import example.micronaut.entities.mongo.postit.Comment
+import example.micronaut.exception.NotFoundException
 import example.micronaut.repository.postit.comments.CommentRepository
 import io.micronaut.data.model.Page
 import io.micronaut.data.model.Pageable
@@ -15,7 +16,8 @@ class CommentService(
     fun createComment(comment: Comment): Mono<Comment> =
         commentRepository.save(comment)
 
-    fun getComment(id: ObjectId): Mono<Comment> = Mono.from(commentRepository.find(id))
+    fun getComment(id: ObjectId): Mono<Comment> =
+        assertExits(id).flatMap { Mono.from(commentRepository.find(id))}
 
     fun getComment(id:String): Mono<Comment> = getComment(ObjectId(id))
 
@@ -42,4 +44,14 @@ class CommentService(
 
     fun getComments(ids: List<ObjectId>, offset:Int, limit:Int): Mono<Page<Comment>> =
         commentRepository.findByIdIn(ids, Pageable.from(offset, limit))
+
+    fun checkExists(id: ObjectId): Mono<Boolean> =
+        Mono.from(commentRepository.existsById(id))
+
+    fun assertExits(id:ObjectId) = checkExists(id).flatMap {
+        if (!it) {
+            throw NotFoundException("Comment", id.toString())
+        }
+        Mono.just(it)
+    }
 }
