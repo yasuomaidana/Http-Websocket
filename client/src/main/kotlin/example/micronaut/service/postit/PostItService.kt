@@ -1,6 +1,7 @@
 package example.micronaut.service.postit
 
 import example.micronaut.entities.mongo.postit.PostIt
+import example.micronaut.exception.NotFoundException
 import example.micronaut.repository.postit.PostItRepository
 import io.micronaut.data.model.Page
 import io.micronaut.data.model.Pageable
@@ -17,7 +18,12 @@ class PostItService(
         postItRepository.save(postIt)
 
     fun getPostIt(id: ObjectId): Mono<PostIt> =
-        Mono.from(postItRepository.find(id))
+        checkPostItExists(id).flatMap {
+            if (!it) {
+                throw NotFoundException("PostIt", id.toString())
+            }
+            Mono.from(postItRepository.find(id))
+        }
 
     fun deletePostIt(id: ObjectId): Mono<Long> =
         postItRepository.deleteById(id)
