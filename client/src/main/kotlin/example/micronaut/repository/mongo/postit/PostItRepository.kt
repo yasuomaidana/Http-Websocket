@@ -1,4 +1,4 @@
-package example.micronaut.repository.postit
+package example.micronaut.repository.mongo.postit
 
 import example.micronaut.configuration.mongo.DefaultMongoRepository
 import example.micronaut.entities.mongo.postit.PostIt

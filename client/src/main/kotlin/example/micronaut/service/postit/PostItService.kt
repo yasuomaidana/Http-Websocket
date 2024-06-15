@@ -2,7 +2,7 @@ package example.micronaut.service.postit
 
 import example.micronaut.entities.mongo.postit.PostIt
 import example.micronaut.exception.NotFoundException
-import example.micronaut.repository.postit.PostItRepository
+import example.micronaut.repository.mongo.postit.PostItRepository
 import io.micronaut.data.model.Page
 import io.micronaut.data.model.Pageable
 import jakarta.inject.Singleton

@@ -1,4 +1,4 @@
-package example.micronaut.repository.postit.comments.votes
+package example.micronaut.repository.mongo.postit.comments.votes
 
 import example.micronaut.configuration.mongo.DefaultMongoRepository
 import example.micronaut.entities.mongo.postit.Votes

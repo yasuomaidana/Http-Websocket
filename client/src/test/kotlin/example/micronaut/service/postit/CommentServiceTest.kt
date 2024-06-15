@@ -3,7 +3,7 @@ package example.micronaut.service.postit
 import example.micronaut.entities.mongo.postit.Comment
 import example.micronaut.entities.mongo.postit.PostIt
 import example.micronaut.entities.mongo.postit.Votes
-import example.micronaut.repository.postit.comments.CommentRepository
+import example.micronaut.repository.mongo.postit.comments.CommentRepository
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import jakarta.inject.Inject
 import org.bson.types.ObjectId

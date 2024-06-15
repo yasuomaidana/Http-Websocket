@@ -2,7 +2,7 @@ package example.micronaut.service.postit
 
 import example.micronaut.entities.mongo.postit.Comment
 import example.micronaut.entities.mongo.postit.PostIt
-import example.micronaut.repository.postit.PostItRepository
+import example.micronaut.repository.mongo.postit.PostItRepository
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import jakarta.inject.Inject
 import org.junit.jupiter.api.AfterEach

@@ -1,4 +1,4 @@
-package example.micronaut.repository.postit.comments
+package example.micronaut.repository.mongo.postit.comments
 
 import example.micronaut.configuration.mongo.DefaultMongoRepository
 import example.micronaut.entities.mongo.postit.Comment
