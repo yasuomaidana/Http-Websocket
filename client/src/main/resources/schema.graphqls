@@ -11,6 +11,7 @@ type Mutation {
     deletePostIt(id: ID!): Float
     createComment(postId: ID!, title: String!, content: String): Comment
     changeCommentPostIt(id: ID!, newPostItId: ID!): Comment
+    updateComment(id: ID!, title: String, content: String): Comment
     deleteComment(id: ID!): Float
     addChildPostIt(parentId: ID!, childId: ID!): PostIt
     createChildPostIt(parentId: ID!, title: String!, content: String!, color: String!): PostIt
