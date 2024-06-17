@@ -13,6 +13,7 @@ type Mutation {
     changeCommentPostIt(id: ID!, newPostItId: ID!): Comment
     updateComment(id: ID!, title: String, content: String): Comment
     deleteComment(id: ID!): Float
+    likeComment(id: ID!): Comment
     addChildPostIt(parentId: ID!, childId: ID!): PostIt
     createChildPostIt(parentId: ID!, title: String!, content: String!, color: String!): PostIt
     removeChildPostIt(parentId: ID!, childId: ID!): PostIt

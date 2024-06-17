@@ -29,7 +29,8 @@ class GraphQLFetcherLoader(
     deletePostItFetcher: DeletePostItFetcher,
     deleteCommentFetcher: DeleteCommentFetcher,
     updatePostItFetcher: UpdatePostItFetcher,
-    changeCommentPostItFetcher: ChangeCommentPostItFetcher
+    changeCommentPostItFetcher: ChangeCommentPostItFetcher,
+    likeCommentFetcher: LikeCommentFetcher,
 ) {
 
     val queryDict: Map<String, DataFetcher<*>> = mapOf(
@@ -49,6 +50,7 @@ class GraphQLFetcherLoader(
         "deletePostIt" to deletePostItFetcher,
         "deleteComment" to deleteCommentFetcher,
         "updatePostIt" to updatePostItFetcher,
-        "changeCommentPostIt" to changeCommentPostItFetcher
+        "changeCommentPostIt" to changeCommentPostItFetcher,
+        "likeComment" to likeCommentFetcher,
     )
 }

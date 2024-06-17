@@ -2,6 +2,7 @@ package example.micronaut.manager
 
 import example.micronaut.entities.mongo.postit.Comment
 import example.micronaut.entities.mongo.postit.PostIt
+import example.micronaut.entities.mongo.postit.useractivity.CommentVote
 import example.micronaut.service.UserActivityService
 import example.micronaut.service.postit.CommentService
 import example.micronaut.service.postit.PostItService
@@ -151,4 +152,68 @@ class PostItManager(
 
     fun changeCommentPostIt(commentId: String, newPostItId: String) =
         changeCommentPostIt(ObjectId(commentId), ObjectId(newPostItId))
+
+    private fun toggleVote(commentId: ObjectId, currentVoteType: CommentVote.VoteType) =
+        commentService.getComment(commentId)
+            .flatMap { comment ->
+                comment.votes.likes += if (currentVoteType == CommentVote.VoteType.LIKE) -1 else 1
+                comment.votes.dislikes += if (currentVoteType == CommentVote.VoteType.DISLIKE) -1 else 1
+                commentService.updateComment(comment)
+            }
+
+    private fun removeVote(commentId: ObjectId, currentVoteType: CommentVote.VoteType) =
+        commentService.getComment(commentId)
+            .flatMap { comment ->
+                comment.votes.likes -= if (currentVoteType == CommentVote.VoteType.LIKE) 1 else 0
+                comment.votes.dislikes -= if (currentVoteType == CommentVote.VoteType.DISLIKE) 1 else 0
+                commentService.updateComment(comment)
+            }
+
+    private fun addVote(commentId: ObjectId, newVoteType: CommentVote.VoteType) =
+        commentService.assertExits(commentId)
+            .flatMap {
+                if (newVoteType == CommentVote.VoteType.LIKE) {
+                    commentService.updateLikeComment(commentId, true)
+                } else {
+                    commentService.updateDisLikeComment(commentId, true)
+                }
+            }
+
+    private fun updateCommentVotes(
+        commentId: ObjectId,
+        oldVoteType: CommentVote.VoteType?,
+        newVoteType: CommentVote.VoteType,
+    ) =
+        when (oldVoteType) {
+            null -> addVote(commentId, newVoteType)
+            newVoteType -> removeVote(commentId, newVoteType)
+            else -> toggleVote(commentId, newVoteType)
+        }
+
+    fun likeComment(commentId: ObjectId, username: String):
+            Mono<Comment> =
+        commentService.assertExits(commentId)
+            .zipWith(userActivityService.getUserActivity(username))
+            .flatMap { zipResult ->
+                val userActivity = zipResult.t2
+
+                val existingVote = userActivity.commentVotes.find { it.commentId == commentId }
+                val newVoteType = CommentVote.VoteType.LIKE
+
+                val updatedUserActivity = if (existingVote != null) {
+                    if (existingVote.voteType == newVoteType) {
+                        userActivity.commentVotes -= existingVote
+                    } else {
+                        existingVote.voteType = newVoteType
+                    }
+                    userActivity
+                } else {
+                    userActivity.commentVotes += CommentVote(commentId, newVoteType)
+                    userActivity
+                }
+
+                userActivityService.updateUserActivity(updatedUserActivity)
+                    .then(updateCommentVotes(commentId, existingVote?.voteType, newVoteType))
+
+            }
 }
