@@ -43,7 +43,7 @@ fun testUpdateUserActivity() {
     // Update the user activity
     val updatedPostItIds = listOf(ObjectId(), ObjectId())
     val updatedCommentIds = listOf(ObjectId(), ObjectId())
-    val updatedCommentVotes = listOf(CommentVote(ObjectId(), CommentVote.Vote.DISLIKE), CommentVote(ObjectId(), CommentVote.Vote.LIKE))
+    val updatedCommentVotes = listOf(CommentVote(ObjectId(), CommentVote.VoteType.DISLIKE), CommentVote(ObjectId(), CommentVote.VoteType.LIKE))
     val updatedUserActivity = UserActivity(id, username, updatedPostItIds, updatedCommentIds, updatedCommentVotes)
     userActivityService.updateUserActivity(updatedUserActivity).block()
 

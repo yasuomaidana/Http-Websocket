@@ -8,9 +8,9 @@ import org.bson.types.ObjectId
 @Serdeable
 data class CommentVote(
     val commentId: ObjectId,
-    var vote: Vote? = null,
+    var voteType: VoteType? = null,
 ) {
-    enum class Vote {
+    enum class VoteType {
         LIKE, DISLIKE
     }
 }
