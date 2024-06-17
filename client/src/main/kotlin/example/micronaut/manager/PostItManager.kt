@@ -211,20 +211,11 @@ class PostItManager(
             .then(updateCommentVotes(commentId, oldVoteType, newVoteType))
     }
 
-    fun likeComment(commentId: ObjectId, username: String):
-            Mono<Comment> =
+    fun voteComment(commentId: ObjectId, username: String, voteType: CommentVote.VoteType): Mono<Comment> =
         commentService.assertExits(commentId)
             .zipWith(userActivityService.getUserActivity(username))
             .flatMap { zipResult ->
                 val userActivity = zipResult.t2
-                likeDislikeHelper(commentId, userActivity, CommentVote.VoteType.LIKE)
+                likeDislikeHelper(commentId, userActivity, voteType)
             }
-
-    fun dislikeComment(commentId: ObjectId, username: String): Mono<Comment> =
-    commentService.assertExits(commentId)
-        .zipWith(userActivityService.getUserActivity(username))
-        .flatMap { zipResult ->
-            val userActivity = zipResult.t2
-            likeDislikeHelper(commentId, userActivity, CommentVote.VoteType.DISLIKE)
-        }
 }

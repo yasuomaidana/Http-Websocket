@@ -1,6 +1,7 @@
 package example.micronaut.graphql.fetcher.postsIt.comments.mutator
 
 import example.micronaut.entities.mongo.postit.Comment
+import example.micronaut.entities.mongo.postit.useractivity.CommentVote
 import example.micronaut.exception.UserNotAuthenticatedException
 import example.micronaut.manager.PostItManager
 import graphql.schema.DataFetcher
@@ -19,6 +20,6 @@ class DislikeCommentFetcher(
     override fun get(environment: DataFetchingEnvironment): Comment {
         val id = environment.getArgument<String>("id")!!
         val username = securityService.username().orElseGet { throw UserNotAuthenticatedException() }
-        return postItManager.dislikeComment(ObjectId(id), username).toFuture().get()
+        return postItManager.voteComment(ObjectId(id), username, CommentVote.VoteType.DISLIKE).toFuture().get()
     }
 }
