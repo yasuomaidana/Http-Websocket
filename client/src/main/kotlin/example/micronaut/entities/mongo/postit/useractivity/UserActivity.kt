@@ -14,7 +14,7 @@ data class UserActivity(
     var postItIds: List<ObjectId> = emptyList(),
     var commentIds: List<ObjectId> = emptyList(),
     var commentVotes: List<CommentVote> = emptyList(),
-    var public: Boolean = false
+    var publicFlag: Boolean = false
 ){
     constructor(
         username: String

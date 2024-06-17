@@ -3,6 +3,7 @@ type Query {
     posts(offset: Int, limit:Int, commentLimit:Int): PostItPage
     comment(id: ID!): Comment
     comments(postId:ID!, offset:Int, limit:Int): CommentPage
+    userActivity(username: String!, postsOffset: Int, postsLimit: Int, commentsOffset: Int, commentsLimit: Int): UserActivity
 }
 
 type Mutation {

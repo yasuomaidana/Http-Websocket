@@ -35,7 +35,8 @@ class GraphQLFetcherLoader(
         "postIt" to postItFetcher,
         "posts" to postsFetcher,
         "comment" to commentFetcher,
-        "comments" to commentsFetcher
+        "comments" to commentsFetcher,
+        "userActivity" to userActivityFetcher
     )
 
     val mutationDict: Map<String, DataFetcher<*>> = mapOf(
