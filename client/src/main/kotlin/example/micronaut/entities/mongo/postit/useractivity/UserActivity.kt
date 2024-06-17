@@ -13,7 +13,8 @@ data class UserActivity(
     var username: String,
     var postItIds: List<ObjectId> = emptyList(),
     var commentIds: List<ObjectId> = emptyList(),
-    var commentVotes: List<CommentVote> = emptyList()
+    var commentVotes: List<CommentVote> = emptyList(),
+    var public: Boolean = false
 ){
     constructor(
         username: String
