@@ -3,7 +3,7 @@ type Query {
     posts(offset: Int, limit:Int, commentLimit:Int): PostItPage
     comment(id: ID!): Comment
     comments(postId:ID!, offset:Int, limit:Int): CommentPage
-    userActivity(username: String!, postsOffset: Int, postsLimit: Int, commentsOffset: Int, commentsLimit: Int): UserActivity
+    userActivity(username: String, postsOffset: Int, postsLimit: Int, commentsOffset: Int, commentsLimit: Int): UserActivity
 }
 
 type Mutation {
@@ -20,6 +20,7 @@ type Mutation {
     createChildPostIt(parentId: ID!, title: String!, content: String!, color: String!): PostIt
     removeChildPostIt(parentId: ID!, childId: ID!): PostIt
     changeParentPostIt(parentId: ID!, childId: ID!, newParentId: ID!): PostIt
+    toggleUserActivityPrivacy(username: String): UserActivity
 }
 
 type PostIt {
@@ -58,4 +59,22 @@ type PostItPage {
 type Votes {
     likes: Int!
     dislikes: Int!
+}
+
+type UserActivity {
+    username: String!
+    postIts: PostItPage!
+    comments: CommentPage!
+    commentVotes: [CommentVote]!
+    public: Boolean!
+}
+
+type CommentVote {
+    commentId: ID!
+    voteType: VoteType!
+}
+
+enum VoteType {
+    LIKE
+    DISLIKE
 }

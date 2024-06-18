@@ -1,12 +1,13 @@
 package example.micronaut.graphql
 
-import example.micronaut.graphql.fetcher.UserActivityFetcher
+import example.micronaut.graphql.fetcher.useractivity.UserActivityFetcher
 import example.micronaut.graphql.fetcher.postsIt.comments.mutator.*
 import example.micronaut.graphql.fetcher.postsIt.query.PostItFetcher
 import example.micronaut.graphql.fetcher.postsIt.query.PostsFetcher
 import example.micronaut.graphql.fetcher.postsIt.comments.query.CommentFetcher
 import example.micronaut.graphql.fetcher.postsIt.comments.query.CommentsFetcher
 import example.micronaut.graphql.fetcher.postsIt.mutator.*
+import example.micronaut.graphql.fetcher.useractivity.ToggleUserActivityPrivacyFetcher
 import graphql.schema.DataFetcher
 import jakarta.inject.Singleton
 
@@ -17,6 +18,7 @@ class GraphQLFetcherLoader(
     postsFetcher: PostsFetcher,
     commentFetcher: CommentFetcher,
     commentsFetcher: CommentsFetcher,
+    userActivityFetcher: UserActivityFetcher,
     //Mutators
     addChildPostItFetcher: AddChildPostItFetcher,
     changeParentPostItFetcher: ChangeParentPostItFetcher,
@@ -30,7 +32,7 @@ class GraphQLFetcherLoader(
     changeCommentPostItFetcher: ChangeCommentPostItFetcher,
     likeCommentFetcher: LikeCommentFetcher,
     dislikeCommentFetcher: DislikeCommentFetcher,
-    userActivityFetcher: UserActivityFetcher
+    toggleUserActivityPrivacyFetcher: ToggleUserActivityPrivacyFetcher
 ) {
 
     val queryDict: Map<String, DataFetcher<*>> = mapOf(
@@ -53,6 +55,7 @@ class GraphQLFetcherLoader(
         "updatePostIt" to updatePostItFetcher,
         "changeCommentPostIt" to changeCommentPostItFetcher,
         "likeComment" to likeCommentFetcher,
-        "dislikeComment" to dislikeCommentFetcher
+        "dislikeComment" to dislikeCommentFetcher,
+        "toggleUserActivityPrivacy" to toggleUserActivityPrivacyFetcher
     )
 }
