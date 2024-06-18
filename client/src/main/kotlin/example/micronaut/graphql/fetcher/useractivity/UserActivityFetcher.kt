@@ -1,12 +1,10 @@
-package example.micronaut.graphql.fetcher
+package example.micronaut.graphql.fetcher.useractivity
 
 import example.micronaut.entities.user.ADMIN_ROLE
 import example.micronaut.exception.ForbiddenException
 import example.micronaut.exception.UserNotAuthenticatedException
 import example.micronaut.graphql.dto.UserActivityDTO
-import example.micronaut.graphql.mapper.CommentMapper
-import example.micronaut.graphql.mapper.PostItMapper
-import example.micronaut.manager.PostItManager
+import example.micronaut.graphql.mapper.UserActivityMapper
 import example.micronaut.service.UserActivityService
 import graphql.schema.DataFetcher
 import graphql.schema.DataFetchingEnvironment
@@ -17,9 +15,7 @@ import jakarta.inject.Singleton
 @Singleton
 class UserActivityFetcher(
     private val userActivityService: UserActivityService,
-    private val postItManager: PostItManager,
-    private val postItMapper: PostItMapper,
-    private val commentMapper: CommentMapper,
+    private val userActivityMapper: UserActivityMapper,
     @Inject
     private val securityService: SecurityService
 ):DataFetcher<UserActivityDTO> {
@@ -36,16 +32,6 @@ class UserActivityFetcher(
             throw ForbiddenException(user=username, action="view user activity: $username")
         }
 
-        val postsPage = postItManager.getPostsByIds(userActivity.postItIds, postsOffset, postsLimit).toFuture().get()
-        val postIts = postItMapper.postItPageToDTO(postsPage, postsLimit)
-        val comments = commentMapper.commentPageToCommentPageDTO(postItManager.getComments(userActivity.commentIds, commentsOffset, commentsLimit).toFuture().get())
-
-        return UserActivityDTO(
-            userActivity.username,
-            postIts,
-            comments,
-            userActivity.commentVotes,
-            userActivity.publicFlag
-        )
+        return userActivityMapper.userActivityToUserActivityDTO(userActivity, postsOffset, postsLimit, commentsOffset, commentsLimit)
     }
 }
