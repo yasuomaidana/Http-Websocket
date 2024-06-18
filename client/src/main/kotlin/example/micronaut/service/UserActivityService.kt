@@ -19,4 +19,10 @@ class UserActivityService(
         getUserActivity(userActivity.username).flatMap { userActivityRepository.update(userActivity) }
     fun deleteUserActivity(userActivity: UserActivity) =
         userActivityRepository.delete(userActivity)
+
+    fun togglePublicFlag(username: String) =
+        getUserActivity(username).map {
+            it.publicFlag = !it.publicFlag
+            it
+        }.flatMap { userActivityRepository.update(it) }
 }
